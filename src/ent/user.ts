@@ -1,6 +1,7 @@
 import { Interval } from "luxon";
 import { GraphQLInt } from "graphql"
 import * as bcrypt from "bcryptjs";
+import { gqlField } from "@lolopinto/ent/graphql";
 
 import { UserBase } from "src/ent/internal";
 import {
@@ -9,7 +10,6 @@ import {
   AlwaysDenyRule,
   Data
 } from "@lolopinto/ent"
-import { gqlField } from "@lolopinto/ent/graphql"
 
 import { AllowIfOmniRule } from "./../privacy/omni";
 
@@ -34,10 +34,10 @@ export class User extends UserBase {
     return valid ? data : null;
   }
 
-  // @gqlField({
-  //   type: GraphQLInt
-  // })
-  // howLong() {
-  //   return Interval.fromDateTimes(this.createdAt, new Date()).count('seconds');
-  // }
+  @gqlField({
+    type: GraphQLInt
+  })
+  howLong() {
+    return Interval.fromDateTimes(this.createdAt, new Date()).count('seconds');
+  }
 }

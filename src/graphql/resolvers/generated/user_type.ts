@@ -3,6 +3,7 @@
 import {
   GraphQLFieldConfigMap,
   GraphQLID,
+  GraphQLInt,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
@@ -26,6 +27,12 @@ export const UserType = new GraphQLObjectType({
     },
     emailAddress: {
       type: GraphQLNonNull(GraphQLString),
+    },
+    howLong: {
+      type: GraphQLNonNull(GraphQLInt),
+      resolve: (user: User, args: {}, context: RequestContext) => {
+        return user.howLong();
+      },
     },
   }),
   interfaces: [GraphQLNodeInterface],
