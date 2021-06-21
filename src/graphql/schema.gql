@@ -1,0 +1,49 @@
+type User implements Node {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  emailAddress: String!
+}
+
+"""node interface"""
+interface Node {
+  id: ID!
+}
+
+type Viewer {
+  viewerID: ID
+  user: User
+}
+
+input UserCreateInput {
+  firstName: String!
+  lastName: String!
+  emailAddress: String!
+  password: String!
+}
+
+type UserCreatePayload {
+  user: User!
+}
+
+type Query {
+  node(id: ID!): Node
+  user(userID: ID!): User
+  userByEmail(emailAddress: String!): User
+  viewer: Viewer!
+}
+
+type Mutation {
+  userAuthJWT(input: UserAuthJWTInput!): UserAuthJWTPayload!
+  userCreate(input: UserCreateInput!): UserCreatePayload!
+}
+
+type UserAuthJWTPayload {
+  token: String!
+  viewerID: ID!
+}
+
+input UserAuthJWTInput {
+  emailAddress: String!
+  password: String!
+}
