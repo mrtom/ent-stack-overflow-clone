@@ -9,8 +9,20 @@ import {
   GraphQLString,
 } from "graphql";
 import { RequestContext } from "@lolopinto/ent";
-import { GraphQLNodeInterface, nodeIDEncoder } from "@lolopinto/ent/graphql";
-import { User } from "src/ent/";
+import {
+  GraphQLEdgeConnection,
+  GraphQLNodeInterface,
+  nodeIDEncoder,
+} from "@lolopinto/ent/graphql";
+import {
+  User,
+  UserToAuthorToAuthoredQuestionsQuery,
+  UserToAuthoredQuestionsQuery,
+} from "src/ent/";
+import {
+  UserToAuthorToAuthoredQuestionsConnectionType,
+  UserToAuthoredQuestionsConnectionType,
+} from "src/graphql/resolvers/internal";
 
 export const UserType = new GraphQLObjectType({
   name: "User",
@@ -27,6 +39,65 @@ export const UserType = new GraphQLObjectType({
     },
     emailAddress: {
       type: GraphQLNonNull(GraphQLString),
+    },
+    authorToAuthoredQuestions: {
+      type: GraphQLNonNull(UserToAuthorToAuthoredQuestionsConnectionType()),
+      args: {
+        first: {
+          description: "",
+          type: GraphQLInt,
+        },
+        after: {
+          description: "",
+          type: GraphQLString,
+        },
+        last: {
+          description: "",
+          type: GraphQLInt,
+        },
+        before: {
+          description: "",
+          type: GraphQLString,
+        },
+      },
+      resolve: (user: User, args: {}, context: RequestContext) => {
+        return new GraphQLEdgeConnection(
+          user.viewer,
+          user,
+          (v, user: User) =>
+            UserToAuthorToAuthoredQuestionsQuery.query(v, user),
+          args,
+        );
+      },
+    },
+    authoredQuestions: {
+      type: GraphQLNonNull(UserToAuthoredQuestionsConnectionType()),
+      args: {
+        first: {
+          description: "",
+          type: GraphQLInt,
+        },
+        after: {
+          description: "",
+          type: GraphQLString,
+        },
+        last: {
+          description: "",
+          type: GraphQLInt,
+        },
+        before: {
+          description: "",
+          type: GraphQLString,
+        },
+      },
+      resolve: (user: User, args: {}, context: RequestContext) => {
+        return new GraphQLEdgeConnection(
+          user.viewer,
+          user,
+          (v, user: User) => UserToAuthoredQuestionsQuery.query(v, user),
+          args,
+        );
+      },
     },
     howLong: {
       type: GraphQLNonNull(GraphQLInt),

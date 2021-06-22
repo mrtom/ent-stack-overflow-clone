@@ -6,6 +6,53 @@ from sqlalchemy.dialects import postgresql
 metadata = sa.MetaData()
 
  
+sa.Table("assoc_edge_config", metadata,
+    sa.Column("edge_type", postgresql.UUID(), nullable=False),
+    sa.Column("edge_name", sa.Text(), nullable=False),
+    sa.Column("symmetric_edge", sa.Boolean(), nullable=False, server_default='false'),
+    sa.Column("inverse_edge_type", postgresql.UUID(), nullable=True),
+    sa.Column("edge_table", sa.Text(), nullable=False),
+    sa.Column("created_at", sa.TIMESTAMP(), nullable=False),
+    sa.Column("updated_at", sa.TIMESTAMP(), nullable=False),
+    sa.PrimaryKeyConstraint("edge_type", name="assoc_edge_config_edge_type_pkey"),
+    sa.UniqueConstraint("edge_name", name="assoc_edge_config_unique_edge_name"),
+    sa.ForeignKeyConstraint(["inverse_edge_type"], ["assoc_edge_config.edge_type"], name="assoc_edge_config_inverse_edge_type_fkey", ondelete="RESTRICT"),
+)
+   
+sa.Table("question_authors_edges", metadata,
+    sa.Column("id1", postgresql.UUID(), nullable=False),
+    sa.Column("id1_type", sa.Text(), nullable=False),
+    sa.Column("edge_type", postgresql.UUID(), nullable=False),
+    sa.Column("id2", postgresql.UUID(), nullable=False),
+    sa.Column("id2_type", sa.Text(), nullable=False),
+    sa.Column("time", sa.TIMESTAMP(), nullable=False),
+    sa.Column("data", sa.Text(), nullable=True),
+    sa.PrimaryKeyConstraint("id1", "edge_type", "id2", name="question_authors_edges_id1_edge_type_id2_pkey"),
+    sa.Index("question_authors_edges_time_idx", "time"),
+)
+   
+sa.Table("questions", metadata,
+    sa.Column("id", postgresql.UUID(), nullable=False),
+    sa.Column("created_at", sa.TIMESTAMP(), nullable=False),
+    sa.Column("updated_at", sa.TIMESTAMP(), nullable=False),
+    sa.Column("title", sa.Text(), nullable=False),
+    sa.Column("question_body", sa.Text(), nullable=False),
+    sa.Column("user_id", postgresql.UUID(), nullable=False),
+    sa.PrimaryKeyConstraint("id", name="questions_id_pkey"),
+)
+   
+sa.Table("user_authored_questions_edges", metadata,
+    sa.Column("id1", postgresql.UUID(), nullable=False),
+    sa.Column("id1_type", sa.Text(), nullable=False),
+    sa.Column("edge_type", postgresql.UUID(), nullable=False),
+    sa.Column("id2", postgresql.UUID(), nullable=False),
+    sa.Column("id2_type", sa.Text(), nullable=False),
+    sa.Column("time", sa.TIMESTAMP(), nullable=False),
+    sa.Column("data", sa.Text(), nullable=True),
+    sa.PrimaryKeyConstraint("id1", "edge_type", "id2", name="user_authored_questions_edges_id1_edge_type_id2_pkey"),
+    sa.Index("user_authored_questions_edges_time_idx", "time"),
+)
+   
 sa.Table("users", metadata,
     sa.Column("id", postgresql.UUID(), nullable=False),
     sa.Column("created_at", sa.TIMESTAMP(), nullable=False),
@@ -21,6 +68,9 @@ sa.Table("users", metadata,
 
 metadata.info["edges"] = {
   'public': {
+    'QuestionToAuthorsEdge': {"edge_name":"QuestionToAuthorsEdge", "edge_type":"dbdae75e-1072-438e-8713-4f4284b289ad", "edge_table":"question_authors_edges", "symmetric_edge":False, "inverse_edge_type":"f5f98bc4-94ed-4b3d-88b5-628992440185"},
+    'UserToAuthorToAuthoredQuestionsEdge': {"edge_name":"UserToAuthorToAuthoredQuestionsEdge", "edge_type":"f5f98bc4-94ed-4b3d-88b5-628992440185", "edge_table":"question_authors_edges", "symmetric_edge":False, "inverse_edge_type":"dbdae75e-1072-438e-8713-4f4284b289ad"},
+    'UserToAuthoredQuestionsEdge': {"edge_name":"UserToAuthoredQuestionsEdge", "edge_type":"eb398e63-df78-40d2-9e86-50a3a788c88f", "edge_table":"question_authors_edges", "symmetric_edge":False, "inverse_edge_type":"dbdae75e-1072-438e-8713-4f4284b289ad"},
   }
 }
 

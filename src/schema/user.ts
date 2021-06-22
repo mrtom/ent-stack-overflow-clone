@@ -1,4 +1,11 @@
-import { BaseEntSchema, Field, StringType, Action, ActionOperation } from "@lolopinto/ent/schema";
+import {
+  BaseEntSchema,
+  Edge,
+  Field,
+  StringType,
+  Action,
+  ActionOperation
+} from "@lolopinto/ent/schema";
 import { EmailType } from "@lolopinto/ent-email";
 import { PasswordType } from "@lolopinto/ent-password";
 
@@ -8,6 +15,13 @@ export default class User extends BaseEntSchema {
     StringType({ name: "LastName" }),
     EmailType({ name: "EmailAddress", unique: true }),
     PasswordType({ name: "Password" }),
+  ];
+
+  edges: Edge[] = [
+    {
+      name: "authoredQuestions",
+      schemaName: "Question",
+    },
   ];
 
   actions: Action[] = [

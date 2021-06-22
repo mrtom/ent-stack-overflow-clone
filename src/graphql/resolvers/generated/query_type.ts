@@ -3,6 +3,7 @@
 import { GraphQLObjectType } from "graphql";
 import {
   NodeQueryType,
+  RecentQuestionsQueryType,
   UserByEmailQueryType,
   UserQueryType,
   ViewerQueryType,
@@ -12,6 +13,7 @@ export const QueryType = new GraphQLObjectType({
   name: "Query",
   fields: () => ({
     node: NodeQueryType,
+    recentQuestions: RecentQuestionsQueryType,
     user: UserQueryType,
     userByEmail: UserByEmailQueryType,
     viewer: ViewerQueryType,

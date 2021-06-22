@@ -2,6 +2,7 @@
 
 import {
   AllowIfViewerPrivacyPolicy,
+  AssocEdge,
   Context,
   Data,
   ID,
@@ -16,7 +17,12 @@ import {
   loadEnts,
 } from "@lolopinto/ent";
 import { Field, getFields } from "@lolopinto/ent/schema";
-import { NodeType } from "src/ent/internal";
+import {
+  EdgeType,
+  NodeType,
+  UserToAuthorToAuthoredQuestionsQuery,
+  UserToAuthoredQuestionsQuery,
+} from "src/ent/internal";
 import schema from "src/schema/user";
 
 const tableName = "users";
@@ -162,6 +168,14 @@ export class UserBase {
 
   static getField(key: string): Field | undefined {
     return UserBase.getSchemaFields().get(key);
+  }
+
+  queryAuthorToAuthoredQuestions(): UserToAuthorToAuthoredQuestionsQuery {
+    return UserToAuthorToAuthoredQuestionsQuery.query(this.viewer, this.id);
+  }
+
+  queryAuthoredQuestions(): UserToAuthoredQuestionsQuery {
+    return UserToAuthoredQuestionsQuery.query(this.viewer, this.id);
   }
 }
 

@@ -3,14 +3,60 @@
 import { GraphQLSchema } from "graphql";
 import { MutationType } from "src/graphql/mutations/generated/mutation_type";
 import {
+  QuestionAddAuthorInputType,
+  QuestionAddAuthorPayloadType,
+} from "src/graphql/mutations/generated/question/question_add_author_type";
+import {
+  QuestionCreateInputType,
+  QuestionCreatePayloadType,
+} from "src/graphql/mutations/generated/question/question_create_type";
+import {
+  QuestionDeleteInputType,
+  QuestionDeletePayloadType,
+} from "src/graphql/mutations/generated/question/question_delete_type";
+import {
+  QuestionEditInputType,
+  QuestionEditPayloadType,
+} from "src/graphql/mutations/generated/question/question_edit_type";
+import {
+  QuestionRemoveAuthorInputType,
+  QuestionRemoveAuthorPayloadType,
+} from "src/graphql/mutations/generated/question/question_remove_author_type";
+import {
   UserCreateInputType,
   UserCreatePayloadType,
 } from "src/graphql/mutations/generated/user/user_create_type";
 import { QueryType } from "src/graphql/resolvers/generated/query_type";
-import { UserType, ViewerTypeType } from "./resolvers";
+import {
+  QuestionToAuthorsConnectionType,
+  QuestionType,
+  UserToAuthorToAuthoredQuestionsConnectionType,
+  UserToAuthoredQuestionsConnectionType,
+  UserType,
+  ViewerTypeType,
+} from "./resolvers";
 
 export default new GraphQLSchema({
   query: QueryType,
   mutation: MutationType,
-  types: [UserType, ViewerTypeType, UserCreateInputType, UserCreatePayloadType],
+  types: [
+    QuestionType,
+    UserType,
+    QuestionToAuthorsConnectionType(),
+    UserToAuthorToAuthoredQuestionsConnectionType(),
+    UserToAuthoredQuestionsConnectionType(),
+    ViewerTypeType,
+    QuestionAddAuthorInputType,
+    QuestionAddAuthorPayloadType,
+    QuestionCreateInputType,
+    QuestionCreatePayloadType,
+    QuestionDeleteInputType,
+    QuestionDeletePayloadType,
+    QuestionEditInputType,
+    QuestionEditPayloadType,
+    QuestionRemoveAuthorInputType,
+    QuestionRemoveAuthorPayloadType,
+    UserCreateInputType,
+    UserCreatePayloadType,
+  ],
 });
