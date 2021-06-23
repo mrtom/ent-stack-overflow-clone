@@ -14,8 +14,13 @@ import {
   GraphQLNodeInterface,
   nodeIDEncoder,
 } from "@lolopinto/ent/graphql";
-import { Question, QuestionToAuthorsQuery } from "src/ent/";
 import {
+  Question,
+  QuestionToAnswersQuery,
+  QuestionToAuthorsQuery,
+} from "src/ent/";
+import {
+  QuestionToAnswersConnectionType,
   QuestionToAuthorsConnectionType,
   UserType,
 } from "src/graphql/resolvers/internal";
@@ -38,6 +43,35 @@ export const QuestionType = new GraphQLObjectType({
     },
     questionBody: {
       type: GraphQLNonNull(GraphQLString),
+    },
+    answers: {
+      type: GraphQLNonNull(QuestionToAnswersConnectionType()),
+      args: {
+        first: {
+          description: "",
+          type: GraphQLInt,
+        },
+        after: {
+          description: "",
+          type: GraphQLString,
+        },
+        last: {
+          description: "",
+          type: GraphQLInt,
+        },
+        before: {
+          description: "",
+          type: GraphQLString,
+        },
+      },
+      resolve: (question: Question, args: {}, context: RequestContext) => {
+        return new GraphQLEdgeConnection(
+          question.viewer,
+          question,
+          (v, question: Question) => QuestionToAnswersQuery.query(v, question),
+          args,
+        );
+      },
     },
     authors: {
       type: GraphQLNonNull(QuestionToAuthorsConnectionType()),

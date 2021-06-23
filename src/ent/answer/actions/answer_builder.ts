@@ -12,43 +12,44 @@ import {
 } from "@lolopinto/ent/action";
 import { Answer, Question, User } from "src/ent/";
 import { EdgeType, NodeType } from "src/ent/const";
-import schema from "src/schema/question";
+import schema from "src/schema/answer";
 
-export interface QuestionInput {
-  title?: string;
-  questionBody?: string;
+export interface AnswerInput {
+  body?: string;
+  acceptedAnswer?: boolean;
+  questionID?: ID | Builder<Question>;
   authorID?: ID | Builder<User>;
 }
 
-export interface QuestionAction extends Action<Question> {
-  getInput(): QuestionInput;
+export interface AnswerAction extends Action<Answer> {
+  getInput(): AnswerInput;
 }
 
 function randomNum(): string {
   return Math.random().toString(10).substring(2);
 }
 
-export class QuestionBuilder implements Builder<Question> {
-  orchestrator: Orchestrator<Question>;
+export class AnswerBuilder implements Builder<Answer> {
+  orchestrator: Orchestrator<Answer>;
   readonly placeholderID: ID;
-  readonly ent = Question;
-  private input: QuestionInput;
+  readonly ent = Answer;
+  private input: AnswerInput;
 
   public constructor(
     public readonly viewer: Viewer,
     public readonly operation: WriteOperation,
-    action: QuestionAction,
-    public readonly existingEnt?: Question | undefined,
+    action: AnswerAction,
+    public readonly existingEnt?: Answer | undefined,
   ) {
-    this.placeholderID = `$ent.idPlaceholderID$ ${randomNum()}-Question`;
+    this.placeholderID = `$ent.idPlaceholderID$ ${randomNum()}-Answer`;
     this.input = action.getInput();
 
     this.orchestrator = new Orchestrator({
       viewer: viewer,
       operation: this.operation,
-      tableName: "questions",
+      tableName: "answers",
       key: "id",
-      loaderOptions: Question.loaderOptions(),
+      loaderOptions: Answer.loaderOptions(),
       builder: this,
       action: action,
       schema: schema,
@@ -58,11 +59,11 @@ export class QuestionBuilder implements Builder<Question> {
     });
   }
 
-  getInput(): QuestionInput {
+  getInput(): AnswerInput {
     return this.input;
   }
 
-  updateInput(input: QuestionInput) {
+  updateInput(input: AnswerInput) {
     // override input
     this.input = {
       ...this.input,
@@ -79,55 +80,10 @@ export class QuestionBuilder implements Builder<Question> {
   clearInputEdges(edgeType: EdgeType, op: WriteOperation, id?: ID) {
     this.orchestrator.clearInputEdges(edgeType, op, id);
   }
-  addAnswer(...ids: ID[]): QuestionBuilder;
-  addAnswer(...nodes: Answer[]): QuestionBuilder;
-  addAnswer(...nodes: Builder<Answer>[]): QuestionBuilder;
-  addAnswer(...nodes: ID[] | Answer[] | Builder<Answer>[]): QuestionBuilder {
-    for (const node of nodes) {
-      if (this.isBuilder(node)) {
-        this.addAnswerID(node);
-      } else if (typeof node === "object") {
-        this.addAnswerID(node.id);
-      } else {
-        this.addAnswerID(node);
-      }
-    }
-    return this;
-  }
-
-  addAnswerID(
-    id: ID | Builder<Answer>,
-    options?: AssocEdgeInputOptions,
-  ): QuestionBuilder {
-    this.orchestrator.addOutboundEdge(
-      id,
-      EdgeType.QuestionToAnswers,
-      NodeType.Answer,
-      options,
-    );
-    return this;
-  }
-
-  removeAnswer(...ids: ID[]): QuestionBuilder;
-  removeAnswer(...nodes: Answer[]): QuestionBuilder;
-  removeAnswer(...nodes: ID[] | Answer[]): QuestionBuilder {
-    for (const node of nodes) {
-      if (typeof node === "object") {
-        this.orchestrator.removeOutboundEdge(
-          node.id,
-          EdgeType.QuestionToAnswers,
-        );
-      } else {
-        this.orchestrator.removeOutboundEdge(node, EdgeType.QuestionToAnswers);
-      }
-    }
-    return this;
-  }
-
-  addAuthor(...ids: ID[]): QuestionBuilder;
-  addAuthor(...nodes: User[]): QuestionBuilder;
-  addAuthor(...nodes: Builder<User>[]): QuestionBuilder;
-  addAuthor(...nodes: ID[] | User[] | Builder<User>[]): QuestionBuilder {
+  addAuthor(...ids: ID[]): AnswerBuilder;
+  addAuthor(...nodes: User[]): AnswerBuilder;
+  addAuthor(...nodes: Builder<User>[]): AnswerBuilder;
+  addAuthor(...nodes: ID[] | User[] | Builder<User>[]): AnswerBuilder {
     for (const node of nodes) {
       if (this.isBuilder(node)) {
         this.addAuthorID(node);
@@ -143,33 +99,30 @@ export class QuestionBuilder implements Builder<Question> {
   addAuthorID(
     id: ID | Builder<User>,
     options?: AssocEdgeInputOptions,
-  ): QuestionBuilder {
+  ): AnswerBuilder {
     this.orchestrator.addOutboundEdge(
       id,
-      EdgeType.QuestionToAuthors,
+      EdgeType.AnswerToAuthors,
       NodeType.User,
       options,
     );
     return this;
   }
 
-  removeAuthor(...ids: ID[]): QuestionBuilder;
-  removeAuthor(...nodes: User[]): QuestionBuilder;
-  removeAuthor(...nodes: ID[] | User[]): QuestionBuilder {
+  removeAuthor(...ids: ID[]): AnswerBuilder;
+  removeAuthor(...nodes: User[]): AnswerBuilder;
+  removeAuthor(...nodes: ID[] | User[]): AnswerBuilder {
     for (const node of nodes) {
       if (typeof node === "object") {
-        this.orchestrator.removeOutboundEdge(
-          node.id,
-          EdgeType.QuestionToAuthors,
-        );
+        this.orchestrator.removeOutboundEdge(node.id, EdgeType.AnswerToAuthors);
       } else {
-        this.orchestrator.removeOutboundEdge(node, EdgeType.QuestionToAuthors);
+        this.orchestrator.removeOutboundEdge(node, EdgeType.AnswerToAuthors);
       }
     }
     return this;
   }
 
-  async build(): Promise<Changeset<Question>> {
+  async build(): Promise<Changeset<Answer>> {
     return this.orchestrator.build();
   }
 
@@ -189,11 +142,11 @@ export class QuestionBuilder implements Builder<Question> {
     await saveBuilderX(this);
   }
 
-  async editedEnt(): Promise<Question | null> {
+  async editedEnt(): Promise<Answer | null> {
     return await this.orchestrator.editedEnt();
   }
 
-  async editedEntX(): Promise<Question> {
+  async editedEntX(): Promise<Answer> {
     return await this.orchestrator.editedEntX();
   }
 
@@ -207,13 +160,21 @@ export class QuestionBuilder implements Builder<Question> {
         result.set(key, value);
       }
     };
-    addField("title", fields.title);
-    addField("questionBody", fields.questionBody);
+    addField("body", fields.body);
+    addField("acceptedAnswer", fields.acceptedAnswer);
+    addField("questionID", fields.questionID);
+    if (fields.questionID) {
+      this.orchestrator.addInboundEdge(
+        fields.questionID,
+        EdgeType.QuestionToAnswers,
+        NodeType.Question,
+      );
+    }
     addField("authorID", fields.authorID);
     if (fields.authorID) {
       this.orchestrator.addInboundEdge(
         fields.authorID,
-        EdgeType.UserToAuthoredQuestions,
+        EdgeType.UserToAuthoredAnswers,
         NodeType.User,
       );
     }
@@ -224,14 +185,19 @@ export class QuestionBuilder implements Builder<Question> {
     return (node as Builder<Ent>).placeholderID !== undefined;
   }
 
-  // get value of title. Retrieves it from the input if specified or takes it from existingEnt
-  getNewTitleValue(): string | undefined {
-    return this.input.title || this.existingEnt?.title;
+  // get value of body. Retrieves it from the input if specified or takes it from existingEnt
+  getNewBodyValue(): string | undefined {
+    return this.input.body || this.existingEnt?.body;
   }
 
-  // get value of questionBody. Retrieves it from the input if specified or takes it from existingEnt
-  getNewQuestionBodyValue(): string | undefined {
-    return this.input.questionBody || this.existingEnt?.questionBody;
+  // get value of acceptedAnswer. Retrieves it from the input if specified or takes it from existingEnt
+  getNewAcceptedAnswerValue(): boolean | undefined {
+    return this.input.acceptedAnswer || this.existingEnt?.acceptedAnswer;
+  }
+
+  // get value of questionID. Retrieves it from the input if specified or takes it from existingEnt
+  getNewQuestionIDValue(): ID | Builder<Question> | undefined {
+    return this.input.questionID || this.existingEnt?.questionID;
   }
 
   // get value of authorID. Retrieves it from the input if specified or takes it from existingEnt

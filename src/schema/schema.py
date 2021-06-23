@@ -6,6 +6,29 @@ from sqlalchemy.dialects import postgresql
 metadata = sa.MetaData()
 
  
+sa.Table("answer_authors_edges", metadata,
+    sa.Column("id1", postgresql.UUID(), nullable=False),
+    sa.Column("id1_type", sa.Text(), nullable=False),
+    sa.Column("edge_type", postgresql.UUID(), nullable=False),
+    sa.Column("id2", postgresql.UUID(), nullable=False),
+    sa.Column("id2_type", sa.Text(), nullable=False),
+    sa.Column("time", sa.TIMESTAMP(), nullable=False),
+    sa.Column("data", sa.Text(), nullable=True),
+    sa.PrimaryKeyConstraint("id1", "edge_type", "id2", name="answer_authors_edges_id1_edge_type_id2_pkey"),
+    sa.Index("answer_authors_edges_time_idx", "time"),
+)
+   
+sa.Table("answers", metadata,
+    sa.Column("id", postgresql.UUID(), nullable=False),
+    sa.Column("created_at", sa.TIMESTAMP(), nullable=False),
+    sa.Column("updated_at", sa.TIMESTAMP(), nullable=False),
+    sa.Column("body", sa.Text(), nullable=False),
+    sa.Column("accepted_answer", sa.Boolean(), nullable=False),
+    sa.Column("question_id", postgresql.UUID(), nullable=False),
+    sa.Column("user_id", postgresql.UUID(), nullable=False),
+    sa.PrimaryKeyConstraint("id", name="answers_id_pkey"),
+)
+   
 sa.Table("assoc_edge_config", metadata,
     sa.Column("edge_type", postgresql.UUID(), nullable=False),
     sa.Column("edge_name", sa.Text(), nullable=False),
@@ -17,6 +40,18 @@ sa.Table("assoc_edge_config", metadata,
     sa.PrimaryKeyConstraint("edge_type", name="assoc_edge_config_edge_type_pkey"),
     sa.UniqueConstraint("edge_name", name="assoc_edge_config_unique_edge_name"),
     sa.ForeignKeyConstraint(["inverse_edge_type"], ["assoc_edge_config.edge_type"], name="assoc_edge_config_inverse_edge_type_fkey", ondelete="RESTRICT"),
+)
+   
+sa.Table("question_answers_edges", metadata,
+    sa.Column("id1", postgresql.UUID(), nullable=False),
+    sa.Column("id1_type", sa.Text(), nullable=False),
+    sa.Column("edge_type", postgresql.UUID(), nullable=False),
+    sa.Column("id2", postgresql.UUID(), nullable=False),
+    sa.Column("id2_type", sa.Text(), nullable=False),
+    sa.Column("time", sa.TIMESTAMP(), nullable=False),
+    sa.Column("data", sa.Text(), nullable=True),
+    sa.PrimaryKeyConstraint("id1", "edge_type", "id2", name="question_answers_edges_id1_edge_type_id2_pkey"),
+    sa.Index("question_answers_edges_time_idx", "time"),
 )
    
 sa.Table("question_authors_edges", metadata,
@@ -39,6 +74,18 @@ sa.Table("questions", metadata,
     sa.Column("question_body", sa.Text(), nullable=False),
     sa.Column("user_id", postgresql.UUID(), nullable=False),
     sa.PrimaryKeyConstraint("id", name="questions_id_pkey"),
+)
+   
+sa.Table("user_authored_answers_edges", metadata,
+    sa.Column("id1", postgresql.UUID(), nullable=False),
+    sa.Column("id1_type", sa.Text(), nullable=False),
+    sa.Column("edge_type", postgresql.UUID(), nullable=False),
+    sa.Column("id2", postgresql.UUID(), nullable=False),
+    sa.Column("id2_type", sa.Text(), nullable=False),
+    sa.Column("time", sa.TIMESTAMP(), nullable=False),
+    sa.Column("data", sa.Text(), nullable=True),
+    sa.PrimaryKeyConstraint("id1", "edge_type", "id2", name="user_authored_answers_edges_id1_edge_type_id2_pkey"),
+    sa.Index("user_authored_answers_edges_time_idx", "time"),
 )
    
 sa.Table("user_authored_questions_edges", metadata,
@@ -68,8 +115,12 @@ sa.Table("users", metadata,
 
 metadata.info["edges"] = {
   'public': {
+    'AnswerToAuthorsEdge': {"edge_name":"AnswerToAuthorsEdge", "edge_type":"6226f374-ada1-4acb-a1d3-f0f3e1603ba6", "edge_table":"answer_authors_edges", "symmetric_edge":False, "inverse_edge_type":"334a0a65-f4bf-4119-b1b8-7e60e86c5374"},
+    'QuestionToAnswersEdge': {"edge_name":"QuestionToAnswersEdge", "edge_type":"69eb1cb3-9fa7-437b-8474-21092a525de7", "edge_table":"question_answers_edges", "symmetric_edge":False, "inverse_edge_type":None},
     'QuestionToAuthorsEdge': {"edge_name":"QuestionToAuthorsEdge", "edge_type":"dbdae75e-1072-438e-8713-4f4284b289ad", "edge_table":"question_authors_edges", "symmetric_edge":False, "inverse_edge_type":"f5f98bc4-94ed-4b3d-88b5-628992440185"},
+    'UserToAuthorToAuthoredAnswersEdge': {"edge_name":"UserToAuthorToAuthoredAnswersEdge", "edge_type":"334a0a65-f4bf-4119-b1b8-7e60e86c5374", "edge_table":"answer_authors_edges", "symmetric_edge":False, "inverse_edge_type":"6226f374-ada1-4acb-a1d3-f0f3e1603ba6"},
     'UserToAuthorToAuthoredQuestionsEdge': {"edge_name":"UserToAuthorToAuthoredQuestionsEdge", "edge_type":"f5f98bc4-94ed-4b3d-88b5-628992440185", "edge_table":"question_authors_edges", "symmetric_edge":False, "inverse_edge_type":"dbdae75e-1072-438e-8713-4f4284b289ad"},
+    'UserToAuthoredAnswersEdge': {"edge_name":"UserToAuthoredAnswersEdge", "edge_type":"b39d9e6f-2249-4c6c-b4b3-e8c14430b60e", "edge_table":"user_authored_answers_edges", "symmetric_edge":False, "inverse_edge_type":None},
     'UserToAuthoredQuestionsEdge': {"edge_name":"UserToAuthoredQuestionsEdge", "edge_type":"eb398e63-df78-40d2-9e86-50a3a788c88f", "edge_table":"question_authors_edges", "symmetric_edge":False, "inverse_edge_type":"dbdae75e-1072-438e-8713-4f4284b289ad"},
   }
 }

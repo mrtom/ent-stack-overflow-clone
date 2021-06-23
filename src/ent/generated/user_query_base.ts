@@ -8,13 +8,26 @@ import {
   Viewer,
 } from "@lolopinto/ent";
 import {
+  Answer,
+  AnswerToAuthorsQuery,
   EdgeType,
   Question,
+  QuestionToAnswersQuery,
   QuestionToAuthorsQuery,
   User,
+  UserToAuthorToAuthoredAnswersEdge,
   UserToAuthorToAuthoredQuestionsEdge,
+  UserToAuthoredAnswersEdge,
   UserToAuthoredQuestionsEdge,
 } from "src/ent/internal";
+
+export const userToAuthorToAuthoredAnswersCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.UserToAuthorToAuthoredAnswers);
+export const userToAuthorToAuthoredAnswersDataLoaderFactory =
+  new AssocEdgeLoaderFactory(
+    EdgeType.UserToAuthorToAuthoredAnswers,
+    () => UserToAuthorToAuthoredAnswersEdge,
+  );
 
 export const userToAuthorToAuthoredQuestionsCountLoaderFactory =
   new AssocEdgeCountLoaderFactory(EdgeType.UserToAuthorToAuthoredQuestions);
@@ -24,6 +37,14 @@ export const userToAuthorToAuthoredQuestionsDataLoaderFactory =
     () => UserToAuthorToAuthoredQuestionsEdge,
   );
 
+export const userToAuthoredAnswersCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.UserToAuthoredAnswers);
+export const userToAuthoredAnswersDataLoaderFactory =
+  new AssocEdgeLoaderFactory(
+    EdgeType.UserToAuthoredAnswers,
+    () => UserToAuthoredAnswersEdge,
+  );
+
 export const userToAuthoredQuestionsCountLoaderFactory =
   new AssocEdgeCountLoaderFactory(EdgeType.UserToAuthoredQuestions);
 export const userToAuthoredQuestionsDataLoaderFactory =
@@ -31,6 +52,34 @@ export const userToAuthoredQuestionsDataLoaderFactory =
     EdgeType.UserToAuthoredQuestions,
     () => UserToAuthoredQuestionsEdge,
   );
+
+export class UserToAuthorToAuthoredAnswersQueryBase extends AssocEdgeQueryBase<
+  User,
+  Answer,
+  UserToAuthorToAuthoredAnswersEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<User>) {
+    super(
+      viewer,
+      src,
+      userToAuthorToAuthoredAnswersCountLoaderFactory,
+      userToAuthorToAuthoredAnswersDataLoaderFactory,
+      Answer.loaderOptions(),
+    );
+  }
+
+  static query<T extends UserToAuthorToAuthoredAnswersQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<User>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<User>,
+  ): T {
+    return new this(viewer, src);
+  }
+
+  queryAuthors(): AnswerToAuthorsQuery {
+    return AnswerToAuthorsQuery.query(this.viewer, this);
+  }
+}
 
 export class UserToAuthorToAuthoredQuestionsQueryBase extends AssocEdgeQueryBase<
   User,
@@ -55,8 +104,40 @@ export class UserToAuthorToAuthoredQuestionsQueryBase extends AssocEdgeQueryBase
     return new this(viewer, src);
   }
 
+  queryAnswers(): QuestionToAnswersQuery {
+    return QuestionToAnswersQuery.query(this.viewer, this);
+  }
+
   queryAuthors(): QuestionToAuthorsQuery {
     return QuestionToAuthorsQuery.query(this.viewer, this);
+  }
+}
+
+export class UserToAuthoredAnswersQueryBase extends AssocEdgeQueryBase<
+  User,
+  Answer,
+  UserToAuthoredAnswersEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<User>) {
+    super(
+      viewer,
+      src,
+      userToAuthoredAnswersCountLoaderFactory,
+      userToAuthoredAnswersDataLoaderFactory,
+      Answer.loaderOptions(),
+    );
+  }
+
+  static query<T extends UserToAuthoredAnswersQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<User>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<User>,
+  ): T {
+    return new this(viewer, src);
+  }
+
+  queryAuthors(): AnswerToAuthorsQuery {
+    return AnswerToAuthorsQuery.query(this.viewer, this);
   }
 }
 
@@ -81,6 +162,10 @@ export class UserToAuthoredQuestionsQueryBase extends AssocEdgeQueryBase<
     src: EdgeQuerySource<User>,
   ): T {
     return new this(viewer, src);
+  }
+
+  queryAnswers(): QuestionToAnswersQuery {
+    return QuestionToAnswersQuery.query(this.viewer, this);
   }
 
   queryAuthors(): QuestionToAuthorsQuery {

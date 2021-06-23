@@ -10,7 +10,7 @@ import {
   saveBuilder,
   saveBuilderX,
 } from "@lolopinto/ent/action";
-import { Question, User } from "src/ent/";
+import { Answer, Question, User } from "src/ent/";
 import { EdgeType, NodeType } from "src/ent/const";
 import schema from "src/schema/user";
 
@@ -80,6 +80,56 @@ export class UserBuilder implements Builder<User> {
   clearInputEdges(edgeType: EdgeType, op: WriteOperation, id?: ID) {
     this.orchestrator.clearInputEdges(edgeType, op, id);
   }
+  addAuthorToAuthoredAnswer(...ids: ID[]): UserBuilder;
+  addAuthorToAuthoredAnswer(...nodes: Answer[]): UserBuilder;
+  addAuthorToAuthoredAnswer(...nodes: Builder<Answer>[]): UserBuilder;
+  addAuthorToAuthoredAnswer(
+    ...nodes: ID[] | Answer[] | Builder<Answer>[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addAuthorToAuthoredAnswerID(node);
+      } else if (typeof node === "object") {
+        this.addAuthorToAuthoredAnswerID(node.id);
+      } else {
+        this.addAuthorToAuthoredAnswerID(node);
+      }
+    }
+    return this;
+  }
+
+  addAuthorToAuthoredAnswerID(
+    id: ID | Builder<Answer>,
+    options?: AssocEdgeInputOptions,
+  ): UserBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.UserToAuthorToAuthoredAnswers,
+      NodeType.Answer,
+      options,
+    );
+    return this;
+  }
+
+  removeAuthorToAuthoredAnswer(...ids: ID[]): UserBuilder;
+  removeAuthorToAuthoredAnswer(...nodes: Answer[]): UserBuilder;
+  removeAuthorToAuthoredAnswer(...nodes: ID[] | Answer[]): UserBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.UserToAuthorToAuthoredAnswers,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(
+          node,
+          EdgeType.UserToAuthorToAuthoredAnswers,
+        );
+      }
+    }
+    return this;
+  }
+
   addAuthorToAuthoredQuestion(...ids: ID[]): UserBuilder;
   addAuthorToAuthoredQuestion(...nodes: Question[]): UserBuilder;
   addAuthorToAuthoredQuestion(...nodes: Builder<Question>[]): UserBuilder;
@@ -124,6 +174,56 @@ export class UserBuilder implements Builder<User> {
         this.orchestrator.removeOutboundEdge(
           node,
           EdgeType.UserToAuthorToAuthoredQuestions,
+        );
+      }
+    }
+    return this;
+  }
+
+  addAuthoredAnswer(...ids: ID[]): UserBuilder;
+  addAuthoredAnswer(...nodes: Answer[]): UserBuilder;
+  addAuthoredAnswer(...nodes: Builder<Answer>[]): UserBuilder;
+  addAuthoredAnswer(
+    ...nodes: ID[] | Answer[] | Builder<Answer>[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addAuthoredAnswerID(node);
+      } else if (typeof node === "object") {
+        this.addAuthoredAnswerID(node.id);
+      } else {
+        this.addAuthoredAnswerID(node);
+      }
+    }
+    return this;
+  }
+
+  addAuthoredAnswerID(
+    id: ID | Builder<Answer>,
+    options?: AssocEdgeInputOptions,
+  ): UserBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.UserToAuthoredAnswers,
+      NodeType.Answer,
+      options,
+    );
+    return this;
+  }
+
+  removeAuthoredAnswer(...ids: ID[]): UserBuilder;
+  removeAuthoredAnswer(...nodes: Answer[]): UserBuilder;
+  removeAuthoredAnswer(...nodes: ID[] | Answer[]): UserBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.UserToAuthoredAnswers,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(
+          node,
+          EdgeType.UserToAuthoredAnswers,
         );
       }
     }

@@ -8,13 +8,25 @@ import {
   Viewer,
 } from "@lolopinto/ent";
 import {
+  Answer,
+  AnswerToAuthorsQuery,
   EdgeType,
   Question,
+  QuestionToAnswersEdge,
   QuestionToAuthorsEdge,
   User,
+  UserToAuthorToAuthoredAnswersQuery,
   UserToAuthorToAuthoredQuestionsQuery,
+  UserToAuthoredAnswersQuery,
   UserToAuthoredQuestionsQuery,
 } from "src/ent/internal";
+
+export const questionToAnswersCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.QuestionToAnswers);
+export const questionToAnswersDataLoaderFactory = new AssocEdgeLoaderFactory(
+  EdgeType.QuestionToAnswers,
+  () => QuestionToAnswersEdge,
+);
 
 export const questionToAuthorsCountLoaderFactory =
   new AssocEdgeCountLoaderFactory(EdgeType.QuestionToAuthors);
@@ -22,6 +34,34 @@ export const questionToAuthorsDataLoaderFactory = new AssocEdgeLoaderFactory(
   EdgeType.QuestionToAuthors,
   () => QuestionToAuthorsEdge,
 );
+
+export class QuestionToAnswersQueryBase extends AssocEdgeQueryBase<
+  Question,
+  Answer,
+  QuestionToAnswersEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<Question>) {
+    super(
+      viewer,
+      src,
+      questionToAnswersCountLoaderFactory,
+      questionToAnswersDataLoaderFactory,
+      Answer.loaderOptions(),
+    );
+  }
+
+  static query<T extends QuestionToAnswersQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<Question>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<Question>,
+  ): T {
+    return new this(viewer, src);
+  }
+
+  queryAuthors(): AnswerToAuthorsQuery {
+    return AnswerToAuthorsQuery.query(this.viewer, this);
+  }
+}
 
 export class QuestionToAuthorsQueryBase extends AssocEdgeQueryBase<
   Question,
@@ -46,8 +86,16 @@ export class QuestionToAuthorsQueryBase extends AssocEdgeQueryBase<
     return new this(viewer, src);
   }
 
+  queryAuthorToAuthoredAnswers(): UserToAuthorToAuthoredAnswersQuery {
+    return UserToAuthorToAuthoredAnswersQuery.query(this.viewer, this);
+  }
+
   queryAuthorToAuthoredQuestions(): UserToAuthorToAuthoredQuestionsQuery {
     return UserToAuthorToAuthoredQuestionsQuery.query(this.viewer, this);
+  }
+
+  queryAuthoredAnswers(): UserToAuthoredAnswersQuery {
+    return UserToAuthoredAnswersQuery.query(this.viewer, this);
   }
 
   queryAuthoredQuestions(): UserToAuthoredQuestionsQuery {

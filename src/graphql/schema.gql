@@ -1,9 +1,10 @@
-type Question implements Node {
+type Answer implements Node {
   author: User
+  question: Question
   id: ID!
-  title: String!
-  questionBody: String!
-  authors(first: Int, after: String, last: Int, before: String): QuestionToAuthorsConnection!
+  body: String!
+  acceptedAnswer: Boolean!
+  authors(first: Int, after: String, last: Int, before: String): AnswerToAuthorsConnection!
 }
 
 """node interface"""
@@ -11,18 +12,29 @@ interface Node {
   id: ID!
 }
 
+type Question implements Node {
+  author: User
+  id: ID!
+  title: String!
+  questionBody: String!
+  answers(first: Int, after: String, last: Int, before: String): QuestionToAnswersConnection!
+  authors(first: Int, after: String, last: Int, before: String): QuestionToAuthorsConnection!
+}
+
 type User implements Node {
   id: ID!
   firstName: String!
   lastName: String!
   emailAddress: String!
+  authorToAuthoredAnswers(first: Int, after: String, last: Int, before: String): UserToAuthorToAuthoredAnswersConnection!
   authorToAuthoredQuestions(first: Int, after: String, last: Int, before: String): UserToAuthorToAuthoredQuestionsConnection!
+  authoredAnswers(first: Int, after: String, last: Int, before: String): UserToAuthoredAnswersConnection!
   authoredQuestions(first: Int, after: String, last: Int, before: String): UserToAuthoredQuestionsConnection!
   howLong: Int!
 }
 
-type QuestionToAuthorsConnection implements Connection {
-  edges: [QuestionToAuthorsEdge!]!
+type AnswerToAuthorsConnection implements Connection {
+  edges: [AnswerToAuthorsEdge!]!
   nodes: [User!]!
   pageInfo: PageInfo!
   rawCount: Int!
@@ -48,8 +60,44 @@ type PageInfo {
   endCursor: String!
 }
 
+type AnswerToAuthorsEdge implements Edge {
+  node: User!
+  cursor: String!
+}
+
+type QuestionToAnswersConnection implements Connection {
+  edges: [QuestionToAnswersEdge!]!
+  nodes: [Answer!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type QuestionToAnswersEdge implements Edge {
+  node: Answer!
+  cursor: String!
+}
+
+type QuestionToAuthorsConnection implements Connection {
+  edges: [QuestionToAuthorsEdge!]!
+  nodes: [User!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
 type QuestionToAuthorsEdge implements Edge {
   node: User!
+  cursor: String!
+}
+
+type UserToAuthorToAuthoredAnswersConnection implements Connection {
+  edges: [UserToAuthorToAuthoredAnswersEdge!]!
+  nodes: [Answer!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type UserToAuthorToAuthoredAnswersEdge implements Edge {
+  node: Answer!
   cursor: String!
 }
 
@@ -62,6 +110,18 @@ type UserToAuthorToAuthoredQuestionsConnection implements Connection {
 
 type UserToAuthorToAuthoredQuestionsEdge implements Edge {
   node: Question!
+  cursor: String!
+}
+
+type UserToAuthoredAnswersConnection implements Connection {
+  edges: [UserToAuthoredAnswersEdge!]!
+  nodes: [Answer!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type UserToAuthoredAnswersEdge implements Edge {
+  node: Answer!
   cursor: String!
 }
 
@@ -80,6 +140,55 @@ type UserToAuthoredQuestionsEdge implements Edge {
 type Viewer {
   viewerID: ID
   user: User
+}
+
+input AnswerAddAuthorInput {
+  answerID: ID!
+  authorID: ID!
+}
+
+type AnswerAddAuthorPayload {
+  answer: Answer!
+}
+
+input AnswerCreateInput {
+  body: String!
+  acceptedAnswer: Boolean!
+  questionID: ID!
+  authorID: ID!
+}
+
+type AnswerCreatePayload {
+  answer: Answer!
+}
+
+input AnswerDeleteInput {
+  answerID: ID!
+}
+
+type AnswerDeletePayload {
+  deletedAnswerID: ID
+}
+
+input AnswerEditInput {
+  answerID: ID!
+  body: String
+  acceptedAnswer: Boolean
+  questionID: ID
+  authorID: ID
+}
+
+type AnswerEditPayload {
+  answer: Answer!
+}
+
+input AnswerRemoveAuthorInput {
+  answerID: ID!
+  authorID: ID!
+}
+
+type AnswerRemoveAuthorPayload {
+  answer: Answer!
 }
 
 input QuestionAddAuthorInput {
@@ -149,6 +258,11 @@ type Query {
 }
 
 type Mutation {
+  answerAddAuthor(input: AnswerAddAuthorInput!): AnswerAddAuthorPayload!
+  answerCreate(input: AnswerCreateInput!): AnswerCreatePayload!
+  answerDelete(input: AnswerDeleteInput!): AnswerDeletePayload!
+  answerEdit(input: AnswerEditInput!): AnswerEditPayload!
+  answerRemoveAuthor(input: AnswerRemoveAuthorInput!): AnswerRemoveAuthorPayload!
   questionAddAuthor(input: QuestionAddAuthorInput!): QuestionAddAuthorPayload!
   questionCreate(input: QuestionCreateInput!): QuestionCreatePayload!
   questionDelete(input: QuestionDeleteInput!): QuestionDeletePayload!

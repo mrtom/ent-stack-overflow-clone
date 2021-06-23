@@ -20,7 +20,9 @@ import { Field, getFields } from "@lolopinto/ent/schema";
 import {
   EdgeType,
   NodeType,
+  UserToAuthorToAuthoredAnswersQuery,
   UserToAuthorToAuthoredQuestionsQuery,
+  UserToAuthoredAnswersQuery,
   UserToAuthoredQuestionsQuery,
 } from "src/ent/internal";
 import schema from "src/schema/user";
@@ -170,8 +172,16 @@ export class UserBase {
     return UserBase.getSchemaFields().get(key);
   }
 
+  queryAuthorToAuthoredAnswers(): UserToAuthorToAuthoredAnswersQuery {
+    return UserToAuthorToAuthoredAnswersQuery.query(this.viewer, this.id);
+  }
+
   queryAuthorToAuthoredQuestions(): UserToAuthorToAuthoredQuestionsQuery {
     return UserToAuthorToAuthoredQuestionsQuery.query(this.viewer, this.id);
+  }
+
+  queryAuthoredAnswers(): UserToAuthoredAnswersQuery {
+    return UserToAuthoredAnswersQuery.query(this.viewer, this.id);
   }
 
   queryAuthoredQuestions(): UserToAuthoredQuestionsQuery {
