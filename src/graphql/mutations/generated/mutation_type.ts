@@ -21,6 +21,11 @@ import { QuestionCommentCreateType } from "src/graphql/mutations/generated/quest
 import { QuestionCommentDeleteType } from "src/graphql/mutations/generated/question_comment/question_comment_delete_type";
 import { QuestionCommentEditType } from "src/graphql/mutations/generated/question_comment/question_comment_edit_type";
 import { QuestionCommentRemoveAuthorType } from "src/graphql/mutations/generated/question_comment/question_comment_remove_author_type";
+import { QuestionPrivateNoteAddAuthorType } from "src/graphql/mutations/generated/question_private_note/question_private_note_add_author_type";
+import { QuestionPrivateNoteCreateType } from "src/graphql/mutations/generated/question_private_note/question_private_note_create_type";
+import { QuestionPrivateNoteDeleteType } from "src/graphql/mutations/generated/question_private_note/question_private_note_delete_type";
+import { QuestionPrivateNoteEditType } from "src/graphql/mutations/generated/question_private_note/question_private_note_edit_type";
+import { QuestionPrivateNoteRemoveAuthorType } from "src/graphql/mutations/generated/question_private_note/question_private_note_remove_author_type";
 import { UserCreateType } from "src/graphql/mutations/generated/user/user_create_type";
 import { UserAuthJWTType } from "src/graphql/mutations/generated/user_auth_jwt_type";
 
@@ -46,6 +51,11 @@ export const MutationType = new GraphQLObjectType({
     questionCreate: QuestionCreateType,
     questionDelete: QuestionDeleteType,
     questionEdit: QuestionEditType,
+    questionPrivateNoteAddAuthor: QuestionPrivateNoteAddAuthorType,
+    questionPrivateNoteCreate: QuestionPrivateNoteCreateType,
+    questionPrivateNoteDelete: QuestionPrivateNoteDeleteType,
+    questionPrivateNoteEdit: QuestionPrivateNoteEditType,
+    questionPrivateNoteRemoveAuthor: QuestionPrivateNoteRemoveAuthorType,
     questionRemoveAuthor: QuestionRemoveAuthorType,
     userAuthJWT: UserAuthJWTType,
     userCreate: UserCreateType,

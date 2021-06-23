@@ -28,6 +28,8 @@ import {
   UserToAuthoredAnswersQuery,
   UserToAuthoredQuestionCommentsQuery,
   UserToAuthoredQuestionsQuery,
+  UserToQuestionPrivateNotesQuery,
+  UserToUserQuestionPrivateNotesQuery,
 } from "src/ent/internal";
 import schema from "src/schema/user";
 
@@ -212,6 +214,14 @@ export class UserBase {
 
   queryAuthoredQuestions(): UserToAuthoredQuestionsQuery {
     return UserToAuthoredQuestionsQuery.query(this.viewer, this.id);
+  }
+
+  queryQuestionPrivateNotes(): UserToQuestionPrivateNotesQuery {
+    return UserToQuestionPrivateNotesQuery.query(this.viewer, this.id);
+  }
+
+  queryUserQuestionPrivateNotes(): UserToUserQuestionPrivateNotesQuery {
+    return UserToUserQuestionPrivateNotesQuery.query(this.viewer, this.id);
   }
 }
 

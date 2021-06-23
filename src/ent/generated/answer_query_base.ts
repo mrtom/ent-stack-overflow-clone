@@ -23,6 +23,8 @@ import {
   UserToAuthoredAnswersQuery,
   UserToAuthoredQuestionCommentsQuery,
   UserToAuthoredQuestionsQuery,
+  UserToQuestionPrivateNotesQuery,
+  UserToUserQuestionPrivateNotesQuery,
 } from "src/ent/internal";
 
 export const answerToAuthorsCountLoaderFactory =
@@ -92,6 +94,14 @@ export class AnswerToAuthorsQueryBase extends AssocEdgeQueryBase<
 
   queryAuthoredQuestions(): UserToAuthoredQuestionsQuery {
     return UserToAuthoredQuestionsQuery.query(this.viewer, this);
+  }
+
+  queryQuestionPrivateNotes(): UserToQuestionPrivateNotesQuery {
+    return UserToQuestionPrivateNotesQuery.query(this.viewer, this);
+  }
+
+  queryUserQuestionPrivateNotes(): UserToUserQuestionPrivateNotesQuery {
+    return UserToUserQuestionPrivateNotesQuery.query(this.viewer, this);
   }
 }
 

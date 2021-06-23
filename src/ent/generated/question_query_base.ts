@@ -15,9 +15,12 @@ import {
   Question,
   QuestionComment,
   QuestionCommentToAuthorsQuery,
+  QuestionPrivateNote,
+  QuestionPrivateNoteToAuthorsQuery,
   QuestionToAnswersEdge,
   QuestionToAuthorsEdge,
   QuestionToCommentsEdge,
+  QuestionToPrivateNotesEdge,
   User,
   UserToAuthorToAuthoredAnswerCommentsQuery,
   UserToAuthorToAuthoredAnswersQuery,
@@ -27,6 +30,8 @@ import {
   UserToAuthoredAnswersQuery,
   UserToAuthoredQuestionCommentsQuery,
   UserToAuthoredQuestionsQuery,
+  UserToQuestionPrivateNotesQuery,
+  UserToUserQuestionPrivateNotesQuery,
 } from "src/ent/internal";
 
 export const questionToAnswersCountLoaderFactory =
@@ -49,6 +54,14 @@ export const questionToCommentsDataLoaderFactory = new AssocEdgeLoaderFactory(
   EdgeType.QuestionToComments,
   () => QuestionToCommentsEdge,
 );
+
+export const questionToPrivateNotesCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.QuestionToPrivateNotes);
+export const questionToPrivateNotesDataLoaderFactory =
+  new AssocEdgeLoaderFactory(
+    EdgeType.QuestionToPrivateNotes,
+    () => QuestionToPrivateNotesEdge,
+  );
 
 export class QuestionToAnswersQueryBase extends AssocEdgeQueryBase<
   Question,
@@ -136,6 +149,14 @@ export class QuestionToAuthorsQueryBase extends AssocEdgeQueryBase<
   queryAuthoredQuestions(): UserToAuthoredQuestionsQuery {
     return UserToAuthoredQuestionsQuery.query(this.viewer, this);
   }
+
+  queryQuestionPrivateNotes(): UserToQuestionPrivateNotesQuery {
+    return UserToQuestionPrivateNotesQuery.query(this.viewer, this);
+  }
+
+  queryUserQuestionPrivateNotes(): UserToUserQuestionPrivateNotesQuery {
+    return UserToUserQuestionPrivateNotesQuery.query(this.viewer, this);
+  }
 }
 
 export class QuestionToCommentsQueryBase extends AssocEdgeQueryBase<
@@ -163,5 +184,33 @@ export class QuestionToCommentsQueryBase extends AssocEdgeQueryBase<
 
   queryAuthors(): QuestionCommentToAuthorsQuery {
     return QuestionCommentToAuthorsQuery.query(this.viewer, this);
+  }
+}
+
+export class QuestionToPrivateNotesQueryBase extends AssocEdgeQueryBase<
+  Question,
+  QuestionPrivateNote,
+  QuestionToPrivateNotesEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<Question>) {
+    super(
+      viewer,
+      src,
+      questionToPrivateNotesCountLoaderFactory,
+      questionToPrivateNotesDataLoaderFactory,
+      QuestionPrivateNote.loaderOptions(),
+    );
+  }
+
+  static query<T extends QuestionToPrivateNotesQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<Question>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<Question>,
+  ): T {
+    return new this(viewer, src);
+  }
+
+  queryAuthors(): QuestionPrivateNoteToAuthorsQuery {
+    return QuestionPrivateNoteToAuthorsQuery.query(this.viewer, this);
   }
 }

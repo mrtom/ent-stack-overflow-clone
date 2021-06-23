@@ -9,8 +9,8 @@ import {
 } from "@lolopinto/ent";
 import {
   EdgeType,
-  QuestionComment,
-  QuestionCommentToAuthorsEdge,
+  QuestionPrivateNote,
+  QuestionPrivateNoteToAuthorsEdge,
   User,
   UserToAuthorToAuthoredAnswerCommentsQuery,
   UserToAuthorToAuthoredAnswersQuery,
@@ -24,33 +24,33 @@ import {
   UserToUserQuestionPrivateNotesQuery,
 } from "src/ent/internal";
 
-export const questionCommentToAuthorsCountLoaderFactory =
-  new AssocEdgeCountLoaderFactory(EdgeType.QuestionCommentToAuthors);
-export const questionCommentToAuthorsDataLoaderFactory =
+export const questionPrivateNoteToAuthorsCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.QuestionPrivateNoteToAuthors);
+export const questionPrivateNoteToAuthorsDataLoaderFactory =
   new AssocEdgeLoaderFactory(
-    EdgeType.QuestionCommentToAuthors,
-    () => QuestionCommentToAuthorsEdge,
+    EdgeType.QuestionPrivateNoteToAuthors,
+    () => QuestionPrivateNoteToAuthorsEdge,
   );
 
-export class QuestionCommentToAuthorsQueryBase extends AssocEdgeQueryBase<
-  QuestionComment,
+export class QuestionPrivateNoteToAuthorsQueryBase extends AssocEdgeQueryBase<
+  QuestionPrivateNote,
   User,
-  QuestionCommentToAuthorsEdge
+  QuestionPrivateNoteToAuthorsEdge
 > {
-  constructor(viewer: Viewer, src: EdgeQuerySource<QuestionComment>) {
+  constructor(viewer: Viewer, src: EdgeQuerySource<QuestionPrivateNote>) {
     super(
       viewer,
       src,
-      questionCommentToAuthorsCountLoaderFactory,
-      questionCommentToAuthorsDataLoaderFactory,
+      questionPrivateNoteToAuthorsCountLoaderFactory,
+      questionPrivateNoteToAuthorsDataLoaderFactory,
       User.loaderOptions(),
     );
   }
 
-  static query<T extends QuestionCommentToAuthorsQueryBase>(
-    this: new (viewer: Viewer, src: EdgeQuerySource<QuestionComment>) => T,
+  static query<T extends QuestionPrivateNoteToAuthorsQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<QuestionPrivateNote>) => T,
     viewer: Viewer,
-    src: EdgeQuerySource<QuestionComment>,
+    src: EdgeQuerySource<QuestionPrivateNote>,
   ): T {
     return new this(viewer, src);
   }

@@ -24,6 +24,8 @@ import {
   UserToAuthoredAnswersQuery,
   UserToAuthoredQuestionCommentsQuery,
   UserToAuthoredQuestionsQuery,
+  UserToQuestionPrivateNotesQuery,
+  UserToUserQuestionPrivateNotesQuery,
 } from "src/ent/";
 import {
   UserToAuthorToAuthoredAnswerCommentsConnectionType,
@@ -34,6 +36,8 @@ import {
   UserToAuthoredAnswersConnectionType,
   UserToAuthoredQuestionCommentsConnectionType,
   UserToAuthoredQuestionsConnectionType,
+  UserToQuestionPrivateNotesConnectionType,
+  UserToUserQuestionPrivateNotesConnectionType,
 } from "src/graphql/resolvers/internal";
 
 export const UserType = new GraphQLObjectType({
@@ -287,6 +291,64 @@ export const UserType = new GraphQLObjectType({
           user.viewer,
           user,
           (v, user: User) => UserToAuthoredQuestionsQuery.query(v, user),
+          args,
+        );
+      },
+    },
+    questionPrivateNotes: {
+      type: GraphQLNonNull(UserToQuestionPrivateNotesConnectionType()),
+      args: {
+        first: {
+          description: "",
+          type: GraphQLInt,
+        },
+        after: {
+          description: "",
+          type: GraphQLString,
+        },
+        last: {
+          description: "",
+          type: GraphQLInt,
+        },
+        before: {
+          description: "",
+          type: GraphQLString,
+        },
+      },
+      resolve: (user: User, args: {}, context: RequestContext) => {
+        return new GraphQLEdgeConnection(
+          user.viewer,
+          user,
+          (v, user: User) => UserToQuestionPrivateNotesQuery.query(v, user),
+          args,
+        );
+      },
+    },
+    userQuestionPrivateNotes: {
+      type: GraphQLNonNull(UserToUserQuestionPrivateNotesConnectionType()),
+      args: {
+        first: {
+          description: "",
+          type: GraphQLInt,
+        },
+        after: {
+          description: "",
+          type: GraphQLString,
+        },
+        last: {
+          description: "",
+          type: GraphQLInt,
+        },
+        before: {
+          description: "",
+          type: GraphQLString,
+        },
+      },
+      resolve: (user: User, args: {}, context: RequestContext) => {
+        return new GraphQLEdgeConnection(
+          user.viewer,
+          user,
+          (v, user: User) => UserToUserQuestionPrivateNotesQuery.query(v, user),
           args,
         );
       },

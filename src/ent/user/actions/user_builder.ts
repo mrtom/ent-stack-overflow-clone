@@ -15,6 +15,7 @@ import {
   AnswerComment,
   Question,
   QuestionComment,
+  QuestionPrivateNote,
   User,
 } from "src/ent/";
 import { EdgeType, NodeType } from "src/ent/const";
@@ -492,6 +493,112 @@ export class UserBuilder implements Builder<User> {
         this.orchestrator.removeOutboundEdge(
           node,
           EdgeType.UserToAuthoredQuestions,
+        );
+      }
+    }
+    return this;
+  }
+
+  addQuestionPrivateNote(...ids: ID[]): UserBuilder;
+  addQuestionPrivateNote(...nodes: QuestionPrivateNote[]): UserBuilder;
+  addQuestionPrivateNote(...nodes: Builder<QuestionPrivateNote>[]): UserBuilder;
+  addQuestionPrivateNote(
+    ...nodes: ID[] | QuestionPrivateNote[] | Builder<QuestionPrivateNote>[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addQuestionPrivateNoteID(node);
+      } else if (typeof node === "object") {
+        this.addQuestionPrivateNoteID(node.id);
+      } else {
+        this.addQuestionPrivateNoteID(node);
+      }
+    }
+    return this;
+  }
+
+  addQuestionPrivateNoteID(
+    id: ID | Builder<QuestionPrivateNote>,
+    options?: AssocEdgeInputOptions,
+  ): UserBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.UserToQuestionPrivateNotes,
+      NodeType.QuestionPrivateNote,
+      options,
+    );
+    return this;
+  }
+
+  removeQuestionPrivateNote(...ids: ID[]): UserBuilder;
+  removeQuestionPrivateNote(...nodes: QuestionPrivateNote[]): UserBuilder;
+  removeQuestionPrivateNote(
+    ...nodes: ID[] | QuestionPrivateNote[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.UserToQuestionPrivateNotes,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(
+          node,
+          EdgeType.UserToQuestionPrivateNotes,
+        );
+      }
+    }
+    return this;
+  }
+
+  addUserQuestionPrivateNote(...ids: ID[]): UserBuilder;
+  addUserQuestionPrivateNote(...nodes: QuestionPrivateNote[]): UserBuilder;
+  addUserQuestionPrivateNote(
+    ...nodes: Builder<QuestionPrivateNote>[]
+  ): UserBuilder;
+  addUserQuestionPrivateNote(
+    ...nodes: ID[] | QuestionPrivateNote[] | Builder<QuestionPrivateNote>[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addUserQuestionPrivateNoteID(node);
+      } else if (typeof node === "object") {
+        this.addUserQuestionPrivateNoteID(node.id);
+      } else {
+        this.addUserQuestionPrivateNoteID(node);
+      }
+    }
+    return this;
+  }
+
+  addUserQuestionPrivateNoteID(
+    id: ID | Builder<QuestionPrivateNote>,
+    options?: AssocEdgeInputOptions,
+  ): UserBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.UserToUserQuestionPrivateNotes,
+      NodeType.QuestionPrivateNote,
+      options,
+    );
+    return this;
+  }
+
+  removeUserQuestionPrivateNote(...ids: ID[]): UserBuilder;
+  removeUserQuestionPrivateNote(...nodes: QuestionPrivateNote[]): UserBuilder;
+  removeUserQuestionPrivateNote(
+    ...nodes: ID[] | QuestionPrivateNote[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.UserToUserQuestionPrivateNotes,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(
+          node,
+          EdgeType.UserToUserQuestionPrivateNotes,
         );
       }
     }

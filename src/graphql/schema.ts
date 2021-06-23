@@ -83,6 +83,26 @@ import {
   QuestionCommentRemoveAuthorPayloadType,
 } from "src/graphql/mutations/generated/question_comment/question_comment_remove_author_type";
 import {
+  QuestionPrivateNoteAddAuthorInputType,
+  QuestionPrivateNoteAddAuthorPayloadType,
+} from "src/graphql/mutations/generated/question_private_note/question_private_note_add_author_type";
+import {
+  QuestionPrivateNoteCreateInputType,
+  QuestionPrivateNoteCreatePayloadType,
+} from "src/graphql/mutations/generated/question_private_note/question_private_note_create_type";
+import {
+  QuestionPrivateNoteDeleteInputType,
+  QuestionPrivateNoteDeletePayloadType,
+} from "src/graphql/mutations/generated/question_private_note/question_private_note_delete_type";
+import {
+  QuestionPrivateNoteEditInputType,
+  QuestionPrivateNoteEditPayloadType,
+} from "src/graphql/mutations/generated/question_private_note/question_private_note_edit_type";
+import {
+  QuestionPrivateNoteRemoveAuthorInputType,
+  QuestionPrivateNoteRemoveAuthorPayloadType,
+} from "src/graphql/mutations/generated/question_private_note/question_private_note_remove_author_type";
+import {
   UserCreateInputType,
   UserCreatePayloadType,
 } from "src/graphql/mutations/generated/user/user_create_type";
@@ -95,9 +115,12 @@ import {
   AnswerType,
   QuestionCommentToAuthorsConnectionType,
   QuestionCommentType,
+  QuestionPrivateNoteToAuthorsConnectionType,
+  QuestionPrivateNoteType,
   QuestionToAnswersConnectionType,
   QuestionToAuthorsConnectionType,
   QuestionToCommentsConnectionType,
+  QuestionToPrivateNotesConnectionType,
   QuestionType,
   UserToAuthorToAuthoredAnswerCommentsConnectionType,
   UserToAuthorToAuthoredAnswersConnectionType,
@@ -107,6 +130,8 @@ import {
   UserToAuthoredAnswersConnectionType,
   UserToAuthoredQuestionCommentsConnectionType,
   UserToAuthoredQuestionsConnectionType,
+  UserToQuestionPrivateNotesConnectionType,
+  UserToUserQuestionPrivateNotesConnectionType,
   UserType,
   ViewerTypeType,
 } from "./resolvers";
@@ -118,15 +143,18 @@ export default new GraphQLSchema({
     AnswerCommentType,
     AnswerType,
     QuestionCommentType,
+    QuestionPrivateNoteType,
     QuestionType,
     UserType,
     AnswerCommentToAuthorsConnectionType(),
     AnswerToAuthorsConnectionType(),
     AnswerToCommentsConnectionType(),
     QuestionCommentToAuthorsConnectionType(),
+    QuestionPrivateNoteToAuthorsConnectionType(),
     QuestionToAnswersConnectionType(),
     QuestionToAuthorsConnectionType(),
     QuestionToCommentsConnectionType(),
+    QuestionToPrivateNotesConnectionType(),
     UserToAuthorToAuthoredAnswerCommentsConnectionType(),
     UserToAuthorToAuthoredAnswersConnectionType(),
     UserToAuthorToAuthoredQuestionCommentsConnectionType(),
@@ -135,6 +163,8 @@ export default new GraphQLSchema({
     UserToAuthoredAnswersConnectionType(),
     UserToAuthoredQuestionCommentsConnectionType(),
     UserToAuthoredQuestionsConnectionType(),
+    UserToQuestionPrivateNotesConnectionType(),
+    UserToUserQuestionPrivateNotesConnectionType(),
     ViewerTypeType,
     AnswerAddAuthorInputType,
     AnswerAddAuthorPayloadType,
@@ -174,6 +204,16 @@ export default new GraphQLSchema({
     QuestionDeletePayloadType,
     QuestionEditInputType,
     QuestionEditPayloadType,
+    QuestionPrivateNoteAddAuthorInputType,
+    QuestionPrivateNoteAddAuthorPayloadType,
+    QuestionPrivateNoteCreateInputType,
+    QuestionPrivateNoteCreatePayloadType,
+    QuestionPrivateNoteDeleteInputType,
+    QuestionPrivateNoteDeletePayloadType,
+    QuestionPrivateNoteEditInputType,
+    QuestionPrivateNoteEditPayloadType,
+    QuestionPrivateNoteRemoveAuthorInputType,
+    QuestionPrivateNoteRemoveAuthorPayloadType,
     QuestionRemoveAuthorInputType,
     QuestionRemoveAuthorPayloadType,
     UserCreateInputType,

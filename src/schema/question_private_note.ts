@@ -1,3 +1,4 @@
+
 import {
   Schema,
   Action,
@@ -5,20 +6,22 @@ import {
   Edge,
   BaseEntSchema,
   ActionOperation,
-  BooleanType,
   StringType,
   UUIDType,
 } from "@lolopinto/ent/schema/";
 
 /// explicit schema
-export default class Question extends BaseEntSchema implements Schema {
+export default class QuestionPrivateNote extends BaseEntSchema implements Schema {
   fields: Field[] = [
-    StringType({ name: "title" }),
-    StringType({ name: "questionBody" }),
-    BooleanType({ name: "answered", nullable: false, defaultValueOnCreate: () => false}),
+    StringType({ name: "body" }),
+    UUIDType({
+      name: "questionID",
+      fieldEdge: { schema: "Question", inverseEdge: "privateNotes" },
+      storageKey: "question_id",
+    }),
     UUIDType({
       name: "authorID",
-      fieldEdge: { schema: "User", inverseEdge: "authoredQuestions" },
+      fieldEdge: { schema: "User", inverseEdge: "questionPrivateNotes" },
       storageKey: "user_id",
     }),
   ];
@@ -28,7 +31,7 @@ export default class Question extends BaseEntSchema implements Schema {
       name: "authors",
       schemaName: "User",
       inverseEdge: {
-        name: "authorToAuthoredQuestions",
+        name: "userQuestionPrivateNotes",
       },
       edgeActions: [
         {
@@ -38,18 +41,6 @@ export default class Question extends BaseEntSchema implements Schema {
           operation: ActionOperation.RemoveEdge,
         },
       ],
-    },
-    {
-      name: "answers",
-      schemaName: "Answer",
-    },
-    {
-      name: "comments",
-      schemaName: "QuestionComment",
-    },
-    {
-      name: "privateNotes",
-      schemaName: "QuestionPrivateNote",
     },
   ];
 

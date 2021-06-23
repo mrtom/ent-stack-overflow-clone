@@ -10,7 +10,13 @@ import {
   saveBuilder,
   saveBuilderX,
 } from "@lolopinto/ent/action";
-import { Answer, Question, QuestionComment, User } from "src/ent/";
+import {
+  Answer,
+  Question,
+  QuestionComment,
+  QuestionPrivateNote,
+  User,
+} from "src/ent/";
 import { EdgeType, NodeType } from "src/ent/const";
 import schema from "src/schema/question";
 
@@ -212,6 +218,56 @@ export class QuestionBuilder implements Builder<Question> {
         );
       } else {
         this.orchestrator.removeOutboundEdge(node, EdgeType.QuestionToComments);
+      }
+    }
+    return this;
+  }
+
+  addPrivateNote(...ids: ID[]): QuestionBuilder;
+  addPrivateNote(...nodes: QuestionPrivateNote[]): QuestionBuilder;
+  addPrivateNote(...nodes: Builder<QuestionPrivateNote>[]): QuestionBuilder;
+  addPrivateNote(
+    ...nodes: ID[] | QuestionPrivateNote[] | Builder<QuestionPrivateNote>[]
+  ): QuestionBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addPrivateNoteID(node);
+      } else if (typeof node === "object") {
+        this.addPrivateNoteID(node.id);
+      } else {
+        this.addPrivateNoteID(node);
+      }
+    }
+    return this;
+  }
+
+  addPrivateNoteID(
+    id: ID | Builder<QuestionPrivateNote>,
+    options?: AssocEdgeInputOptions,
+  ): QuestionBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.QuestionToPrivateNotes,
+      NodeType.QuestionPrivateNote,
+      options,
+    );
+    return this;
+  }
+
+  removePrivateNote(...ids: ID[]): QuestionBuilder;
+  removePrivateNote(...nodes: QuestionPrivateNote[]): QuestionBuilder;
+  removePrivateNote(...nodes: ID[] | QuestionPrivateNote[]): QuestionBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.QuestionToPrivateNotes,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(
+          node,
+          EdgeType.QuestionToPrivateNotes,
+        );
       }
     }
     return this;

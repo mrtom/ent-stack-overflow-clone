@@ -34,6 +34,10 @@ export default class User extends BaseEntSchema {
       name: "authoredAnswerComments",
       schemaName: "AnswerComment",
     },
+    {
+      name: "questionPrivateNotes",
+      schemaName: "QuestionPrivateNote",
+    },
   ];
 
   actions: Action[] = [

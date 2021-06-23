@@ -20,11 +20,13 @@ import {
   QuestionToAnswersQuery,
   QuestionToAuthorsQuery,
   QuestionToCommentsQuery,
+  QuestionToPrivateNotesQuery,
 } from "src/ent/";
 import {
   QuestionToAnswersConnectionType,
   QuestionToAuthorsConnectionType,
   QuestionToCommentsConnectionType,
+  QuestionToPrivateNotesConnectionType,
   UserType,
 } from "src/graphql/resolvers/internal";
 
@@ -133,6 +135,36 @@ export const QuestionType = new GraphQLObjectType({
           question.viewer,
           question,
           (v, question: Question) => QuestionToCommentsQuery.query(v, question),
+          args,
+        );
+      },
+    },
+    privateNotes: {
+      type: GraphQLNonNull(QuestionToPrivateNotesConnectionType()),
+      args: {
+        first: {
+          description: "",
+          type: GraphQLInt,
+        },
+        after: {
+          description: "",
+          type: GraphQLString,
+        },
+        last: {
+          description: "",
+          type: GraphQLInt,
+        },
+        before: {
+          description: "",
+          type: GraphQLString,
+        },
+      },
+      resolve: (question: Question, args: {}, context: RequestContext) => {
+        return new GraphQLEdgeConnection(
+          question.viewer,
+          question,
+          (v, question: Question) =>
+            QuestionToPrivateNotesQuery.query(v, question),
           args,
         );
       },

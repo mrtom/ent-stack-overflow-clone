@@ -29,6 +29,14 @@ type QuestionComment implements Node {
   authors(first: Int, after: String, last: Int, before: String): QuestionCommentToAuthorsConnection!
 }
 
+type QuestionPrivateNote implements Node {
+  author: User
+  question: Question
+  id: ID!
+  body: String!
+  authors(first: Int, after: String, last: Int, before: String): QuestionPrivateNoteToAuthorsConnection!
+}
+
 type Question implements Node {
   author: User
   id: ID!
@@ -38,6 +46,7 @@ type Question implements Node {
   answers(first: Int, after: String, last: Int, before: String): QuestionToAnswersConnection!
   authors(first: Int, after: String, last: Int, before: String): QuestionToAuthorsConnection!
   comments(first: Int, after: String, last: Int, before: String): QuestionToCommentsConnection!
+  privateNotes(first: Int, after: String, last: Int, before: String): QuestionToPrivateNotesConnection!
 }
 
 type User implements Node {
@@ -53,6 +62,8 @@ type User implements Node {
   authoredAnswers(first: Int, after: String, last: Int, before: String): UserToAuthoredAnswersConnection!
   authoredQuestionComments(first: Int, after: String, last: Int, before: String): UserToAuthoredQuestionCommentsConnection!
   authoredQuestions(first: Int, after: String, last: Int, before: String): UserToAuthoredQuestionsConnection!
+  questionPrivateNotes(first: Int, after: String, last: Int, before: String): UserToQuestionPrivateNotesConnection!
+  userQuestionPrivateNotes(first: Int, after: String, last: Int, before: String): UserToUserQuestionPrivateNotesConnection!
   howLong: Int!
 }
 
@@ -124,6 +135,18 @@ type QuestionCommentToAuthorsEdge implements Edge {
   cursor: String!
 }
 
+type QuestionPrivateNoteToAuthorsConnection implements Connection {
+  edges: [QuestionPrivateNoteToAuthorsEdge!]!
+  nodes: [User!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type QuestionPrivateNoteToAuthorsEdge implements Edge {
+  node: User!
+  cursor: String!
+}
+
 type QuestionToAnswersConnection implements Connection {
   edges: [QuestionToAnswersEdge!]!
   nodes: [Answer!]!
@@ -157,6 +180,18 @@ type QuestionToCommentsConnection implements Connection {
 
 type QuestionToCommentsEdge implements Edge {
   node: QuestionComment!
+  cursor: String!
+}
+
+type QuestionToPrivateNotesConnection implements Connection {
+  edges: [QuestionToPrivateNotesEdge!]!
+  nodes: [QuestionPrivateNote!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type QuestionToPrivateNotesEdge implements Edge {
+  node: QuestionPrivateNote!
   cursor: String!
 }
 
@@ -253,6 +288,30 @@ type UserToAuthoredQuestionsConnection implements Connection {
 
 type UserToAuthoredQuestionsEdge implements Edge {
   node: Question!
+  cursor: String!
+}
+
+type UserToQuestionPrivateNotesConnection implements Connection {
+  edges: [UserToQuestionPrivateNotesEdge!]!
+  nodes: [QuestionPrivateNote!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type UserToQuestionPrivateNotesEdge implements Edge {
+  node: QuestionPrivateNote!
+  cursor: String!
+}
+
+type UserToUserQuestionPrivateNotesConnection implements Connection {
+  edges: [UserToUserQuestionPrivateNotesEdge!]!
+  nodes: [QuestionPrivateNote!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type UserToUserQuestionPrivateNotesEdge implements Edge {
+  node: QuestionPrivateNote!
   cursor: String!
 }
 
@@ -444,6 +503,53 @@ type QuestionEditPayload {
   question: Question!
 }
 
+input QuestionPrivateNoteAddAuthorInput {
+  questionPrivateNoteID: ID!
+  authorID: ID!
+}
+
+type QuestionPrivateNoteAddAuthorPayload {
+  questionPrivateNote: QuestionPrivateNote!
+}
+
+input QuestionPrivateNoteCreateInput {
+  body: String!
+  questionID: ID!
+  authorID: ID!
+}
+
+type QuestionPrivateNoteCreatePayload {
+  questionPrivateNote: QuestionPrivateNote!
+}
+
+input QuestionPrivateNoteDeleteInput {
+  questionPrivateNoteID: ID!
+}
+
+type QuestionPrivateNoteDeletePayload {
+  deletedQuestionPrivateNoteID: ID
+}
+
+input QuestionPrivateNoteEditInput {
+  questionPrivateNoteID: ID!
+  body: String
+  questionID: ID
+  authorID: ID
+}
+
+type QuestionPrivateNoteEditPayload {
+  questionPrivateNote: QuestionPrivateNote!
+}
+
+input QuestionPrivateNoteRemoveAuthorInput {
+  questionPrivateNoteID: ID!
+  authorID: ID!
+}
+
+type QuestionPrivateNoteRemoveAuthorPayload {
+  questionPrivateNote: QuestionPrivateNote!
+}
+
 input QuestionRemoveAuthorInput {
   questionID: ID!
   authorID: ID!
@@ -492,6 +598,11 @@ type Mutation {
   questionCreate(input: QuestionCreateInput!): QuestionCreatePayload!
   questionDelete(input: QuestionDeleteInput!): QuestionDeletePayload!
   questionEdit(input: QuestionEditInput!): QuestionEditPayload!
+  questionPrivateNoteAddAuthor(input: QuestionPrivateNoteAddAuthorInput!): QuestionPrivateNoteAddAuthorPayload!
+  questionPrivateNoteCreate(input: QuestionPrivateNoteCreateInput!): QuestionPrivateNoteCreatePayload!
+  questionPrivateNoteDelete(input: QuestionPrivateNoteDeleteInput!): QuestionPrivateNoteDeletePayload!
+  questionPrivateNoteEdit(input: QuestionPrivateNoteEditInput!): QuestionPrivateNoteEditPayload!
+  questionPrivateNoteRemoveAuthor(input: QuestionPrivateNoteRemoveAuthorInput!): QuestionPrivateNoteRemoveAuthorPayload!
   questionRemoveAuthor(input: QuestionRemoveAuthorInput!): QuestionRemoveAuthorPayload!
   userAuthJWT(input: UserAuthJWTInput!): UserAuthJWTPayload!
   userCreate(input: UserCreateInput!): UserCreatePayload!

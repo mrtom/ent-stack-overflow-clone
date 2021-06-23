@@ -17,9 +17,12 @@ import {
   Question,
   QuestionComment,
   QuestionCommentToAuthorsQuery,
+  QuestionPrivateNote,
+  QuestionPrivateNoteToAuthorsQuery,
   QuestionToAnswersQuery,
   QuestionToAuthorsQuery,
   QuestionToCommentsQuery,
+  QuestionToPrivateNotesQuery,
   User,
   UserToAuthorToAuthoredAnswerCommentsEdge,
   UserToAuthorToAuthoredAnswersEdge,
@@ -29,6 +32,8 @@ import {
   UserToAuthoredAnswersEdge,
   UserToAuthoredQuestionCommentsEdge,
   UserToAuthoredQuestionsEdge,
+  UserToQuestionPrivateNotesEdge,
+  UserToUserQuestionPrivateNotesEdge,
 } from "src/ent/internal";
 
 export const userToAuthorToAuthoredAnswerCommentsCountLoaderFactory =
@@ -97,6 +102,22 @@ export const userToAuthoredQuestionsDataLoaderFactory =
   new AssocEdgeLoaderFactory(
     EdgeType.UserToAuthoredQuestions,
     () => UserToAuthoredQuestionsEdge,
+  );
+
+export const userToQuestionPrivateNotesCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.UserToQuestionPrivateNotes);
+export const userToQuestionPrivateNotesDataLoaderFactory =
+  new AssocEdgeLoaderFactory(
+    EdgeType.UserToQuestionPrivateNotes,
+    () => UserToQuestionPrivateNotesEdge,
+  );
+
+export const userToUserQuestionPrivateNotesCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.UserToUserQuestionPrivateNotes);
+export const userToUserQuestionPrivateNotesDataLoaderFactory =
+  new AssocEdgeLoaderFactory(
+    EdgeType.UserToUserQuestionPrivateNotes,
+    () => UserToUserQuestionPrivateNotesEdge,
   );
 
 export class UserToAuthorToAuthoredAnswerCommentsQueryBase extends AssocEdgeQueryBase<
@@ -221,6 +242,10 @@ export class UserToAuthorToAuthoredQuestionsQueryBase extends AssocEdgeQueryBase
   queryComments(): QuestionToCommentsQuery {
     return QuestionToCommentsQuery.query(this.viewer, this);
   }
+
+  queryPrivateNotes(): QuestionToPrivateNotesQuery {
+    return QuestionToPrivateNotesQuery.query(this.viewer, this);
+  }
 }
 
 export class UserToAuthoredAnswerCommentsQueryBase extends AssocEdgeQueryBase<
@@ -344,5 +369,65 @@ export class UserToAuthoredQuestionsQueryBase extends AssocEdgeQueryBase<
 
   queryComments(): QuestionToCommentsQuery {
     return QuestionToCommentsQuery.query(this.viewer, this);
+  }
+
+  queryPrivateNotes(): QuestionToPrivateNotesQuery {
+    return QuestionToPrivateNotesQuery.query(this.viewer, this);
+  }
+}
+
+export class UserToQuestionPrivateNotesQueryBase extends AssocEdgeQueryBase<
+  User,
+  QuestionPrivateNote,
+  UserToQuestionPrivateNotesEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<User>) {
+    super(
+      viewer,
+      src,
+      userToQuestionPrivateNotesCountLoaderFactory,
+      userToQuestionPrivateNotesDataLoaderFactory,
+      QuestionPrivateNote.loaderOptions(),
+    );
+  }
+
+  static query<T extends UserToQuestionPrivateNotesQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<User>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<User>,
+  ): T {
+    return new this(viewer, src);
+  }
+
+  queryAuthors(): QuestionPrivateNoteToAuthorsQuery {
+    return QuestionPrivateNoteToAuthorsQuery.query(this.viewer, this);
+  }
+}
+
+export class UserToUserQuestionPrivateNotesQueryBase extends AssocEdgeQueryBase<
+  User,
+  QuestionPrivateNote,
+  UserToUserQuestionPrivateNotesEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<User>) {
+    super(
+      viewer,
+      src,
+      userToUserQuestionPrivateNotesCountLoaderFactory,
+      userToUserQuestionPrivateNotesDataLoaderFactory,
+      QuestionPrivateNote.loaderOptions(),
+    );
+  }
+
+  static query<T extends UserToUserQuestionPrivateNotesQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<User>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<User>,
+  ): T {
+    return new this(viewer, src);
+  }
+
+  queryAuthors(): QuestionPrivateNoteToAuthorsQuery {
+    return QuestionPrivateNoteToAuthorsQuery.query(this.viewer, this);
   }
 }

@@ -13,6 +13,7 @@ import {
   AnswerComment,
   Question,
   QuestionComment,
+  QuestionPrivateNote,
   User,
 } from "src/ent/";
 import { NodeType } from "./const";
@@ -43,6 +44,8 @@ export function getLoaderOptions(type: NodeType): LoadEntOptions<Ent> {
       return Question.loaderOptions();
     case NodeType.QuestionComment:
       return QuestionComment.loaderOptions();
+    case NodeType.QuestionPrivateNote:
+      return QuestionPrivateNote.loaderOptions();
     case NodeType.User:
       return User.loaderOptions();
   }

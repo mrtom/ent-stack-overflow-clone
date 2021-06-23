@@ -1,0 +1,3 @@
+import { QuestionPrivateNoteRemoveAuthorActionBase } from "src/ent/question_private_note/actions/generated/question_private_note_remove_author_action_base";
+
+export default class QuestionPrivateNoteRemoveAuthorAction extends QuestionPrivateNoteRemoveAuthorActionBase {}
