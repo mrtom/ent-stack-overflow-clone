@@ -10,13 +10,14 @@ import {
   saveBuilder,
   saveBuilderX,
 } from "@lolopinto/ent/action";
-import { Answer, Question, User } from "src/ent/";
+import { Answer, Question, QuestionComment, User } from "src/ent/";
 import { EdgeType, NodeType } from "src/ent/const";
 import schema from "src/schema/question";
 
 export interface QuestionInput {
   title?: string;
   questionBody?: string;
+  answered?: boolean;
   authorID?: ID | Builder<User>;
 }
 
@@ -169,6 +170,53 @@ export class QuestionBuilder implements Builder<Question> {
     return this;
   }
 
+  addComment(...ids: ID[]): QuestionBuilder;
+  addComment(...nodes: QuestionComment[]): QuestionBuilder;
+  addComment(...nodes: Builder<QuestionComment>[]): QuestionBuilder;
+  addComment(
+    ...nodes: ID[] | QuestionComment[] | Builder<QuestionComment>[]
+  ): QuestionBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addCommentID(node);
+      } else if (typeof node === "object") {
+        this.addCommentID(node.id);
+      } else {
+        this.addCommentID(node);
+      }
+    }
+    return this;
+  }
+
+  addCommentID(
+    id: ID | Builder<QuestionComment>,
+    options?: AssocEdgeInputOptions,
+  ): QuestionBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.QuestionToComments,
+      NodeType.QuestionComment,
+      options,
+    );
+    return this;
+  }
+
+  removeComment(...ids: ID[]): QuestionBuilder;
+  removeComment(...nodes: QuestionComment[]): QuestionBuilder;
+  removeComment(...nodes: ID[] | QuestionComment[]): QuestionBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.QuestionToComments,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(node, EdgeType.QuestionToComments);
+      }
+    }
+    return this;
+  }
+
   async build(): Promise<Changeset<Question>> {
     return this.orchestrator.build();
   }
@@ -209,6 +257,7 @@ export class QuestionBuilder implements Builder<Question> {
     };
     addField("title", fields.title);
     addField("questionBody", fields.questionBody);
+    addField("answered", fields.answered);
     addField("authorID", fields.authorID);
     if (fields.authorID) {
       this.orchestrator.addInboundEdge(
@@ -232,6 +281,11 @@ export class QuestionBuilder implements Builder<Question> {
   // get value of questionBody. Retrieves it from the input if specified or takes it from existingEnt
   getNewQuestionBodyValue(): string | undefined {
     return this.input.questionBody || this.existingEnt?.questionBody;
+  }
+
+  // get value of answered. Retrieves it from the input if specified or takes it from existingEnt
+  getNewAnsweredValue(): boolean | undefined {
+    return this.input.answered || this.existingEnt?.answered;
   }
 
   // get value of authorID. Retrieves it from the input if specified or takes it from existingEnt

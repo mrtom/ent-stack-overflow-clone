@@ -10,7 +10,13 @@ import {
   saveBuilder,
   saveBuilderX,
 } from "@lolopinto/ent/action";
-import { Answer, Question, User } from "src/ent/";
+import {
+  Answer,
+  AnswerComment,
+  Question,
+  QuestionComment,
+  User,
+} from "src/ent/";
 import { EdgeType, NodeType } from "src/ent/const";
 import schema from "src/schema/user";
 
@@ -80,6 +86,60 @@ export class UserBuilder implements Builder<User> {
   clearInputEdges(edgeType: EdgeType, op: WriteOperation, id?: ID) {
     this.orchestrator.clearInputEdges(edgeType, op, id);
   }
+  addAuthorToAuthoredAnswerComment(...ids: ID[]): UserBuilder;
+  addAuthorToAuthoredAnswerComment(...nodes: AnswerComment[]): UserBuilder;
+  addAuthorToAuthoredAnswerComment(
+    ...nodes: Builder<AnswerComment>[]
+  ): UserBuilder;
+  addAuthorToAuthoredAnswerComment(
+    ...nodes: ID[] | AnswerComment[] | Builder<AnswerComment>[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addAuthorToAuthoredAnswerCommentID(node);
+      } else if (typeof node === "object") {
+        this.addAuthorToAuthoredAnswerCommentID(node.id);
+      } else {
+        this.addAuthorToAuthoredAnswerCommentID(node);
+      }
+    }
+    return this;
+  }
+
+  addAuthorToAuthoredAnswerCommentID(
+    id: ID | Builder<AnswerComment>,
+    options?: AssocEdgeInputOptions,
+  ): UserBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.UserToAuthorToAuthoredAnswerComments,
+      NodeType.AnswerComment,
+      options,
+    );
+    return this;
+  }
+
+  removeAuthorToAuthoredAnswerComment(...ids: ID[]): UserBuilder;
+  removeAuthorToAuthoredAnswerComment(...nodes: AnswerComment[]): UserBuilder;
+  removeAuthorToAuthoredAnswerComment(
+    ...nodes: ID[] | AnswerComment[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.UserToAuthorToAuthoredAnswerComments,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(
+          node,
+          EdgeType.UserToAuthorToAuthoredAnswerComments,
+        );
+      }
+    }
+    return this;
+  }
+
   addAuthorToAuthoredAnswer(...ids: ID[]): UserBuilder;
   addAuthorToAuthoredAnswer(...nodes: Answer[]): UserBuilder;
   addAuthorToAuthoredAnswer(...nodes: Builder<Answer>[]): UserBuilder;
@@ -124,6 +184,62 @@ export class UserBuilder implements Builder<User> {
         this.orchestrator.removeOutboundEdge(
           node,
           EdgeType.UserToAuthorToAuthoredAnswers,
+        );
+      }
+    }
+    return this;
+  }
+
+  addAuthorToAuthoredQuestionComment(...ids: ID[]): UserBuilder;
+  addAuthorToAuthoredQuestionComment(...nodes: QuestionComment[]): UserBuilder;
+  addAuthorToAuthoredQuestionComment(
+    ...nodes: Builder<QuestionComment>[]
+  ): UserBuilder;
+  addAuthorToAuthoredQuestionComment(
+    ...nodes: ID[] | QuestionComment[] | Builder<QuestionComment>[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addAuthorToAuthoredQuestionCommentID(node);
+      } else if (typeof node === "object") {
+        this.addAuthorToAuthoredQuestionCommentID(node.id);
+      } else {
+        this.addAuthorToAuthoredQuestionCommentID(node);
+      }
+    }
+    return this;
+  }
+
+  addAuthorToAuthoredQuestionCommentID(
+    id: ID | Builder<QuestionComment>,
+    options?: AssocEdgeInputOptions,
+  ): UserBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.UserToAuthorToAuthoredQuestionComments,
+      NodeType.QuestionComment,
+      options,
+    );
+    return this;
+  }
+
+  removeAuthorToAuthoredQuestionComment(...ids: ID[]): UserBuilder;
+  removeAuthorToAuthoredQuestionComment(
+    ...nodes: QuestionComment[]
+  ): UserBuilder;
+  removeAuthorToAuthoredQuestionComment(
+    ...nodes: ID[] | QuestionComment[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.UserToAuthorToAuthoredQuestionComments,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(
+          node,
+          EdgeType.UserToAuthorToAuthoredQuestionComments,
         );
       }
     }
@@ -180,6 +296,56 @@ export class UserBuilder implements Builder<User> {
     return this;
   }
 
+  addAuthoredAnswerComment(...ids: ID[]): UserBuilder;
+  addAuthoredAnswerComment(...nodes: AnswerComment[]): UserBuilder;
+  addAuthoredAnswerComment(...nodes: Builder<AnswerComment>[]): UserBuilder;
+  addAuthoredAnswerComment(
+    ...nodes: ID[] | AnswerComment[] | Builder<AnswerComment>[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addAuthoredAnswerCommentID(node);
+      } else if (typeof node === "object") {
+        this.addAuthoredAnswerCommentID(node.id);
+      } else {
+        this.addAuthoredAnswerCommentID(node);
+      }
+    }
+    return this;
+  }
+
+  addAuthoredAnswerCommentID(
+    id: ID | Builder<AnswerComment>,
+    options?: AssocEdgeInputOptions,
+  ): UserBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.UserToAuthoredAnswerComments,
+      NodeType.AnswerComment,
+      options,
+    );
+    return this;
+  }
+
+  removeAuthoredAnswerComment(...ids: ID[]): UserBuilder;
+  removeAuthoredAnswerComment(...nodes: AnswerComment[]): UserBuilder;
+  removeAuthoredAnswerComment(...nodes: ID[] | AnswerComment[]): UserBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.UserToAuthoredAnswerComments,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(
+          node,
+          EdgeType.UserToAuthoredAnswerComments,
+        );
+      }
+    }
+    return this;
+  }
+
   addAuthoredAnswer(...ids: ID[]): UserBuilder;
   addAuthoredAnswer(...nodes: Answer[]): UserBuilder;
   addAuthoredAnswer(...nodes: Builder<Answer>[]): UserBuilder;
@@ -224,6 +390,58 @@ export class UserBuilder implements Builder<User> {
         this.orchestrator.removeOutboundEdge(
           node,
           EdgeType.UserToAuthoredAnswers,
+        );
+      }
+    }
+    return this;
+  }
+
+  addAuthoredQuestionComment(...ids: ID[]): UserBuilder;
+  addAuthoredQuestionComment(...nodes: QuestionComment[]): UserBuilder;
+  addAuthoredQuestionComment(...nodes: Builder<QuestionComment>[]): UserBuilder;
+  addAuthoredQuestionComment(
+    ...nodes: ID[] | QuestionComment[] | Builder<QuestionComment>[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addAuthoredQuestionCommentID(node);
+      } else if (typeof node === "object") {
+        this.addAuthoredQuestionCommentID(node.id);
+      } else {
+        this.addAuthoredQuestionCommentID(node);
+      }
+    }
+    return this;
+  }
+
+  addAuthoredQuestionCommentID(
+    id: ID | Builder<QuestionComment>,
+    options?: AssocEdgeInputOptions,
+  ): UserBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.UserToAuthoredQuestionComments,
+      NodeType.QuestionComment,
+      options,
+    );
+    return this;
+  }
+
+  removeAuthoredQuestionComment(...ids: ID[]): UserBuilder;
+  removeAuthoredQuestionComment(...nodes: QuestionComment[]): UserBuilder;
+  removeAuthoredQuestionComment(
+    ...nodes: ID[] | QuestionComment[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.UserToAuthoredQuestionComments,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(
+          node,
+          EdgeType.UserToAuthoredQuestionComments,
         );
       }
     }

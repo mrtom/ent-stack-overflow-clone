@@ -16,15 +16,23 @@ import {
 } from "@lolopinto/ent/graphql";
 import {
   User,
+  UserToAuthorToAuthoredAnswerCommentsQuery,
   UserToAuthorToAuthoredAnswersQuery,
+  UserToAuthorToAuthoredQuestionCommentsQuery,
   UserToAuthorToAuthoredQuestionsQuery,
+  UserToAuthoredAnswerCommentsQuery,
   UserToAuthoredAnswersQuery,
+  UserToAuthoredQuestionCommentsQuery,
   UserToAuthoredQuestionsQuery,
 } from "src/ent/";
 import {
+  UserToAuthorToAuthoredAnswerCommentsConnectionType,
   UserToAuthorToAuthoredAnswersConnectionType,
+  UserToAuthorToAuthoredQuestionCommentsConnectionType,
   UserToAuthorToAuthoredQuestionsConnectionType,
+  UserToAuthoredAnswerCommentsConnectionType,
   UserToAuthoredAnswersConnectionType,
+  UserToAuthoredQuestionCommentsConnectionType,
   UserToAuthoredQuestionsConnectionType,
 } from "src/graphql/resolvers/internal";
 
@@ -43,6 +51,38 @@ export const UserType = new GraphQLObjectType({
     },
     emailAddress: {
       type: GraphQLNonNull(GraphQLString),
+    },
+    authorToAuthoredAnswerComments: {
+      type: GraphQLNonNull(
+        UserToAuthorToAuthoredAnswerCommentsConnectionType(),
+      ),
+      args: {
+        first: {
+          description: "",
+          type: GraphQLInt,
+        },
+        after: {
+          description: "",
+          type: GraphQLString,
+        },
+        last: {
+          description: "",
+          type: GraphQLInt,
+        },
+        before: {
+          description: "",
+          type: GraphQLString,
+        },
+      },
+      resolve: (user: User, args: {}, context: RequestContext) => {
+        return new GraphQLEdgeConnection(
+          user.viewer,
+          user,
+          (v, user: User) =>
+            UserToAuthorToAuthoredAnswerCommentsQuery.query(v, user),
+          args,
+        );
+      },
     },
     authorToAuthoredAnswers: {
       type: GraphQLNonNull(UserToAuthorToAuthoredAnswersConnectionType()),
@@ -69,6 +109,38 @@ export const UserType = new GraphQLObjectType({
           user.viewer,
           user,
           (v, user: User) => UserToAuthorToAuthoredAnswersQuery.query(v, user),
+          args,
+        );
+      },
+    },
+    authorToAuthoredQuestionComments: {
+      type: GraphQLNonNull(
+        UserToAuthorToAuthoredQuestionCommentsConnectionType(),
+      ),
+      args: {
+        first: {
+          description: "",
+          type: GraphQLInt,
+        },
+        after: {
+          description: "",
+          type: GraphQLString,
+        },
+        last: {
+          description: "",
+          type: GraphQLInt,
+        },
+        before: {
+          description: "",
+          type: GraphQLString,
+        },
+      },
+      resolve: (user: User, args: {}, context: RequestContext) => {
+        return new GraphQLEdgeConnection(
+          user.viewer,
+          user,
+          (v, user: User) =>
+            UserToAuthorToAuthoredQuestionCommentsQuery.query(v, user),
           args,
         );
       },
@@ -103,6 +175,35 @@ export const UserType = new GraphQLObjectType({
         );
       },
     },
+    authoredAnswerComments: {
+      type: GraphQLNonNull(UserToAuthoredAnswerCommentsConnectionType()),
+      args: {
+        first: {
+          description: "",
+          type: GraphQLInt,
+        },
+        after: {
+          description: "",
+          type: GraphQLString,
+        },
+        last: {
+          description: "",
+          type: GraphQLInt,
+        },
+        before: {
+          description: "",
+          type: GraphQLString,
+        },
+      },
+      resolve: (user: User, args: {}, context: RequestContext) => {
+        return new GraphQLEdgeConnection(
+          user.viewer,
+          user,
+          (v, user: User) => UserToAuthoredAnswerCommentsQuery.query(v, user),
+          args,
+        );
+      },
+    },
     authoredAnswers: {
       type: GraphQLNonNull(UserToAuthoredAnswersConnectionType()),
       args: {
@@ -128,6 +229,35 @@ export const UserType = new GraphQLObjectType({
           user.viewer,
           user,
           (v, user: User) => UserToAuthoredAnswersQuery.query(v, user),
+          args,
+        );
+      },
+    },
+    authoredQuestionComments: {
+      type: GraphQLNonNull(UserToAuthoredQuestionCommentsConnectionType()),
+      args: {
+        first: {
+          description: "",
+          type: GraphQLInt,
+        },
+        after: {
+          description: "",
+          type: GraphQLString,
+        },
+        last: {
+          description: "",
+          type: GraphQLInt,
+        },
+        before: {
+          description: "",
+          type: GraphQLString,
+        },
+      },
+      resolve: (user: User, args: {}, context: RequestContext) => {
+        return new GraphQLEdgeConnection(
+          user.viewer,
+          user,
+          (v, user: User) => UserToAuthoredQuestionCommentsQuery.query(v, user),
           args,
         );
       },

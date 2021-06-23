@@ -20,6 +20,7 @@ import {
   NodeType,
   QuestionToAnswersQuery,
   QuestionToAuthorsQuery,
+  QuestionToCommentsQuery,
   User,
 } from "src/ent/internal";
 import schema from "src/schema/question";
@@ -31,6 +32,7 @@ const fields = [
   "updated_at",
   "title",
   "question_body",
+  "answered",
   "user_id",
 ];
 
@@ -41,6 +43,7 @@ export class QuestionBase {
   readonly updatedAt: Date;
   readonly title: string;
   readonly questionBody: string;
+  readonly answered: boolean;
   readonly authorID: ID;
 
   constructor(public viewer: Viewer, data: Data) {
@@ -49,6 +52,7 @@ export class QuestionBase {
     this.updatedAt = data.updated_at;
     this.title = data.title;
     this.questionBody = data.question_body;
+    this.answered = data.answered;
     this.authorID = data.user_id;
   }
 
@@ -129,6 +133,10 @@ export class QuestionBase {
 
   queryAuthors(): QuestionToAuthorsQuery {
     return QuestionToAuthorsQuery.query(this.viewer, this.id);
+  }
+
+  queryComments(): QuestionToCommentsQuery {
+    return QuestionToCommentsQuery.query(this.viewer, this.id);
   }
 
   async loadAuthor(): Promise<User | null> {

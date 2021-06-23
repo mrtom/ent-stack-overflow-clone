@@ -10,7 +10,7 @@ import {
   saveBuilder,
   saveBuilderX,
 } from "@lolopinto/ent/action";
-import { Answer, Question, User } from "src/ent/";
+import { Answer, AnswerComment, Question, User } from "src/ent/";
 import { EdgeType, NodeType } from "src/ent/const";
 import schema from "src/schema/answer";
 
@@ -117,6 +117,53 @@ export class AnswerBuilder implements Builder<Answer> {
         this.orchestrator.removeOutboundEdge(node.id, EdgeType.AnswerToAuthors);
       } else {
         this.orchestrator.removeOutboundEdge(node, EdgeType.AnswerToAuthors);
+      }
+    }
+    return this;
+  }
+
+  addComment(...ids: ID[]): AnswerBuilder;
+  addComment(...nodes: AnswerComment[]): AnswerBuilder;
+  addComment(...nodes: Builder<AnswerComment>[]): AnswerBuilder;
+  addComment(
+    ...nodes: ID[] | AnswerComment[] | Builder<AnswerComment>[]
+  ): AnswerBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addCommentID(node);
+      } else if (typeof node === "object") {
+        this.addCommentID(node.id);
+      } else {
+        this.addCommentID(node);
+      }
+    }
+    return this;
+  }
+
+  addCommentID(
+    id: ID | Builder<AnswerComment>,
+    options?: AssocEdgeInputOptions,
+  ): AnswerBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.AnswerToComments,
+      NodeType.AnswerComment,
+      options,
+    );
+    return this;
+  }
+
+  removeComment(...ids: ID[]): AnswerBuilder;
+  removeComment(...nodes: AnswerComment[]): AnswerBuilder;
+  removeComment(...nodes: ID[] | AnswerComment[]): AnswerBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.AnswerToComments,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(node, EdgeType.AnswerToComments);
       }
     }
     return this;

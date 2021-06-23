@@ -10,14 +10,22 @@ import {
 import {
   Answer,
   AnswerToAuthorsQuery,
+  AnswerToCommentsQuery,
   EdgeType,
   Question,
+  QuestionComment,
+  QuestionCommentToAuthorsQuery,
   QuestionToAnswersEdge,
   QuestionToAuthorsEdge,
+  QuestionToCommentsEdge,
   User,
+  UserToAuthorToAuthoredAnswerCommentsQuery,
   UserToAuthorToAuthoredAnswersQuery,
+  UserToAuthorToAuthoredQuestionCommentsQuery,
   UserToAuthorToAuthoredQuestionsQuery,
+  UserToAuthoredAnswerCommentsQuery,
   UserToAuthoredAnswersQuery,
+  UserToAuthoredQuestionCommentsQuery,
   UserToAuthoredQuestionsQuery,
 } from "src/ent/internal";
 
@@ -33,6 +41,13 @@ export const questionToAuthorsCountLoaderFactory =
 export const questionToAuthorsDataLoaderFactory = new AssocEdgeLoaderFactory(
   EdgeType.QuestionToAuthors,
   () => QuestionToAuthorsEdge,
+);
+
+export const questionToCommentsCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.QuestionToComments);
+export const questionToCommentsDataLoaderFactory = new AssocEdgeLoaderFactory(
+  EdgeType.QuestionToComments,
+  () => QuestionToCommentsEdge,
 );
 
 export class QuestionToAnswersQueryBase extends AssocEdgeQueryBase<
@@ -61,6 +76,10 @@ export class QuestionToAnswersQueryBase extends AssocEdgeQueryBase<
   queryAuthors(): AnswerToAuthorsQuery {
     return AnswerToAuthorsQuery.query(this.viewer, this);
   }
+
+  queryComments(): AnswerToCommentsQuery {
+    return AnswerToCommentsQuery.query(this.viewer, this);
+  }
 }
 
 export class QuestionToAuthorsQueryBase extends AssocEdgeQueryBase<
@@ -86,19 +105,63 @@ export class QuestionToAuthorsQueryBase extends AssocEdgeQueryBase<
     return new this(viewer, src);
   }
 
+  queryAuthorToAuthoredAnswerComments(): UserToAuthorToAuthoredAnswerCommentsQuery {
+    return UserToAuthorToAuthoredAnswerCommentsQuery.query(this.viewer, this);
+  }
+
   queryAuthorToAuthoredAnswers(): UserToAuthorToAuthoredAnswersQuery {
     return UserToAuthorToAuthoredAnswersQuery.query(this.viewer, this);
+  }
+
+  queryAuthorToAuthoredQuestionComments(): UserToAuthorToAuthoredQuestionCommentsQuery {
+    return UserToAuthorToAuthoredQuestionCommentsQuery.query(this.viewer, this);
   }
 
   queryAuthorToAuthoredQuestions(): UserToAuthorToAuthoredQuestionsQuery {
     return UserToAuthorToAuthoredQuestionsQuery.query(this.viewer, this);
   }
 
+  queryAuthoredAnswerComments(): UserToAuthoredAnswerCommentsQuery {
+    return UserToAuthoredAnswerCommentsQuery.query(this.viewer, this);
+  }
+
   queryAuthoredAnswers(): UserToAuthoredAnswersQuery {
     return UserToAuthoredAnswersQuery.query(this.viewer, this);
   }
 
+  queryAuthoredQuestionComments(): UserToAuthoredQuestionCommentsQuery {
+    return UserToAuthoredQuestionCommentsQuery.query(this.viewer, this);
+  }
+
   queryAuthoredQuestions(): UserToAuthoredQuestionsQuery {
     return UserToAuthoredQuestionsQuery.query(this.viewer, this);
+  }
+}
+
+export class QuestionToCommentsQueryBase extends AssocEdgeQueryBase<
+  Question,
+  QuestionComment,
+  QuestionToCommentsEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<Question>) {
+    super(
+      viewer,
+      src,
+      questionToCommentsCountLoaderFactory,
+      questionToCommentsDataLoaderFactory,
+      QuestionComment.loaderOptions(),
+    );
+  }
+
+  static query<T extends QuestionToCommentsQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<Question>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<Question>,
+  ): T {
+    return new this(viewer, src);
+  }
+
+  queryAuthors(): QuestionCommentToAuthorsQuery {
+    return QuestionCommentToAuthorsQuery.query(this.viewer, this);
   }
 }

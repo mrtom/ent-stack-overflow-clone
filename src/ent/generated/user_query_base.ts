@@ -9,17 +9,37 @@ import {
 } from "@lolopinto/ent";
 import {
   Answer,
+  AnswerComment,
+  AnswerCommentToAuthorsQuery,
   AnswerToAuthorsQuery,
+  AnswerToCommentsQuery,
   EdgeType,
   Question,
+  QuestionComment,
+  QuestionCommentToAuthorsQuery,
   QuestionToAnswersQuery,
   QuestionToAuthorsQuery,
+  QuestionToCommentsQuery,
   User,
+  UserToAuthorToAuthoredAnswerCommentsEdge,
   UserToAuthorToAuthoredAnswersEdge,
+  UserToAuthorToAuthoredQuestionCommentsEdge,
   UserToAuthorToAuthoredQuestionsEdge,
+  UserToAuthoredAnswerCommentsEdge,
   UserToAuthoredAnswersEdge,
+  UserToAuthoredQuestionCommentsEdge,
   UserToAuthoredQuestionsEdge,
 } from "src/ent/internal";
+
+export const userToAuthorToAuthoredAnswerCommentsCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(
+    EdgeType.UserToAuthorToAuthoredAnswerComments,
+  );
+export const userToAuthorToAuthoredAnswerCommentsDataLoaderFactory =
+  new AssocEdgeLoaderFactory(
+    EdgeType.UserToAuthorToAuthoredAnswerComments,
+    () => UserToAuthorToAuthoredAnswerCommentsEdge,
+  );
 
 export const userToAuthorToAuthoredAnswersCountLoaderFactory =
   new AssocEdgeCountLoaderFactory(EdgeType.UserToAuthorToAuthoredAnswers);
@@ -27,6 +47,16 @@ export const userToAuthorToAuthoredAnswersDataLoaderFactory =
   new AssocEdgeLoaderFactory(
     EdgeType.UserToAuthorToAuthoredAnswers,
     () => UserToAuthorToAuthoredAnswersEdge,
+  );
+
+export const userToAuthorToAuthoredQuestionCommentsCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(
+    EdgeType.UserToAuthorToAuthoredQuestionComments,
+  );
+export const userToAuthorToAuthoredQuestionCommentsDataLoaderFactory =
+  new AssocEdgeLoaderFactory(
+    EdgeType.UserToAuthorToAuthoredQuestionComments,
+    () => UserToAuthorToAuthoredQuestionCommentsEdge,
   );
 
 export const userToAuthorToAuthoredQuestionsCountLoaderFactory =
@@ -37,12 +67,28 @@ export const userToAuthorToAuthoredQuestionsDataLoaderFactory =
     () => UserToAuthorToAuthoredQuestionsEdge,
   );
 
+export const userToAuthoredAnswerCommentsCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.UserToAuthoredAnswerComments);
+export const userToAuthoredAnswerCommentsDataLoaderFactory =
+  new AssocEdgeLoaderFactory(
+    EdgeType.UserToAuthoredAnswerComments,
+    () => UserToAuthoredAnswerCommentsEdge,
+  );
+
 export const userToAuthoredAnswersCountLoaderFactory =
   new AssocEdgeCountLoaderFactory(EdgeType.UserToAuthoredAnswers);
 export const userToAuthoredAnswersDataLoaderFactory =
   new AssocEdgeLoaderFactory(
     EdgeType.UserToAuthoredAnswers,
     () => UserToAuthoredAnswersEdge,
+  );
+
+export const userToAuthoredQuestionCommentsCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.UserToAuthoredQuestionComments);
+export const userToAuthoredQuestionCommentsDataLoaderFactory =
+  new AssocEdgeLoaderFactory(
+    EdgeType.UserToAuthoredQuestionComments,
+    () => UserToAuthoredQuestionCommentsEdge,
   );
 
 export const userToAuthoredQuestionsCountLoaderFactory =
@@ -52,6 +98,34 @@ export const userToAuthoredQuestionsDataLoaderFactory =
     EdgeType.UserToAuthoredQuestions,
     () => UserToAuthoredQuestionsEdge,
   );
+
+export class UserToAuthorToAuthoredAnswerCommentsQueryBase extends AssocEdgeQueryBase<
+  User,
+  AnswerComment,
+  UserToAuthorToAuthoredAnswerCommentsEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<User>) {
+    super(
+      viewer,
+      src,
+      userToAuthorToAuthoredAnswerCommentsCountLoaderFactory,
+      userToAuthorToAuthoredAnswerCommentsDataLoaderFactory,
+      AnswerComment.loaderOptions(),
+    );
+  }
+
+  static query<T extends UserToAuthorToAuthoredAnswerCommentsQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<User>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<User>,
+  ): T {
+    return new this(viewer, src);
+  }
+
+  queryAuthors(): AnswerCommentToAuthorsQuery {
+    return AnswerCommentToAuthorsQuery.query(this.viewer, this);
+  }
+}
 
 export class UserToAuthorToAuthoredAnswersQueryBase extends AssocEdgeQueryBase<
   User,
@@ -78,6 +152,38 @@ export class UserToAuthorToAuthoredAnswersQueryBase extends AssocEdgeQueryBase<
 
   queryAuthors(): AnswerToAuthorsQuery {
     return AnswerToAuthorsQuery.query(this.viewer, this);
+  }
+
+  queryComments(): AnswerToCommentsQuery {
+    return AnswerToCommentsQuery.query(this.viewer, this);
+  }
+}
+
+export class UserToAuthorToAuthoredQuestionCommentsQueryBase extends AssocEdgeQueryBase<
+  User,
+  QuestionComment,
+  UserToAuthorToAuthoredQuestionCommentsEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<User>) {
+    super(
+      viewer,
+      src,
+      userToAuthorToAuthoredQuestionCommentsCountLoaderFactory,
+      userToAuthorToAuthoredQuestionCommentsDataLoaderFactory,
+      QuestionComment.loaderOptions(),
+    );
+  }
+
+  static query<T extends UserToAuthorToAuthoredQuestionCommentsQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<User>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<User>,
+  ): T {
+    return new this(viewer, src);
+  }
+
+  queryAuthors(): QuestionCommentToAuthorsQuery {
+    return QuestionCommentToAuthorsQuery.query(this.viewer, this);
   }
 }
 
@@ -111,6 +217,38 @@ export class UserToAuthorToAuthoredQuestionsQueryBase extends AssocEdgeQueryBase
   queryAuthors(): QuestionToAuthorsQuery {
     return QuestionToAuthorsQuery.query(this.viewer, this);
   }
+
+  queryComments(): QuestionToCommentsQuery {
+    return QuestionToCommentsQuery.query(this.viewer, this);
+  }
+}
+
+export class UserToAuthoredAnswerCommentsQueryBase extends AssocEdgeQueryBase<
+  User,
+  AnswerComment,
+  UserToAuthoredAnswerCommentsEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<User>) {
+    super(
+      viewer,
+      src,
+      userToAuthoredAnswerCommentsCountLoaderFactory,
+      userToAuthoredAnswerCommentsDataLoaderFactory,
+      AnswerComment.loaderOptions(),
+    );
+  }
+
+  static query<T extends UserToAuthoredAnswerCommentsQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<User>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<User>,
+  ): T {
+    return new this(viewer, src);
+  }
+
+  queryAuthors(): AnswerCommentToAuthorsQuery {
+    return AnswerCommentToAuthorsQuery.query(this.viewer, this);
+  }
 }
 
 export class UserToAuthoredAnswersQueryBase extends AssocEdgeQueryBase<
@@ -138,6 +276,38 @@ export class UserToAuthoredAnswersQueryBase extends AssocEdgeQueryBase<
 
   queryAuthors(): AnswerToAuthorsQuery {
     return AnswerToAuthorsQuery.query(this.viewer, this);
+  }
+
+  queryComments(): AnswerToCommentsQuery {
+    return AnswerToCommentsQuery.query(this.viewer, this);
+  }
+}
+
+export class UserToAuthoredQuestionCommentsQueryBase extends AssocEdgeQueryBase<
+  User,
+  QuestionComment,
+  UserToAuthoredQuestionCommentsEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<User>) {
+    super(
+      viewer,
+      src,
+      userToAuthoredQuestionCommentsCountLoaderFactory,
+      userToAuthoredQuestionCommentsDataLoaderFactory,
+      QuestionComment.loaderOptions(),
+    );
+  }
+
+  static query<T extends UserToAuthoredQuestionCommentsQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<User>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<User>,
+  ): T {
+    return new this(viewer, src);
+  }
+
+  queryAuthors(): QuestionCommentToAuthorsQuery {
+    return QuestionCommentToAuthorsQuery.query(this.viewer, this);
   }
 }
 
@@ -170,5 +340,9 @@ export class UserToAuthoredQuestionsQueryBase extends AssocEdgeQueryBase<
 
   queryAuthors(): QuestionToAuthorsQuery {
     return QuestionToAuthorsQuery.query(this.viewer, this);
+  }
+
+  queryComments(): QuestionToCommentsQuery {
+    return QuestionToCommentsQuery.query(this.viewer, this);
   }
 }

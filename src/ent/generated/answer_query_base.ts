@@ -9,12 +9,19 @@ import {
 } from "@lolopinto/ent";
 import {
   Answer,
+  AnswerComment,
+  AnswerCommentToAuthorsQuery,
   AnswerToAuthorsEdge,
+  AnswerToCommentsEdge,
   EdgeType,
   User,
+  UserToAuthorToAuthoredAnswerCommentsQuery,
   UserToAuthorToAuthoredAnswersQuery,
+  UserToAuthorToAuthoredQuestionCommentsQuery,
   UserToAuthorToAuthoredQuestionsQuery,
+  UserToAuthoredAnswerCommentsQuery,
   UserToAuthoredAnswersQuery,
+  UserToAuthoredQuestionCommentsQuery,
   UserToAuthoredQuestionsQuery,
 } from "src/ent/internal";
 
@@ -23,6 +30,13 @@ export const answerToAuthorsCountLoaderFactory =
 export const answerToAuthorsDataLoaderFactory = new AssocEdgeLoaderFactory(
   EdgeType.AnswerToAuthors,
   () => AnswerToAuthorsEdge,
+);
+
+export const answerToCommentsCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.AnswerToComments);
+export const answerToCommentsDataLoaderFactory = new AssocEdgeLoaderFactory(
+  EdgeType.AnswerToComments,
+  () => AnswerToCommentsEdge,
 );
 
 export class AnswerToAuthorsQueryBase extends AssocEdgeQueryBase<
@@ -48,19 +62,63 @@ export class AnswerToAuthorsQueryBase extends AssocEdgeQueryBase<
     return new this(viewer, src);
   }
 
+  queryAuthorToAuthoredAnswerComments(): UserToAuthorToAuthoredAnswerCommentsQuery {
+    return UserToAuthorToAuthoredAnswerCommentsQuery.query(this.viewer, this);
+  }
+
   queryAuthorToAuthoredAnswers(): UserToAuthorToAuthoredAnswersQuery {
     return UserToAuthorToAuthoredAnswersQuery.query(this.viewer, this);
+  }
+
+  queryAuthorToAuthoredQuestionComments(): UserToAuthorToAuthoredQuestionCommentsQuery {
+    return UserToAuthorToAuthoredQuestionCommentsQuery.query(this.viewer, this);
   }
 
   queryAuthorToAuthoredQuestions(): UserToAuthorToAuthoredQuestionsQuery {
     return UserToAuthorToAuthoredQuestionsQuery.query(this.viewer, this);
   }
 
+  queryAuthoredAnswerComments(): UserToAuthoredAnswerCommentsQuery {
+    return UserToAuthoredAnswerCommentsQuery.query(this.viewer, this);
+  }
+
   queryAuthoredAnswers(): UserToAuthoredAnswersQuery {
     return UserToAuthoredAnswersQuery.query(this.viewer, this);
   }
 
+  queryAuthoredQuestionComments(): UserToAuthoredQuestionCommentsQuery {
+    return UserToAuthoredQuestionCommentsQuery.query(this.viewer, this);
+  }
+
   queryAuthoredQuestions(): UserToAuthoredQuestionsQuery {
     return UserToAuthoredQuestionsQuery.query(this.viewer, this);
+  }
+}
+
+export class AnswerToCommentsQueryBase extends AssocEdgeQueryBase<
+  Answer,
+  AnswerComment,
+  AnswerToCommentsEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<Answer>) {
+    super(
+      viewer,
+      src,
+      answerToCommentsCountLoaderFactory,
+      answerToCommentsDataLoaderFactory,
+      AnswerComment.loaderOptions(),
+    );
+  }
+
+  static query<T extends AnswerToCommentsQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<Answer>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<Answer>,
+  ): T {
+    return new this(viewer, src);
+  }
+
+  queryAuthors(): AnswerCommentToAuthorsQuery {
+    return AnswerCommentToAuthorsQuery.query(this.viewer, this);
   }
 }

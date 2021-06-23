@@ -8,7 +8,13 @@ import {
   loadEnt,
   loadEntX,
 } from "@lolopinto/ent";
-import { Answer, Question, User } from "src/ent/";
+import {
+  Answer,
+  AnswerComment,
+  Question,
+  QuestionComment,
+  User,
+} from "src/ent/";
 import { NodeType } from "./const";
 
 export async function loadEntByType(
@@ -31,8 +37,12 @@ export function getLoaderOptions(type: NodeType): LoadEntOptions<Ent> {
   switch (type) {
     case NodeType.Answer:
       return Answer.loaderOptions();
+    case NodeType.AnswerComment:
+      return AnswerComment.loaderOptions();
     case NodeType.Question:
       return Question.loaderOptions();
+    case NodeType.QuestionComment:
+      return QuestionComment.loaderOptions();
     case NodeType.User:
       return User.loaderOptions();
   }

@@ -20,9 +20,13 @@ import { Field, getFields } from "@lolopinto/ent/schema";
 import {
   EdgeType,
   NodeType,
+  UserToAuthorToAuthoredAnswerCommentsQuery,
   UserToAuthorToAuthoredAnswersQuery,
+  UserToAuthorToAuthoredQuestionCommentsQuery,
   UserToAuthorToAuthoredQuestionsQuery,
+  UserToAuthoredAnswerCommentsQuery,
   UserToAuthoredAnswersQuery,
+  UserToAuthoredQuestionCommentsQuery,
   UserToAuthoredQuestionsQuery,
 } from "src/ent/internal";
 import schema from "src/schema/user";
@@ -172,16 +176,38 @@ export class UserBase {
     return UserBase.getSchemaFields().get(key);
   }
 
+  queryAuthorToAuthoredAnswerComments(): UserToAuthorToAuthoredAnswerCommentsQuery {
+    return UserToAuthorToAuthoredAnswerCommentsQuery.query(
+      this.viewer,
+      this.id,
+    );
+  }
+
   queryAuthorToAuthoredAnswers(): UserToAuthorToAuthoredAnswersQuery {
     return UserToAuthorToAuthoredAnswersQuery.query(this.viewer, this.id);
+  }
+
+  queryAuthorToAuthoredQuestionComments(): UserToAuthorToAuthoredQuestionCommentsQuery {
+    return UserToAuthorToAuthoredQuestionCommentsQuery.query(
+      this.viewer,
+      this.id,
+    );
   }
 
   queryAuthorToAuthoredQuestions(): UserToAuthorToAuthoredQuestionsQuery {
     return UserToAuthorToAuthoredQuestionsQuery.query(this.viewer, this.id);
   }
 
+  queryAuthoredAnswerComments(): UserToAuthoredAnswerCommentsQuery {
+    return UserToAuthoredAnswerCommentsQuery.query(this.viewer, this.id);
+  }
+
   queryAuthoredAnswers(): UserToAuthoredAnswersQuery {
     return UserToAuthoredAnswersQuery.query(this.viewer, this.id);
+  }
+
+  queryAuthoredQuestionComments(): UserToAuthoredQuestionCommentsQuery {
+    return UserToAuthoredQuestionCommentsQuery.query(this.viewer, this.id);
   }
 
   queryAuthoredQuestions(): UserToAuthoredQuestionsQuery {

@@ -8,7 +8,6 @@ import {
   BooleanType,
   StringType,
   UUIDType,
-  AssocEdgeGroup,
 } from "@lolopinto/ent/schema/";
 
 /// explicit schema
@@ -16,7 +15,7 @@ export default class Question extends BaseEntSchema implements Schema {
   fields: Field[] = [
     StringType({ name: "title" }),
     StringType({ name: "questionBody" }),
-    // BooleanType({ name: "answered", nullable: true}),
+    BooleanType({ name: "answered", nullable: false, defaultValueOnCreate: () => false}),
     UUIDType({
       name: "authorID",
       fieldEdge: { schema: "User", inverseEdge: "authoredQuestions" },
@@ -43,6 +42,10 @@ export default class Question extends BaseEntSchema implements Schema {
     {
       name: "answers",
       schemaName: "Answer",
+    },
+    {
+      name: "comments",
+      schemaName: "QuestionComment",
     },
   ];
 

@@ -3,41 +3,75 @@
 export enum NodeType {
   // Answer is the node type for the Answer object. Used to identify this node in edges and other places.
   Answer = "answer",
+  // AnswerComment is the node type for the AnswerComment object. Used to identify this node in edges and other places.
+  AnswerComment = "answerComment",
   // Question is the node type for the Question object. Used to identify this node in edges and other places.
   Question = "question",
+  // QuestionComment is the node type for the QuestionComment object. Used to identify this node in edges and other places.
+  QuestionComment = "questionComment",
   // User is the node type for the User object. Used to identify this node in edges and other places.
   User = "user",
 }
 
 export function getNodeTypeValues() {
-  return [NodeType.Answer, NodeType.Question, NodeType.User];
+  return [
+    NodeType.Answer,
+    NodeType.AnswerComment,
+    NodeType.Question,
+    NodeType.QuestionComment,
+    NodeType.User,
+  ];
 }
 
 export enum EdgeType {
+  // AnswerCommentToAuthors is the edgeType for the answerComment to authors edge.
+  AnswerCommentToAuthors = "fdba641e-4f7e-4c7a-a1d1-fca2a1ed68dc",
   // AnswerToAuthors is the edgeType for the answer to authors edge.
   AnswerToAuthors = "6226f374-ada1-4acb-a1d3-f0f3e1603ba6",
+  // AnswerToComments is the edgeType for the answer to comments edge.
+  AnswerToComments = "f69f8452-a1be-45e8-8c71-a1fcc6a0dbcd",
+  // QuestionCommentToAuthors is the edgeType for the questionComment to authors edge.
+  QuestionCommentToAuthors = "1daa71ae-916d-45d5-b86a-91de3dc33356",
   // QuestionToAnswers is the edgeType for the question to answers edge.
   QuestionToAnswers = "69eb1cb3-9fa7-437b-8474-21092a525de7",
   // QuestionToAuthors is the edgeType for the question to authors edge.
   QuestionToAuthors = "dbdae75e-1072-438e-8713-4f4284b289ad",
+  // QuestionToComments is the edgeType for the question to comments edge.
+  QuestionToComments = "1f939a84-c765-4168-a6d1-ac9deea9d34e",
+  // UserToAuthorToAuthoredAnswerComments is the edgeType for the user to authortoauthoredanswercomments edge.
+  UserToAuthorToAuthoredAnswerComments = "21319a5d-1678-4a97-8d9f-e8af198504b2",
   // UserToAuthorToAuthoredAnswers is the edgeType for the user to authortoauthoredanswers edge.
   UserToAuthorToAuthoredAnswers = "334a0a65-f4bf-4119-b1b8-7e60e86c5374",
+  // UserToAuthorToAuthoredQuestionComments is the edgeType for the user to authortoauthoredquestioncomments edge.
+  UserToAuthorToAuthoredQuestionComments = "1888c833-ad80-4f06-846b-96fab877b50b",
   // UserToAuthorToAuthoredQuestions is the edgeType for the user to authortoauthoredquestions edge.
   UserToAuthorToAuthoredQuestions = "f5f98bc4-94ed-4b3d-88b5-628992440185",
+  // UserToAuthoredAnswerComments is the edgeType for the user to authoredanswercomments edge.
+  UserToAuthoredAnswerComments = "2bd913d5-a2cb-485b-9563-4c2e447b99b2",
   // UserToAuthoredAnswers is the edgeType for the user to authoredanswers edge.
   UserToAuthoredAnswers = "b39d9e6f-2249-4c6c-b4b3-e8c14430b60e",
+  // UserToAuthoredQuestionComments is the edgeType for the user to authoredquestioncomments edge.
+  UserToAuthoredQuestionComments = "641dd0e0-ca29-44cb-8c78-21c6a9962609",
   // UserToAuthoredQuestions is the edgeType for the user to authoredquestions edge.
   UserToAuthoredQuestions = "eb398e63-df78-40d2-9e86-50a3a788c88f",
 }
 
 export function getEdgeTypeValues() {
   return [
+    EdgeType.AnswerCommentToAuthors,
     EdgeType.AnswerToAuthors,
+    EdgeType.AnswerToComments,
+    EdgeType.QuestionCommentToAuthors,
     EdgeType.QuestionToAnswers,
     EdgeType.QuestionToAuthors,
+    EdgeType.QuestionToComments,
+    EdgeType.UserToAuthorToAuthoredAnswerComments,
     EdgeType.UserToAuthorToAuthoredAnswers,
+    EdgeType.UserToAuthorToAuthoredQuestionComments,
     EdgeType.UserToAuthorToAuthoredQuestions,
+    EdgeType.UserToAuthoredAnswerComments,
     EdgeType.UserToAuthoredAnswers,
+    EdgeType.UserToAuthoredQuestionComments,
     EdgeType.UserToAuthoredQuestions,
   ];
 }

@@ -15,9 +15,10 @@ import {
   GraphQLNodeInterface,
   nodeIDEncoder,
 } from "@lolopinto/ent/graphql";
-import { Answer, AnswerToAuthorsQuery } from "src/ent/";
+import { Answer, AnswerToAuthorsQuery, AnswerToCommentsQuery } from "src/ent/";
 import {
   AnswerToAuthorsConnectionType,
+  AnswerToCommentsConnectionType,
   QuestionType,
   UserType,
 } from "src/graphql/resolvers/internal";
@@ -72,6 +73,35 @@ export const AnswerType = new GraphQLObjectType({
           answer.viewer,
           answer,
           (v, answer: Answer) => AnswerToAuthorsQuery.query(v, answer),
+          args,
+        );
+      },
+    },
+    comments: {
+      type: GraphQLNonNull(AnswerToCommentsConnectionType()),
+      args: {
+        first: {
+          description: "",
+          type: GraphQLInt,
+        },
+        after: {
+          description: "",
+          type: GraphQLString,
+        },
+        last: {
+          description: "",
+          type: GraphQLInt,
+        },
+        before: {
+          description: "",
+          type: GraphQLString,
+        },
+      },
+      resolve: (answer: Answer, args: {}, context: RequestContext) => {
+        return new GraphQLEdgeConnection(
+          answer.viewer,
+          answer,
+          (v, answer: Answer) => AnswerToCommentsQuery.query(v, answer),
           args,
         );
       },

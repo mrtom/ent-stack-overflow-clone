@@ -1,10 +1,9 @@
-type Answer implements Node {
+type AnswerComment implements Node {
+  answer: Answer
   author: User
-  question: Question
   id: ID!
   body: String!
-  acceptedAnswer: Boolean!
-  authors(first: Int, after: String, last: Int, before: String): AnswerToAuthorsConnection!
+  authors(first: Int, after: String, last: Int, before: String): AnswerCommentToAuthorsConnection!
 }
 
 """node interface"""
@@ -12,13 +11,33 @@ interface Node {
   id: ID!
 }
 
+type Answer implements Node {
+  author: User
+  question: Question
+  id: ID!
+  body: String!
+  acceptedAnswer: Boolean!
+  authors(first: Int, after: String, last: Int, before: String): AnswerToAuthorsConnection!
+  comments(first: Int, after: String, last: Int, before: String): AnswerToCommentsConnection!
+}
+
+type QuestionComment implements Node {
+  author: User
+  question: Question
+  id: ID!
+  body: String!
+  authors(first: Int, after: String, last: Int, before: String): QuestionCommentToAuthorsConnection!
+}
+
 type Question implements Node {
   author: User
   id: ID!
   title: String!
   questionBody: String!
+  answered: Boolean!
   answers(first: Int, after: String, last: Int, before: String): QuestionToAnswersConnection!
   authors(first: Int, after: String, last: Int, before: String): QuestionToAuthorsConnection!
+  comments(first: Int, after: String, last: Int, before: String): QuestionToCommentsConnection!
 }
 
 type User implements Node {
@@ -26,15 +45,19 @@ type User implements Node {
   firstName: String!
   lastName: String!
   emailAddress: String!
+  authorToAuthoredAnswerComments(first: Int, after: String, last: Int, before: String): UserToAuthorToAuthoredAnswerCommentsConnection!
   authorToAuthoredAnswers(first: Int, after: String, last: Int, before: String): UserToAuthorToAuthoredAnswersConnection!
+  authorToAuthoredQuestionComments(first: Int, after: String, last: Int, before: String): UserToAuthorToAuthoredQuestionCommentsConnection!
   authorToAuthoredQuestions(first: Int, after: String, last: Int, before: String): UserToAuthorToAuthoredQuestionsConnection!
+  authoredAnswerComments(first: Int, after: String, last: Int, before: String): UserToAuthoredAnswerCommentsConnection!
   authoredAnswers(first: Int, after: String, last: Int, before: String): UserToAuthoredAnswersConnection!
+  authoredQuestionComments(first: Int, after: String, last: Int, before: String): UserToAuthoredQuestionCommentsConnection!
   authoredQuestions(first: Int, after: String, last: Int, before: String): UserToAuthoredQuestionsConnection!
   howLong: Int!
 }
 
-type AnswerToAuthorsConnection implements Connection {
-  edges: [AnswerToAuthorsEdge!]!
+type AnswerCommentToAuthorsConnection implements Connection {
+  edges: [AnswerCommentToAuthorsEdge!]!
   nodes: [User!]!
   pageInfo: PageInfo!
   rawCount: Int!
@@ -60,7 +83,43 @@ type PageInfo {
   endCursor: String!
 }
 
+type AnswerCommentToAuthorsEdge implements Edge {
+  node: User!
+  cursor: String!
+}
+
+type AnswerToAuthorsConnection implements Connection {
+  edges: [AnswerToAuthorsEdge!]!
+  nodes: [User!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
 type AnswerToAuthorsEdge implements Edge {
+  node: User!
+  cursor: String!
+}
+
+type AnswerToCommentsConnection implements Connection {
+  edges: [AnswerToCommentsEdge!]!
+  nodes: [AnswerComment!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type AnswerToCommentsEdge implements Edge {
+  node: AnswerComment!
+  cursor: String!
+}
+
+type QuestionCommentToAuthorsConnection implements Connection {
+  edges: [QuestionCommentToAuthorsEdge!]!
+  nodes: [User!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type QuestionCommentToAuthorsEdge implements Edge {
   node: User!
   cursor: String!
 }
@@ -89,6 +148,30 @@ type QuestionToAuthorsEdge implements Edge {
   cursor: String!
 }
 
+type QuestionToCommentsConnection implements Connection {
+  edges: [QuestionToCommentsEdge!]!
+  nodes: [QuestionComment!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type QuestionToCommentsEdge implements Edge {
+  node: QuestionComment!
+  cursor: String!
+}
+
+type UserToAuthorToAuthoredAnswerCommentsConnection implements Connection {
+  edges: [UserToAuthorToAuthoredAnswerCommentsEdge!]!
+  nodes: [AnswerComment!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type UserToAuthorToAuthoredAnswerCommentsEdge implements Edge {
+  node: AnswerComment!
+  cursor: String!
+}
+
 type UserToAuthorToAuthoredAnswersConnection implements Connection {
   edges: [UserToAuthorToAuthoredAnswersEdge!]!
   nodes: [Answer!]!
@@ -98,6 +181,18 @@ type UserToAuthorToAuthoredAnswersConnection implements Connection {
 
 type UserToAuthorToAuthoredAnswersEdge implements Edge {
   node: Answer!
+  cursor: String!
+}
+
+type UserToAuthorToAuthoredQuestionCommentsConnection implements Connection {
+  edges: [UserToAuthorToAuthoredQuestionCommentsEdge!]!
+  nodes: [QuestionComment!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type UserToAuthorToAuthoredQuestionCommentsEdge implements Edge {
+  node: QuestionComment!
   cursor: String!
 }
 
@@ -113,6 +208,18 @@ type UserToAuthorToAuthoredQuestionsEdge implements Edge {
   cursor: String!
 }
 
+type UserToAuthoredAnswerCommentsConnection implements Connection {
+  edges: [UserToAuthoredAnswerCommentsEdge!]!
+  nodes: [AnswerComment!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type UserToAuthoredAnswerCommentsEdge implements Edge {
+  node: AnswerComment!
+  cursor: String!
+}
+
 type UserToAuthoredAnswersConnection implements Connection {
   edges: [UserToAuthoredAnswersEdge!]!
   nodes: [Answer!]!
@@ -122,6 +229,18 @@ type UserToAuthoredAnswersConnection implements Connection {
 
 type UserToAuthoredAnswersEdge implements Edge {
   node: Answer!
+  cursor: String!
+}
+
+type UserToAuthoredQuestionCommentsConnection implements Connection {
+  edges: [UserToAuthoredQuestionCommentsEdge!]!
+  nodes: [QuestionComment!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type UserToAuthoredQuestionCommentsEdge implements Edge {
+  node: QuestionComment!
   cursor: String!
 }
 
@@ -149,6 +268,53 @@ input AnswerAddAuthorInput {
 
 type AnswerAddAuthorPayload {
   answer: Answer!
+}
+
+input AnswerCommentAddAuthorInput {
+  answerCommentID: ID!
+  authorID: ID!
+}
+
+type AnswerCommentAddAuthorPayload {
+  answerComment: AnswerComment!
+}
+
+input AnswerCommentCreateInput {
+  body: String!
+  answerID: ID!
+  authorID: ID!
+}
+
+type AnswerCommentCreatePayload {
+  answerComment: AnswerComment!
+}
+
+input AnswerCommentDeleteInput {
+  answerCommentID: ID!
+}
+
+type AnswerCommentDeletePayload {
+  deletedAnswerCommentID: ID
+}
+
+input AnswerCommentEditInput {
+  answerCommentID: ID!
+  body: String
+  answerID: ID
+  authorID: ID
+}
+
+type AnswerCommentEditPayload {
+  answerComment: AnswerComment!
+}
+
+input AnswerCommentRemoveAuthorInput {
+  answerCommentID: ID!
+  authorID: ID!
+}
+
+type AnswerCommentRemoveAuthorPayload {
+  answerComment: AnswerComment!
 }
 
 input AnswerCreateInput {
@@ -200,9 +366,57 @@ type QuestionAddAuthorPayload {
   question: Question!
 }
 
+input QuestionCommentAddAuthorInput {
+  questionCommentID: ID!
+  authorID: ID!
+}
+
+type QuestionCommentAddAuthorPayload {
+  questionComment: QuestionComment!
+}
+
+input QuestionCommentCreateInput {
+  body: String!
+  questionID: ID!
+  authorID: ID!
+}
+
+type QuestionCommentCreatePayload {
+  questionComment: QuestionComment!
+}
+
+input QuestionCommentDeleteInput {
+  questionCommentID: ID!
+}
+
+type QuestionCommentDeletePayload {
+  deletedQuestionCommentID: ID
+}
+
+input QuestionCommentEditInput {
+  questionCommentID: ID!
+  body: String
+  questionID: ID
+  authorID: ID
+}
+
+type QuestionCommentEditPayload {
+  questionComment: QuestionComment!
+}
+
+input QuestionCommentRemoveAuthorInput {
+  questionCommentID: ID!
+  authorID: ID!
+}
+
+type QuestionCommentRemoveAuthorPayload {
+  questionComment: QuestionComment!
+}
+
 input QuestionCreateInput {
   title: String!
   questionBody: String!
+  answered: Boolean!
   authorID: ID!
 }
 
@@ -222,6 +436,7 @@ input QuestionEditInput {
   questionID: ID!
   title: String
   questionBody: String
+  answered: Boolean
   authorID: ID
 }
 
@@ -259,11 +474,21 @@ type Query {
 
 type Mutation {
   answerAddAuthor(input: AnswerAddAuthorInput!): AnswerAddAuthorPayload!
+  answerCommentAddAuthor(input: AnswerCommentAddAuthorInput!): AnswerCommentAddAuthorPayload!
+  answerCommentCreate(input: AnswerCommentCreateInput!): AnswerCommentCreatePayload!
+  answerCommentDelete(input: AnswerCommentDeleteInput!): AnswerCommentDeletePayload!
+  answerCommentEdit(input: AnswerCommentEditInput!): AnswerCommentEditPayload!
+  answerCommentRemoveAuthor(input: AnswerCommentRemoveAuthorInput!): AnswerCommentRemoveAuthorPayload!
   answerCreate(input: AnswerCreateInput!): AnswerCreatePayload!
   answerDelete(input: AnswerDeleteInput!): AnswerDeletePayload!
   answerEdit(input: AnswerEditInput!): AnswerEditPayload!
   answerRemoveAuthor(input: AnswerRemoveAuthorInput!): AnswerRemoveAuthorPayload!
   questionAddAuthor(input: QuestionAddAuthorInput!): QuestionAddAuthorPayload!
+  questionCommentAddAuthor(input: QuestionCommentAddAuthorInput!): QuestionCommentAddAuthorPayload!
+  questionCommentCreate(input: QuestionCommentCreateInput!): QuestionCommentCreatePayload!
+  questionCommentDelete(input: QuestionCommentDeleteInput!): QuestionCommentDeletePayload!
+  questionCommentEdit(input: QuestionCommentEditInput!): QuestionCommentEditPayload!
+  questionCommentRemoveAuthor(input: QuestionCommentRemoveAuthorInput!): QuestionCommentRemoveAuthorPayload!
   questionCreate(input: QuestionCreateInput!): QuestionCreatePayload!
   questionDelete(input: QuestionDeleteInput!): QuestionDeletePayload!
   questionEdit(input: QuestionEditInput!): QuestionEditPayload!

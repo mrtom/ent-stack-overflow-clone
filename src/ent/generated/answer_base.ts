@@ -17,6 +17,7 @@ import {
 import { Field, getFields } from "@lolopinto/ent/schema";
 import {
   AnswerToAuthorsQuery,
+  AnswerToCommentsQuery,
   EdgeType,
   NodeType,
   Question,
@@ -128,6 +129,10 @@ export class AnswerBase {
 
   queryAuthors(): AnswerToAuthorsQuery {
     return AnswerToAuthorsQuery.query(this.viewer, this.id);
+  }
+
+  queryComments(): AnswerToCommentsQuery {
+    return AnswerToCommentsQuery.query(this.viewer, this.id);
   }
 
   async loadAuthor(): Promise<User | null> {

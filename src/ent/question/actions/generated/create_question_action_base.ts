@@ -21,6 +21,7 @@ import {
 export interface QuestionCreateInput {
   title: string;
   questionBody: string;
+  answered: boolean;
   authorID: ID | Builder<User>;
 }
 

@@ -44,6 +44,10 @@ export default class Answer extends BaseEntSchema implements Schema {
         },
       ],
     },
+    {
+      name: "comments",
+      schemaName: "AnswerComment",
+    },
   ];
 
   // create, edit, delete
