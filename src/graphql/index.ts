@@ -2,6 +2,7 @@ import express from "express";
 import { graphqlHTTP } from "express-graphql";
 import { IncomingMessage, ServerResponse } from "http";
 import passport from "passport";
+import cors, { CorsOptions, CorsOptionsDelegate } from "cors";
 import { DB } from "@lolopinto/ent";
 import { buildContext, registerAuthHandler } from "@lolopinto/ent/auth";
 import {
@@ -25,8 +26,26 @@ registerAuthHandler(
   }),
 );
 
+const delegagte: CorsOptionsDelegate = function (req, callback) {
+  const corsOptions: CorsOptions = {
+    origin: req.headers.origin || "*",
+    methods: ["POST", "OPTIONS", "GET", "DELETE", "PATCH"],
+    allowedHeaders: [
+      "Content-Type",
+      "Content-Length",
+      "Authorization",
+      "Accept",
+      "Accept-Encoding",
+      "Accept-Language",
+    ],
+    maxAge: -1,
+  };
+  callback(null, corsOptions);
+};
+
 app.use(
   "/graphql",
+  cors(delegagte),
   graphqlHTTP((request: IncomingMessage, response: ServerResponse) => {
     let doWork = async () => {
       let context = await buildContext(request, response);
