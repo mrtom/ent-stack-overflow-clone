@@ -610,7 +610,7 @@ type Mutation {
 
 type UserAuthJWTPayload {
   token: String!
-  viewerID: ID!
+  viewer: Viewer!
 }
 
 input UserAuthJWTInput {

@@ -13,6 +13,7 @@ import { ID, RequestContext } from "@lolopinto/ent"
 import { useAndVerifyAuthJWT } from "@lolopinto/ent-passport";
 
 import { User } from "src/ent/user";
+import { ViewerType } from "src/graphql/resolvers/viewer";
 
 @gqlInputObjectType()
 class UserAuthJWTInput {
@@ -22,13 +23,18 @@ class UserAuthJWTInput {
   password: string;
 }
 
+// TODO: In the RSVP example project these are generated automatically. Figure out how!
+// TODO: Ideally we'd justs return the viewer rather than the viewer ID and the user separately.
+// I tried to do this and couldn't get codegen to like it, I think because Viewer isn't an Ent and
+// so the type system was complaining. Probably fixed in the same waas as the auto generated viewer
+// stuff in the comment above
 @gqlObjectType()
-class UserAuthJWTPayload {
+export class UserAuthJWTPayload {
   @gqlField()
   token: string;
 
-  @gqlField({ type: GraphQLID })
-  viewerID: ID;
+  @gqlField({ type: ViewerType })
+  viewer: ViewerType;
 }
 
  export class AuthResolver {
@@ -64,12 +70,15 @@ class UserAuthJWTPayload {
      if (!viewer) {
        throw new Error("not the right credentials");
      }
-     const user = await viewer?.viewer();
-     if (!user) {
+     const userEnt = await viewer?.viewer();
+     if (!userEnt) {
        throw new Error("not the right credentials");
      }
+
+     const user = await User.loadX(viewer, userEnt.id);
+
      return {
-       viewerID: encodeGQLID(user),
+       viewer: new ViewerType(viewer),
        token: token,
      };
    }

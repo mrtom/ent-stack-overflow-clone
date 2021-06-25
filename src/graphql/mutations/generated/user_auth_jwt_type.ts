@@ -3,7 +3,6 @@
 import {
   GraphQLFieldConfig,
   GraphQLFieldConfigMap,
-  GraphQLID,
   GraphQLInputFieldConfigMap,
   GraphQLInputObjectType,
   GraphQLNonNull,
@@ -11,17 +10,13 @@ import {
   GraphQLResolveInfo,
   GraphQLString,
 } from "graphql";
-import { ID, RequestContext } from "@lolopinto/ent";
-import { AuthResolver } from "../auth";
+import { RequestContext } from "@lolopinto/ent";
+import { ViewerTypeType } from "src/graphql/resolvers/internal";
+import { AuthResolver, UserAuthJWTPayload } from "../auth";
 
 interface UserAuthJWTInput {
   emailAddress: string;
   password: string;
-}
-
-interface UserAuthJWTPayload {
-  token: string;
-  viewerID: ID;
 }
 
 export const UserAuthJWTInputType = new GraphQLInputObjectType({
@@ -42,8 +37,8 @@ export const UserAuthJWTPayloadType = new GraphQLObjectType({
     token: {
       type: GraphQLNonNull(GraphQLString),
     },
-    viewerID: {
-      type: GraphQLNonNull(GraphQLID),
+    viewer: {
+      type: GraphQLNonNull(ViewerTypeType),
     },
   }),
 });
