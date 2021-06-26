@@ -19,4 +19,16 @@ export class UserResolver {
   ) {
     return await User.load(context.getViewer(), userID);
   }
+
+  @gqlQuery({ name: "recentQuestions", type: "[Question]"})
+  async user(
+    @gqlContextType() context: RequestContext,
+  ) {
+    const unansweredQuestions = await loadEntsFromClause(
+      context.getViewer(),
+      query.Eq("answered", false),
+      Question.loaderOptions(),
+    );
+    return unansweredQuestions.values().next().value;
+  }
 }
