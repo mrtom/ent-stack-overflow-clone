@@ -26,7 +26,6 @@ export * from "src/graphql/resolvers/generated/user/user_to_authored_question_co
 export * from "src/graphql/resolvers/generated/user/user_to_authored_questions_connection_type";
 export * from "src/graphql/resolvers/generated/user/user_to_question_private_notes_connection_type";
 export * from "src/graphql/resolvers/generated/user/user_to_user_question_private_notes_connection_type";
-export * from "src/graphql/resolvers/generated/recent_questions_query_type";
 export * from "src/graphql/resolvers/generated/user_by_email_query_type";
 export * from "src/graphql/resolvers/generated/user_query_type";
 export * from "src/graphql/resolvers/generated/viewer_query_type";

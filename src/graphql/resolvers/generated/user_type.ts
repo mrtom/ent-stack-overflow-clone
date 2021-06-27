@@ -4,6 +4,7 @@ import {
   GraphQLFieldConfigMap,
   GraphQLID,
   GraphQLInt,
+  GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
@@ -28,6 +29,7 @@ import {
   UserToUserQuestionPrivateNotesQuery,
 } from "src/ent/";
 import {
+  QuestionType,
   UserToAuthorToAuthoredAnswerCommentsConnectionType,
   UserToAuthorToAuthoredAnswersConnectionType,
   UserToAuthorToAuthoredQuestionCommentsConnectionType,
@@ -357,6 +359,12 @@ export const UserType = new GraphQLObjectType({
       type: GraphQLNonNull(GraphQLInt),
       resolve: (user: User, args: {}, context: RequestContext) => {
         return user.howLong();
+      },
+    },
+    questionsFeed: {
+      type: GraphQLNonNull(GraphQLList(GraphQLNonNull(QuestionType))),
+      resolve: async (user: User, args: {}, context: RequestContext) => {
+        return user.questionsFeed(context);
       },
     },
   }),

@@ -65,6 +65,7 @@ type User implements Node {
   questionPrivateNotes(first: Int, after: String, last: Int, before: String): UserToQuestionPrivateNotesConnection!
   userQuestionPrivateNotes(first: Int, after: String, last: Int, before: String): UserToUserQuestionPrivateNotesConnection!
   howLong: Int!
+  questionsFeed: [Question!]!
 }
 
 type AnswerCommentToAuthorsConnection implements Connection {
@@ -572,7 +573,6 @@ type UserCreatePayload {
 
 type Query {
   node(id: ID!): Node
-  recentQuestions: Question!
   user(userID: ID!): User
   userByEmail(emailAddress: String!): User
   viewer: Viewer!
