@@ -6,7 +6,7 @@ import {
   AssocEdgeQueryBase,
   EdgeQuerySource,
   Viewer,
-} from "@lolopinto/ent";
+} from "@snowtop/ent";
 import {
   AnswerComment,
   AnswerCommentToAuthorsEdge,

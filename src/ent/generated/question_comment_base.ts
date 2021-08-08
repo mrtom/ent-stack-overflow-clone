@@ -4,17 +4,21 @@ import {
   AllowIfViewerPrivacyPolicy,
   AssocEdge,
   Context,
+  CustomQuery,
   Data,
   ID,
   LoadEntOptions,
   ObjectLoaderFactory,
   PrivacyPolicy,
   Viewer,
+  convertDate,
+  loadCustomData,
+  loadCustomEnts,
   loadEnt,
   loadEntX,
   loadEnts,
-} from "@lolopinto/ent";
-import { Field, getFields } from "@lolopinto/ent/schema";
+} from "@snowtop/ent";
+import { Field, getFields } from "@snowtop/ent/schema";
 import {
   EdgeType,
   NodeType,
@@ -45,8 +49,8 @@ export class QuestionCommentBase {
 
   constructor(public viewer: Viewer, data: Data) {
     this.id = data.id;
-    this.createdAt = data.created_at;
-    this.updatedAt = data.updated_at;
+    this.createdAt = convertDate(data.created_at);
+    this.updatedAt = convertDate(data.updated_at);
     this.body = data.body;
     this.questionID = data.question_id;
     this.authorID = data.user_id;
@@ -80,6 +84,30 @@ export class QuestionCommentBase {
       viewer,
       QuestionCommentBase.loaderOptions.apply(this),
       ...ids,
+    );
+  }
+
+  static async loadCustom<T extends QuestionCommentBase>(
+    this: new (viewer: Viewer, data: Data) => T,
+    viewer: Viewer,
+    query: CustomQuery,
+  ): Promise<T[]> {
+    return loadCustomEnts(
+      viewer,
+      QuestionCommentBase.loaderOptions.apply(this),
+      query,
+    );
+  }
+
+  static async loadCustomData<T extends QuestionCommentBase>(
+    this: new (viewer: Viewer, data: Data) => T,
+    query: CustomQuery,
+    context?: Context,
+  ): Promise<Data[]> {
+    return loadCustomData(
+      QuestionCommentBase.loaderOptions.apply(this),
+      query,
+      context,
     );
   }
 

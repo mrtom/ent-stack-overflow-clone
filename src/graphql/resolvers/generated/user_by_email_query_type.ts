@@ -6,7 +6,7 @@ import {
   GraphQLResolveInfo,
   GraphQLString,
 } from "graphql";
-import { RequestContext } from "@lolopinto/ent";
+import { RequestContext } from "@snowtop/ent";
 import { UserType } from "src/graphql/resolvers/internal";
 import { UserResolver } from "../user";
 
@@ -23,11 +23,11 @@ export const UserByEmailQueryType: GraphQLFieldConfig<
   },
   resolve: async (
     _source,
-    { emailAddress },
+    args: { emailAddress },
     context: RequestContext,
     _info: GraphQLResolveInfo,
   ) => {
     const r = new UserResolver();
-    return r.userByEmail(context, emailAddress);
+    return r.userByEmail(context, args.emailAddress);
   },
 };

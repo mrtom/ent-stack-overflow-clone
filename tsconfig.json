@@ -17,6 +17,7 @@
     "paths": {
       // TODO
       "ent/*": [
+        // TODO: Should this be @@snowtop?
         "@lolopinto/ent/*",
       ],
       "src/*": [

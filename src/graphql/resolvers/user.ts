@@ -1,6 +1,6 @@
 import { GraphQLID } from "graphql";
-import { ID, RequestContext } from "@lolopinto/ent";
-import { gqlArg, gqlContextType, gqlQuery } from "@lolopinto/ent/graphql";
+import { ID, RequestContext } from "@snowtop/ent";
+import { gqlArg, gqlContextType, gqlQuery } from "@snowtop/ent/graphql";
 import { User } from "src/ent";
 
 export class UserResolver {

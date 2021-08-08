@@ -1,6 +1,5 @@
 dialect: postgres
 database: ent-starter
-  # user: tomelliott
 user: tom
 password: ''
 host: localhost

@@ -4,17 +4,22 @@ import {
   AllowIfViewerPrivacyPolicy,
   AssocEdge,
   Context,
+  CustomQuery,
   Data,
   ID,
   LoadEntOptions,
   ObjectLoaderFactory,
   PrivacyPolicy,
   Viewer,
+  convertBool,
+  convertDate,
+  loadCustomData,
+  loadCustomEnts,
   loadEnt,
   loadEntX,
   loadEnts,
-} from "@lolopinto/ent";
-import { Field, getFields } from "@lolopinto/ent/schema";
+} from "@snowtop/ent";
+import { Field, getFields } from "@snowtop/ent/schema";
 import {
   EdgeType,
   NodeType,
@@ -49,11 +54,11 @@ export class QuestionBase {
 
   constructor(public viewer: Viewer, data: Data) {
     this.id = data.id;
-    this.createdAt = data.created_at;
-    this.updatedAt = data.updated_at;
+    this.createdAt = convertDate(data.created_at);
+    this.updatedAt = convertDate(data.updated_at);
     this.title = data.title;
     this.questionBody = data.question_body;
-    this.answered = data.answered;
+    this.answered = convertBool(data.answered);
     this.authorID = data.user_id;
   }
 
@@ -82,6 +87,30 @@ export class QuestionBase {
     ...ids: ID[]
   ): Promise<T[]> {
     return loadEnts(viewer, QuestionBase.loaderOptions.apply(this), ...ids);
+  }
+
+  static async loadCustom<T extends QuestionBase>(
+    this: new (viewer: Viewer, data: Data) => T,
+    viewer: Viewer,
+    query: CustomQuery,
+  ): Promise<T[]> {
+    return loadCustomEnts(
+      viewer,
+      QuestionBase.loaderOptions.apply(this),
+      query,
+    );
+  }
+
+  static async loadCustomData<T extends QuestionBase>(
+    this: new (viewer: Viewer, data: Data) => T,
+    query: CustomQuery,
+    context?: Context,
+  ): Promise<Data[]> {
+    return loadCustomData(
+      QuestionBase.loaderOptions.apply(this),
+      query,
+      context,
+    );
   }
 
   static async loadRawData<T extends QuestionBase>(

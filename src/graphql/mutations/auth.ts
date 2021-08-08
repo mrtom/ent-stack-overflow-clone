@@ -8,9 +8,9 @@ import {
   gqlMutation,
   gqlObjectType,
   encodeGQLID,
-} from "@lolopinto/ent/graphql"
-import { ID, RequestContext } from "@lolopinto/ent"
-import { useAndVerifyAuthJWT } from "@lolopinto/ent-passport";
+} from "@snowtop/ent/graphql"
+import { ID, RequestContext } from "@snowtop/ent"
+import { useAndVerifyAuthJWT } from "@snowtop/ent-passport";
 
 import { User } from "src/ent/user";
 import { ViewerType } from "src/graphql/resolvers/viewer";

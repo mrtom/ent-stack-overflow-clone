@@ -1,5 +1,5 @@
-import { Ent } from "@lolopinto/ent";
-import { Builder } from "@lolopinto/ent/action";
+import { Ent } from "@snowtop/ent";
+import { Builder } from "@snowtop/ent/action";
 
 const FakeLogger = {
   log: (msg: String) => console.log(msg),

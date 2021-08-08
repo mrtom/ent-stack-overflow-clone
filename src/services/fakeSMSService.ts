@@ -1,4 +1,4 @@
-import type { ID } from "@lolopinto/ent";
+import type { ID } from "@snowtop/ent";
 
 class FakeSMSService {
   sendSMS(toUserID: ID, msg: String) {

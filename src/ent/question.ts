@@ -1,11 +1,11 @@
-import { loadEntsFromClause } from "@lolopinto/ent/core/ent";
+import { loadEntsFromClause } from "@snowtop/ent/core/ent";
 import { QuestionBase } from "src/ent/internal";
 
 import {
   PrivacyPolicy,
   AllowIfViewerRule,
   AlwaysAllowRule,
-} from "@lolopinto/ent"
+} from "@snowtop/ent"
 
 import { AllowIfOmniRule } from "./../privacy/omni";
 

@@ -12,8 +12,8 @@ import {
   GraphQLResolveInfo,
   GraphQLString,
 } from "graphql";
-import { RequestContext } from "@lolopinto/ent";
-import { mustDecodeIDFromGQLID } from "@lolopinto/ent/graphql";
+import { RequestContext } from "@snowtop/ent";
+import { mustDecodeIDFromGQLID } from "@snowtop/ent/graphql";
 import { Answer } from "src/ent/";
 import EditAnswerAction, {
   AnswerEditInput,

@@ -1,4 +1,4 @@
-import { Data, IDViewer, AlwaysAllowPrivacyPolicy } from "@lolopinto/ent";
+import { Data, IDViewer, AlwaysAllowPrivacyPolicy } from "@snowtop/ent";
 import {
   CreateUserActionBase,
   UserCreateInput,

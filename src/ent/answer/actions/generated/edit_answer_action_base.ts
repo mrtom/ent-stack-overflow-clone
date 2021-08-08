@@ -5,13 +5,13 @@ import {
   ID,
   PrivacyPolicy,
   Viewer,
-} from "@lolopinto/ent";
+} from "@snowtop/ent";
 import {
   Action,
   Builder,
   Changeset,
   WriteOperation,
-} from "@lolopinto/ent/action";
+} from "@snowtop/ent/action";
 import { Answer, Question, User } from "src/ent/";
 import {
   AnswerBuilder,

@@ -5,8 +5,8 @@ import {
   ID,
   PrivacyPolicy,
   Viewer,
-} from "@lolopinto/ent";
-import { Action, Changeset, WriteOperation } from "@lolopinto/ent/action";
+} from "@snowtop/ent";
+import { Action, Changeset, WriteOperation } from "@snowtop/ent/action";
 import { AnswerComment } from "src/ent/";
 import {
   AnswerCommentBuilder,

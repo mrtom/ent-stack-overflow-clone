@@ -7,7 +7,7 @@ import {
   ActionOperation,
   StringType,
   UUIDType,
-} from "@lolopinto/ent/schema/";
+} from "@snowtop/ent/schema/";
 
 /// explicit schema
 export default class QuestionComment extends BaseEntSchema implements Schema {

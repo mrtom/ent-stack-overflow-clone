@@ -1,4 +1,4 @@
-import { AssocEdge } from "@lolopinto/ent";
+import { AssocEdge } from "@snowtop/ent";
 import { UserToAuthorToAuthoredQuestionCommentsQueryBase } from "src/ent/internal";
 
 export class UserToAuthorToAuthoredQuestionCommentsEdge extends AssocEdge {}

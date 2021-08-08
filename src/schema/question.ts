@@ -8,7 +8,7 @@ import {
   BooleanType,
   StringType,
   UUIDType,
-} from "@lolopinto/ent/schema/";
+} from "@snowtop/ent/schema/";
 
 /// explicit schema
 export default class Question extends BaseEntSchema implements Schema {

@@ -3,11 +3,11 @@ import { graphqlHTTP } from "express-graphql";
 import { IncomingMessage, ServerResponse } from "http";
 import passport from "passport";
 import cors, { CorsOptions, CorsOptionsDelegate } from "cors";
-import { DB } from "@lolopinto/ent";
-import { buildContext, registerAuthHandler } from "@lolopinto/ent/auth";
+import { DB } from "@snowtop/ent";
+import { buildContext, registerAuthHandler } from "@snowtop/ent/auth";
 import {
   PassportStrategyHandler,
-} from "@lolopinto/ent-passport";
+} from "@snowtop/ent-passport";
 
 import { User } from "src/ent";
 import schema from "./schema";

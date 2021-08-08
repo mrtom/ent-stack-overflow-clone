@@ -4,17 +4,21 @@ import {
   AllowIfViewerPrivacyPolicy,
   AssocEdge,
   Context,
+  CustomQuery,
   Data,
   ID,
   LoadEntOptions,
   ObjectLoaderFactory,
   PrivacyPolicy,
   Viewer,
+  convertDate,
+  loadCustomData,
+  loadCustomEnts,
   loadEnt,
   loadEntX,
   loadEnts,
-} from "@lolopinto/ent";
-import { Field, getFields } from "@lolopinto/ent/schema";
+} from "@snowtop/ent";
+import { Field, getFields } from "@snowtop/ent/schema";
 import {
   Answer,
   AnswerCommentToAuthorsQuery,
@@ -45,8 +49,8 @@ export class AnswerCommentBase {
 
   constructor(public viewer: Viewer, data: Data) {
     this.id = data.id;
-    this.createdAt = data.created_at;
-    this.updatedAt = data.updated_at;
+    this.createdAt = convertDate(data.created_at);
+    this.updatedAt = convertDate(data.updated_at);
     this.body = data.body;
     this.answerID = data.answer_id;
     this.authorID = data.user_id;
@@ -80,6 +84,30 @@ export class AnswerCommentBase {
       viewer,
       AnswerCommentBase.loaderOptions.apply(this),
       ...ids,
+    );
+  }
+
+  static async loadCustom<T extends AnswerCommentBase>(
+    this: new (viewer: Viewer, data: Data) => T,
+    viewer: Viewer,
+    query: CustomQuery,
+  ): Promise<T[]> {
+    return loadCustomEnts(
+      viewer,
+      AnswerCommentBase.loaderOptions.apply(this),
+      query,
+    );
+  }
+
+  static async loadCustomData<T extends AnswerCommentBase>(
+    this: new (viewer: Viewer, data: Data) => T,
+    query: CustomQuery,
+    context?: Context,
+  ): Promise<Data[]> {
+    return loadCustomData(
+      AnswerCommentBase.loaderOptions.apply(this),
+      query,
+      context,
     );
   }
 

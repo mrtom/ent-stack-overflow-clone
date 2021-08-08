@@ -4,13 +4,13 @@ import {
   GraphQLNonNull,
   GraphQLResolveInfo,
 } from "graphql";
-import { RequestContext } from "@lolopinto/ent";
+import { RequestContext } from "@snowtop/ent";
 import {
   EntNodeResolver,
   GraphQLNodeInterface,
   registerResolver,
   resolveID,
-} from "@lolopinto/ent/graphql";
+} from "@snowtop/ent/graphql";
 import { loadEntByType } from "src/ent/loadAny";
 
 interface NodeQueryArgs {

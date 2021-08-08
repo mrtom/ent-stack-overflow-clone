@@ -10,7 +10,7 @@ import {
   GraphQLResolveInfo,
   GraphQLString,
 } from "graphql";
-import { RequestContext } from "@lolopinto/ent";
+import { RequestContext } from "@snowtop/ent";
 import { ViewerTypeType } from "src/graphql/resolvers/internal";
 import { AuthResolver, UserAuthJWTPayload } from "../auth";
 

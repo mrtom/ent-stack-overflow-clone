@@ -4,7 +4,7 @@ import {
   PrivacyPolicy,
   AllowIfViewerRule,
   AlwaysAllowRule,
-} from "@lolopinto/ent"
+} from "@snowtop/ent"
 
 import { AllowIfOmniRule } from "./../privacy/omni";
 

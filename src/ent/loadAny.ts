@@ -7,7 +7,7 @@ import {
   Viewer,
   loadEnt,
   loadEntX,
-} from "@lolopinto/ent";
+} from "@snowtop/ent";
 import {
   Answer,
   AnswerComment,

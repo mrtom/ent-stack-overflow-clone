@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "compile": "rm -rf dist && ./node_modules/.bin/ent-custom-compiler",
-    "start": "docker-compose -f docker-compose.dev.yml up --build",
+    "start": "docker-compose -f docker-compose.dev.yml up",
     "start-fast": "npm run compile && node dist/graphql/index.js",
     "codegen": "docker-compose -f docker-compose.dev.yml run --rm app tsent codegen",
     "rebuild-image": "docker-compose -f docker-compose.dev.yml build",
@@ -27,20 +27,22 @@
   },
   "homepage": "https://github.com/lolopinto/ent-starter#readme",
   "dependencies": {
-    "@lolopinto/ent": "0.0.95",
-    "@lolopinto/ent-email": "0.0.3",
-    "@lolopinto/ent-passport": "0.0.4",
-    "@lolopinto/ent-password": "0.0.4",
+    "@snowtop/ent": "^0.0.4",
+    "@snowtop/ent-email": "^0.0.1",
+    "@snowtop/ent-passport": "0.0.1",
+    "@snowtop/ent-password": "^0.0.1",
+    "@types/express": "^4.17.9",
+    "better-sqlite3": "^7.4.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
     "graphql": "^15.4.0"
   },
   "devDependencies": {
-    "@lolopinto/ent-graphql-tests": "0.0.14",
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.10",
     "@types/express": "^4.17.1",
-    "@types/jest": "^26.0.20"
+    "@types/jest": "^26.0.20",
+    "tsconfig-paths": "^3.10.1"
   }
 }

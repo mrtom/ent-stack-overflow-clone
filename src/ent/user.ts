@@ -1,7 +1,7 @@
 import { Interval } from "luxon";
 import { GraphQLInt } from "graphql"
 import * as bcrypt from "bcryptjs";
-import { gqlField, gqlContextType } from "@lolopinto/ent/graphql";
+import { gqlField, gqlContextType } from "@snowtop/ent/graphql";
 
 import { UserBase } from "src/ent/internal";
 import {
@@ -13,8 +13,8 @@ import {
   PrivacyPolicy,
   RequestContext,
   Viewer
-} from "@lolopinto/ent"
-import { loadEntsFromClause } from "@lolopinto/ent/core/ent";
+} from "@snowtop/ent"
+import { loadEntsFromClause } from "@snowtop/ent/core/ent";
 
 import { Question } from "src/ent";
 import { AllowIfOmniRule } from "src/privacy/omni";

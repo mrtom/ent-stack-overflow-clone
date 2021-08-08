@@ -106,6 +106,10 @@ import {
   UserCreateInputType,
   UserCreatePayloadType,
 } from "src/graphql/mutations/generated/user/user_create_type";
+import {
+  UserAuthJWTInputType,
+  UserAuthJWTPayloadType,
+} from "src/graphql/mutations/generated/user_auth_jwt_type";
 import { QueryType } from "src/graphql/resolvers/generated/query_type";
 import {
   AnswerCommentToAuthorsConnectionType,
@@ -166,6 +170,8 @@ export default new GraphQLSchema({
     UserToQuestionPrivateNotesConnectionType(),
     UserToUserQuestionPrivateNotesConnectionType(),
     ViewerTypeType,
+    UserAuthJWTInputType,
+    UserAuthJWTPayloadType,
     AnswerAddAuthorInputType,
     AnswerAddAuthorPayloadType,
     AnswerCommentAddAuthorInputType,

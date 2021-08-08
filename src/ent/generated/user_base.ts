@@ -4,19 +4,23 @@ import {
   AllowIfViewerPrivacyPolicy,
   AssocEdge,
   Context,
+  CustomQuery,
   Data,
   ID,
   LoadEntOptions,
   ObjectLoaderFactory,
   PrivacyPolicy,
   Viewer,
+  convertDate,
+  loadCustomData,
+  loadCustomEnts,
   loadEnt,
   loadEntViaKey,
   loadEntX,
   loadEntXViaKey,
   loadEnts,
-} from "@lolopinto/ent";
-import { Field, getFields } from "@lolopinto/ent/schema";
+} from "@snowtop/ent";
+import { Field, getFields } from "@snowtop/ent/schema";
 import {
   EdgeType,
   NodeType,
@@ -56,8 +60,8 @@ export class UserBase {
 
   constructor(public viewer: Viewer, data: Data) {
     this.id = data.id;
-    this.createdAt = data.created_at;
-    this.updatedAt = data.updated_at;
+    this.createdAt = convertDate(data.created_at);
+    this.updatedAt = convertDate(data.updated_at);
     this.firstName = data.first_name;
     this.lastName = data.last_name;
     this.emailAddress = data.email_address;
@@ -89,6 +93,22 @@ export class UserBase {
     ...ids: ID[]
   ): Promise<T[]> {
     return loadEnts(viewer, UserBase.loaderOptions.apply(this), ...ids);
+  }
+
+  static async loadCustom<T extends UserBase>(
+    this: new (viewer: Viewer, data: Data) => T,
+    viewer: Viewer,
+    query: CustomQuery,
+  ): Promise<T[]> {
+    return loadCustomEnts(viewer, UserBase.loaderOptions.apply(this), query);
+  }
+
+  static async loadCustomData<T extends UserBase>(
+    this: new (viewer: Viewer, data: Data) => T,
+    query: CustomQuery,
+    context?: Context,
+  ): Promise<Data[]> {
+    return loadCustomData(UserBase.loaderOptions.apply(this), query, context);
   }
 
   static async loadRawData<T extends UserBase>(

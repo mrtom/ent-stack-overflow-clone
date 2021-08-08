@@ -9,7 +9,7 @@ import {
   StringType,
   UUIDType,
   AssocEdgeGroup,
-} from "@lolopinto/ent/schema/";
+} from "@snowtop/ent/schema/";
 
 /// explicit schema
 export default class Answer extends BaseEntSchema implements Schema {

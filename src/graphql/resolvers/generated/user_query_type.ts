@@ -6,8 +6,8 @@ import {
   GraphQLNonNull,
   GraphQLResolveInfo,
 } from "graphql";
-import { RequestContext } from "@lolopinto/ent";
-import { mustDecodeIDFromGQLID } from "@lolopinto/ent/graphql";
+import { RequestContext } from "@snowtop/ent";
+import { mustDecodeIDFromGQLID } from "@snowtop/ent/graphql";
 import { UserType } from "src/graphql/resolvers/internal";
 import { UserResolver } from "../user";
 
@@ -21,11 +21,11 @@ export const UserQueryType: GraphQLFieldConfig<undefined, RequestContext> = {
   },
   resolve: async (
     _source,
-    { userID },
+    args: { userID },
     context: RequestContext,
     _info: GraphQLResolveInfo,
   ) => {
     const r = new UserResolver();
-    return r.user(context, mustDecodeIDFromGQLID(userID));
+    return r.user(context, mustDecodeIDFromGQLID(args.userID));
   },
 };

@@ -10,8 +10,8 @@ import {
   GraphQLObjectType,
   GraphQLResolveInfo,
 } from "graphql";
-import { RequestContext } from "@lolopinto/ent";
-import { mustDecodeIDFromGQLID } from "@lolopinto/ent/graphql";
+import { RequestContext } from "@snowtop/ent";
+import { mustDecodeIDFromGQLID } from "@snowtop/ent/graphql";
 import { AnswerComment } from "src/ent/";
 import AnswerCommentRemoveAuthorAction from "src/ent/answer_comment/actions/answer_comment_remove_author_action";
 import { AnswerCommentType } from "src/graphql/resolvers/";
