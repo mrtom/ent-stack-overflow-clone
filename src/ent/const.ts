@@ -28,43 +28,43 @@ export function getNodeTypeValues() {
 
 export enum EdgeType {
   // AnswerCommentToAuthors is the edgeType for the answerComment to authors edge.
-  AnswerCommentToAuthors = "27e1aa22-2690-4253-81d4-d1e0cc263b50",
+  AnswerCommentToAuthors = "fdba641e-4f7e-4c7a-a1d1-fca2a1ed68dc",
   // AnswerToAuthors is the edgeType for the answer to authors edge.
-  AnswerToAuthors = "50274145-6c64-4693-a0c3-b19e38195a8f",
+  AnswerToAuthors = "6226f374-ada1-4acb-a1d3-f0f3e1603ba6",
   // AnswerToComments is the edgeType for the answer to comments edge.
-  AnswerToComments = "588823a4-f9bb-4c8a-bb76-8b9151ce2acc",
+  AnswerToComments = "f69f8452-a1be-45e8-8c71-a1fcc6a0dbcd",
   // QuestionCommentToAuthors is the edgeType for the questionComment to authors edge.
-  QuestionCommentToAuthors = "da0fd4ae-68e0-4fc7-a59d-8c4f70fa478e",
+  QuestionCommentToAuthors = "1daa71ae-916d-45d5-b86a-91de3dc33356",
   // QuestionPrivateNoteToAuthors is the edgeType for the questionPrivateNote to authors edge.
-  QuestionPrivateNoteToAuthors = "d17eba1c-8ce7-4262-83b5-0a0f880f6849",
+  QuestionPrivateNoteToAuthors = "33c7d9f9-c700-466b-b278-e40b887f7ac4",
   // QuestionToAnswers is the edgeType for the question to answers edge.
-  QuestionToAnswers = "f5f7ab79-9f39-4f5e-878b-c0183f3e8617",
+  QuestionToAnswers = "69eb1cb3-9fa7-437b-8474-21092a525de7",
   // QuestionToAuthors is the edgeType for the question to authors edge.
-  QuestionToAuthors = "f3795d44-be58-4b04-b434-4bb0d418f66b",
+  QuestionToAuthors = "dbdae75e-1072-438e-8713-4f4284b289ad",
   // QuestionToComments is the edgeType for the question to comments edge.
-  QuestionToComments = "c448499e-c78d-4e87-8627-b4c7f586a2f6",
+  QuestionToComments = "1f939a84-c765-4168-a6d1-ac9deea9d34e",
   // QuestionToPrivateNotes is the edgeType for the question to privatenotes edge.
-  QuestionToPrivateNotes = "da17ffb4-d545-403d-bb50-0f8a63c71792",
+  QuestionToPrivateNotes = "ad37d17b-4319-4192-8a59-6499dd870edb",
   // UserToAuthorToAuthoredAnswerComments is the edgeType for the user to authortoauthoredanswercomments edge.
-  UserToAuthorToAuthoredAnswerComments = "b01a492e-281c-4844-9ef6-9dcfad9d4994",
+  UserToAuthorToAuthoredAnswerComments = "21319a5d-1678-4a97-8d9f-e8af198504b2",
   // UserToAuthorToAuthoredAnswers is the edgeType for the user to authortoauthoredanswers edge.
-  UserToAuthorToAuthoredAnswers = "63a655cd-717a-4875-b0cb-3d515000de24",
+  UserToAuthorToAuthoredAnswers = "334a0a65-f4bf-4119-b1b8-7e60e86c5374",
   // UserToAuthorToAuthoredQuestionComments is the edgeType for the user to authortoauthoredquestioncomments edge.
-  UserToAuthorToAuthoredQuestionComments = "c245f9ce-1461-4921-837a-40bc6ae9f726",
+  UserToAuthorToAuthoredQuestionComments = "1888c833-ad80-4f06-846b-96fab877b50b",
   // UserToAuthorToAuthoredQuestions is the edgeType for the user to authortoauthoredquestions edge.
-  UserToAuthorToAuthoredQuestions = "afbc66d2-d1a1-4b2d-bf4f-0d5f81927995",
+  UserToAuthorToAuthoredQuestions = "f5f98bc4-94ed-4b3d-88b5-628992440185",
   // UserToAuthoredAnswerComments is the edgeType for the user to authoredanswercomments edge.
-  UserToAuthoredAnswerComments = "cff7203e-9188-4ff2-a668-2ce33abd0a58",
+  UserToAuthoredAnswerComments = "2bd913d5-a2cb-485b-9563-4c2e447b99b2",
   // UserToAuthoredAnswers is the edgeType for the user to authoredanswers edge.
-  UserToAuthoredAnswers = "2e49fa7d-2b51-45d2-9e0f-7461c2c03039",
+  UserToAuthoredAnswers = "b39d9e6f-2249-4c6c-b4b3-e8c14430b60e",
   // UserToAuthoredQuestionComments is the edgeType for the user to authoredquestioncomments edge.
-  UserToAuthoredQuestionComments = "1d177e91-2f4f-4e98-9880-5e6778f16495",
+  UserToAuthoredQuestionComments = "641dd0e0-ca29-44cb-8c78-21c6a9962609",
   // UserToAuthoredQuestions is the edgeType for the user to authoredquestions edge.
-  UserToAuthoredQuestions = "c9dae4e1-5325-4d9d-94e9-4a5417454eed",
+  UserToAuthoredQuestions = "eb398e63-df78-40d2-9e86-50a3a788c88f",
   // UserToQuestionPrivateNotes is the edgeType for the user to questionprivatenotes edge.
-  UserToQuestionPrivateNotes = "b6f4fe67-f4bf-47b6-a0b1-5153a56f2fb4",
+  UserToQuestionPrivateNotes = "5da8f466-0498-42ed-9f0f-9138223793b9",
   // UserToUserQuestionPrivateNotes is the edgeType for the user to userquestionprivatenotes edge.
-  UserToUserQuestionPrivateNotes = "2fc54251-edbd-47ad-bdac-1af9306e3a8e",
+  UserToUserQuestionPrivateNotes = "fd476c64-01c5-44b3-859b-a15dc450d1f9",
 }
 
 export function getEdgeTypeValues() {

@@ -13,4 +13,4 @@ services:
     volumes:
       - .:/app:rw,delegated
     environment:
-      - DB_CONNECTION_STRING=postgres://tomelliott:@host.docker.internal/ent-starter
+      - DB_CONNECTION_STRING=postgres://tom:@host.docker.internal/ent-starter

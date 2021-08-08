@@ -1,6 +1,7 @@
 dialect: postgres
 database: ent-starter
-user: tomelliott
+  # user: tomelliott
+user: tom
 password: ''
 host: localhost
 port: 5432
