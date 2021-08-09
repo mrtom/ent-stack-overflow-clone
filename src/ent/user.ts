@@ -1,23 +1,18 @@
 import { Interval } from "luxon";
 import { GraphQLInt } from "graphql"
 import * as bcrypt from "bcryptjs";
-import { gqlField, gqlContextType } from "@snowtop/ent/graphql";
+import { gqlField, gqlConnection, gqlContextType } from "@snowtop/ent/graphql";
 
 import { UserBase } from "src/ent/internal";
 import {
-  query,
   AllowIfViewerRule,
   AlwaysDenyRule,
   Data,
-  LoggedOutViewer,
   PrivacyPolicy,
-  RequestContext,
-  Viewer
 } from "@snowtop/ent"
-import { loadEntsFromClause } from "@snowtop/ent/core/ent";
 
-import { Question } from "src/ent";
 import { AllowIfOmniRule } from "src/privacy/omni";
+import { ViewerToUnansweredQuestionsQuery } from "src/ent/user/query/user_to_unanswered_questions_query";
 
 export class User extends UserBase {
   privacyPolicy: PrivacyPolicy = {
@@ -47,17 +42,9 @@ export class User extends UserBase {
     return Interval.fromDateTimes(this.createdAt, new Date()).count('seconds');
   }
 
-  @gqlField({ type: "[Question]", name: "questionsFeed" })
-  async questionsFeed(
-    @gqlContextType() context: RequestContext,
-  ): Promise<Question[]> {
-    const viewer: Viewer = new LoggedOutViewer(); // FIXME
-    const unansweredQuestions = await loadEntsFromClause(
-      viewer,
-      query.Eq("answered", false),
-      Question.loaderOptions(),
-    );
-
-    return Array.from(unansweredQuestions.values());
+  @gqlField({ name: "questionsFeed", type: gqlConnection("Question") })
+  questionsFeed() {
+    const questions = new ViewerToUnansweredQuestionsQuery(this.viewer, this);
+    return questions;
   }
 }

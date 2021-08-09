@@ -1,5 +1,1 @@
-After upgrading from @lolopinto/ent to @snowtop/ent I'm unable to run npm codegen, seems like it's using the old tsent CLI still.
-
-To work around this for now I've installed tsent locally. To get this to work you need to have some things on the path.
-
-Make sure the following are added: /Users/tom/Library/Python/3.8/bin:/Users/tom/go/bin
+In order to use fields in an Ent Custom Query they need to have an index on them

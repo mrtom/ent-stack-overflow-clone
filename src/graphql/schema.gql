@@ -67,7 +67,7 @@ type User implements Node {
   questionPrivateNotes(first: Int, after: String, last: Int, before: String): UserToQuestionPrivateNotesConnection!
   userQuestionPrivateNotes(first: Int, after: String, last: Int, before: String): UserToUserQuestionPrivateNotesConnection!
   howLong: Int!
-  questionsFeed: [Question!]!
+  questionsFeed(first: Int, after: String, last: Int, before: String): UserToQuestionsFeedConnection!
 }
 
 type AnswerCommentToAuthorsConnection implements Connection {
@@ -303,6 +303,18 @@ type UserToQuestionPrivateNotesConnection implements Connection {
 
 type UserToQuestionPrivateNotesEdge implements Edge {
   node: QuestionPrivateNote!
+  cursor: String!
+}
+
+type UserToQuestionsFeedConnection implements Connection {
+  edges: [UserToQuestionsFeedEdge!]!
+  nodes: [Question!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type UserToQuestionsFeedEdge implements Edge {
+  node: Question!
   cursor: String!
 }
 

@@ -4,7 +4,6 @@ import {
   GraphQLFieldConfigMap,
   GraphQLID,
   GraphQLInt,
-  GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
@@ -29,7 +28,6 @@ import {
   UserToUserQuestionPrivateNotesQuery,
 } from "src/ent/";
 import {
-  QuestionType,
   UserToAuthorToAuthoredAnswerCommentsConnectionType,
   UserToAuthorToAuthoredAnswersConnectionType,
   UserToAuthorToAuthoredQuestionCommentsConnectionType,
@@ -39,6 +37,7 @@ import {
   UserToAuthoredQuestionCommentsConnectionType,
   UserToAuthoredQuestionsConnectionType,
   UserToQuestionPrivateNotesConnectionType,
+  UserToQuestionsFeedConnectionType,
   UserToUserQuestionPrivateNotesConnectionType,
 } from "src/graphql/resolvers/internal";
 
@@ -362,9 +361,32 @@ export const UserType = new GraphQLObjectType({
       },
     },
     questionsFeed: {
-      type: GraphQLNonNull(GraphQLList(GraphQLNonNull(QuestionType))),
-      resolve: async (user: User, args: {}, context: RequestContext) => {
-        return user.questionsFeed(context);
+      type: GraphQLNonNull(UserToQuestionsFeedConnectionType()),
+      args: {
+        first: {
+          description: "",
+          type: GraphQLInt,
+        },
+        after: {
+          description: "",
+          type: GraphQLString,
+        },
+        last: {
+          description: "",
+          type: GraphQLInt,
+        },
+        before: {
+          description: "",
+          type: GraphQLString,
+        },
+      },
+      resolve: (user: User, args: {}, context: RequestContext) => {
+        return new GraphQLEdgeConnection(
+          user.viewer,
+          user,
+          (v, user: User) => user.questionsFeed(),
+          args,
+        );
       },
     },
   }),
