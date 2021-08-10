@@ -57,7 +57,15 @@ export default class Question extends BaseEntSchema implements Schema {
   // create, edit, delete
   actions: Action[] = [
     {
-      operation: ActionOperation.Mutations,
+      // operation: ActionOperation.Mutations,
+      operation: ActionOperation.Create,
+      fields: ["title", "questionBody", "authorID"],
+    },
+    {
+      operation: ActionOperation.Edit,
+    },
+    {
+      operation: ActionOperation.Delete,
     },
   ];
 

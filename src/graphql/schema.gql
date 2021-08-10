@@ -498,7 +498,6 @@ type QuestionCommentRemoveAuthorPayload {
 input QuestionCreateInput {
   title: String!
   questionBody: String!
-  answered: Boolean!
   authorID: ID!
 }
 
