@@ -9,6 +9,7 @@ import {
   BooleanType,
   StringType,
   UUIDType,
+  requiredField,
 } from "@snowtop/ent/schema/";
 
 /// explicit schema
@@ -54,10 +55,8 @@ export default class Question extends BaseEntSchema implements Schema {
     },
   ];
 
-  // create, edit, delete
   actions: Action[] = [
     {
-      // operation: ActionOperation.Mutations,
       operation: ActionOperation.Create,
       fields: ["title", "questionBody", "authorID"],
     },
@@ -66,6 +65,14 @@ export default class Question extends BaseEntSchema implements Schema {
     },
     {
       operation: ActionOperation.Delete,
+    },
+    // Set answered / unanswered
+    {
+      operation: ActionOperation.Edit,
+      actionName: "EditQuestionAnsweredAction",
+      graphQLName: "questionAnsweredEdit",
+      inputName: "EditQuestionAnsweredInput",
+      fields: [requiredField("answered")],
     },
   ];
 

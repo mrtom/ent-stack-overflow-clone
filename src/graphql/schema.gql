@@ -448,6 +448,15 @@ type QuestionAddAuthorPayload {
   question: Question!
 }
 
+input QuestionAnsweredEditInput {
+  questionID: ID!
+  answered: Boolean!
+}
+
+type QuestionAnsweredEditPayload {
+  question: Question!
+}
+
 input QuestionCommentAddAuthorInput {
   questionCommentID: ID!
   authorID: ID!
@@ -611,6 +620,7 @@ type Mutation {
   answerEdit(input: AnswerEditInput!): AnswerEditPayload!
   answerRemoveAuthor(input: AnswerRemoveAuthorInput!): AnswerRemoveAuthorPayload!
   questionAddAuthor(input: QuestionAddAuthorInput!): QuestionAddAuthorPayload!
+  questionAnsweredEdit(input: QuestionAnsweredEditInput!): QuestionAnsweredEditPayload!
   questionCommentAddAuthor(input: QuestionCommentAddAuthorInput!): QuestionCommentAddAuthorPayload!
   questionCommentCreate(input: QuestionCommentCreateInput!): QuestionCommentCreatePayload!
   questionCommentDelete(input: QuestionCommentDeleteInput!): QuestionCommentDeletePayload!

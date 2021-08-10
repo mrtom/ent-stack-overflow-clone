@@ -47,6 +47,10 @@ import {
   QuestionAddAuthorPayloadType,
 } from "src/graphql/mutations/generated/question/question_add_author_type";
 import {
+  QuestionAnsweredEditInputType,
+  QuestionAnsweredEditPayloadType,
+} from "src/graphql/mutations/generated/question/question_answered_edit_type";
+import {
   QuestionCreateInputType,
   QuestionCreatePayloadType,
 } from "src/graphql/mutations/generated/question/question_create_type";
@@ -196,6 +200,8 @@ export default new GraphQLSchema({
     AnswerRemoveAuthorPayloadType,
     QuestionAddAuthorInputType,
     QuestionAddAuthorPayloadType,
+    QuestionAnsweredEditInputType,
+    QuestionAnsweredEditPayloadType,
     QuestionCommentAddAuthorInputType,
     QuestionCommentAddAuthorPayloadType,
     QuestionCommentCreateInputType,

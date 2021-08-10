@@ -12,6 +12,7 @@ import { AnswerCommentDeleteType } from "src/graphql/mutations/generated/answer_
 import { AnswerCommentEditType } from "src/graphql/mutations/generated/answer_comment/answer_comment_edit_type";
 import { AnswerCommentRemoveAuthorType } from "src/graphql/mutations/generated/answer_comment/answer_comment_remove_author_type";
 import { QuestionAddAuthorType } from "src/graphql/mutations/generated/question/question_add_author_type";
+import { QuestionAnsweredEditType } from "src/graphql/mutations/generated/question/question_answered_edit_type";
 import { QuestionCreateType } from "src/graphql/mutations/generated/question/question_create_type";
 import { QuestionDeleteType } from "src/graphql/mutations/generated/question/question_delete_type";
 import { QuestionEditType } from "src/graphql/mutations/generated/question/question_edit_type";
@@ -43,6 +44,7 @@ export const MutationType = new GraphQLObjectType({
     answerEdit: AnswerEditType,
     answerRemoveAuthor: AnswerRemoveAuthorType,
     questionAddAuthor: QuestionAddAuthorType,
+    questionAnsweredEdit: QuestionAnsweredEditType,
     questionCommentAddAuthor: QuestionCommentAddAuthorType,
     questionCommentCreate: QuestionCommentCreateType,
     questionCommentDelete: QuestionCommentDeleteType,
