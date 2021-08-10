@@ -3,6 +3,7 @@ import {
   Action,
   Field,
   Edge,
+  Index,
   BaseEntSchema,
   ActionOperation,
   BooleanType,
@@ -15,7 +16,7 @@ export default class Question extends BaseEntSchema implements Schema {
   fields: Field[] = [
     StringType({ name: "title" }),
     StringType({ name: "questionBody" }),
-    BooleanType({ name: "answered", nullable: false, defaultValueOnCreate: () => false}),
+    BooleanType({ name: "answered", nullable: false, defaultValueOnCreate: () => false }),
     UUIDType({
       name: "authorID",
       fieldEdge: { schema: "User", inverseEdge: "authoredQuestions" },
@@ -58,5 +59,21 @@ export default class Question extends BaseEntSchema implements Schema {
     {
       operation: ActionOperation.Mutations,
     },
+  ];
+
+  indices: Index[] = [
+    {
+      name: "question_answered",
+      columns: ["answered"],
+    },
+    {
+      name: "question_author",
+      columns: ["user_id"],
+    },
+    // TODO: Delete me later
+    {
+      name: "question_title",
+      columns: ["title"],
+    }
   ];
 }
