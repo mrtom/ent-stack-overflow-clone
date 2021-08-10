@@ -179,7 +179,6 @@ sa.Table("questions", metadata,
     sa.PrimaryKeyConstraint("id", name="questions_id_pkey"),
     sa.Index("question_answered", "answered"),
     sa.Index("question_author", "user_id"),
-    sa.Index("question_title", "title"),
 )
    
 sa.Table("user_authored_answer_comments_edges", metadata,

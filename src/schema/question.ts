@@ -70,10 +70,5 @@ export default class Question extends BaseEntSchema implements Schema {
       name: "question_author",
       columns: ["user_id"],
     },
-    // TODO: Delete me later
-    {
-      name: "question_title",
-      columns: ["title"],
-    }
   ];
 }
