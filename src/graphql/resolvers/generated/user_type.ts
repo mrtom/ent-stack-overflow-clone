@@ -54,6 +54,9 @@ export const UserType = new GraphQLObjectType({
     lastName: {
       type: GraphQLNonNull(GraphQLString),
     },
+    reputation: {
+      type: GraphQLNonNull(GraphQLInt),
+    },
     emailAddress: {
       type: GraphQLNonNull(GraphQLString),
     },

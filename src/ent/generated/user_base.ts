@@ -44,6 +44,7 @@ const fields = [
   "updated_at",
   "first_name",
   "last_name",
+  "reputation",
   "email_address",
   "password",
 ];
@@ -55,6 +56,7 @@ export class UserBase {
   readonly updatedAt: Date;
   readonly firstName: string;
   readonly lastName: string;
+  readonly reputation: number;
   readonly emailAddress: string;
   protected readonly password: string;
 
@@ -64,6 +66,7 @@ export class UserBase {
     this.updatedAt = convertDate(data.updated_at);
     this.firstName = data.first_name;
     this.lastName = data.last_name;
+    this.reputation = data.reputation;
     this.emailAddress = data.email_address;
     this.password = data.password;
   }

@@ -2,6 +2,7 @@ import {
   BaseEntSchema,
   Edge,
   Field,
+  IntegerType,
   StringType,
   Action,
   ActionOperation
@@ -13,6 +14,7 @@ export default class User extends BaseEntSchema {
   fields: Field[] = [
     StringType({ name: "FirstName" }),
     StringType({ name: "LastName" }),
+    IntegerType({ name: "Reputation", nullable: false, defaultValueOnCreate: () => 0 }),
     EmailType({ name: "EmailAddress", unique: true }),
     PasswordType({ name: "Password" }),
   ];

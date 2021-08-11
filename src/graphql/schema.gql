@@ -53,6 +53,7 @@ type User implements Node {
   id: ID!
   firstName: String!
   lastName: String!
+  reputation: Int!
   emailAddress: String!
   authorToAuthoredAnswerComments(first: Int, after: String, last: Int, before: String): UserToAuthorToAuthoredAnswerCommentsConnection!
   authorToAuthoredAnswers(first: Int, after: String, last: Int, before: String): UserToAuthorToAuthoredAnswersConnection!
