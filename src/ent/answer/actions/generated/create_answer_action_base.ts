@@ -20,7 +20,6 @@ import {
 
 export interface AnswerCreateInput {
   body: string;
-  acceptedAnswer: boolean;
   questionID: ID | Builder<Question>;
   authorID: ID | Builder<User>;
 }

@@ -50,10 +50,16 @@ export default class Answer extends BaseEntSchema implements Schema {
     },
   ];
 
-  // create, edit, delete
   actions: Action[] = [
     {
-      operation: ActionOperation.Mutations,
+      operation: ActionOperation.Create,
+      fields: ["body", "questionID", "authorID"],
+    },
+    {
+      operation: ActionOperation.Edit,
+    },
+    {
+      operation: ActionOperation.Delete,
     },
   ];
 }

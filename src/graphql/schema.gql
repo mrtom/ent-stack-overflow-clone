@@ -401,7 +401,6 @@ type AnswerCommentRemoveAuthorPayload {
 
 input AnswerCreateInput {
   body: String!
-  acceptedAnswer: Boolean!
   questionID: ID!
   authorID: ID!
 }
