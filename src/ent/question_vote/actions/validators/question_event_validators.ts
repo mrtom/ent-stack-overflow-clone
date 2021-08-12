@@ -2,7 +2,6 @@ import { Validator } from "@snowtop/ent/action";
 
 import { Question, QuestionVote } from "src/ent";
 import { QuestionVoteBuilder } from "src/ent/question_vote/actions/question_vote_builder";
-import { isBuilder } from "src/ent/utils/builder";
 
 export class QuestionVoteVoterValidator implements Validator<QuestionVote> {
   async validate(builder: QuestionVoteBuilder): Promise<void> {
@@ -17,7 +16,7 @@ export class QuestionVoteVoterValidator implements Validator<QuestionVote> {
       throw new Error("Question Vote must supply a Question ID");
     }
 
-    if (isBuilder(questionIDOrBuider)) {
+    if (builder.isBuilder(questionIDOrBuider)) {
       throw new Error("Question Vote must supply a Question ID");
     }
 

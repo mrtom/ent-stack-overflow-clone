@@ -5,6 +5,7 @@ import { gqlField, gqlConnection, gqlContextType } from "@snowtop/ent/graphql";
 
 import { UserBase } from "src/ent/internal";
 import {
+  AllowIfHasIdentity,
   AllowIfViewerRule,
   AlwaysDenyRule,
   Data,
@@ -19,6 +20,7 @@ export class User extends UserBase {
     rules: [
       AllowIfOmniRule,
       AllowIfViewerRule,
+      AllowIfHasIdentity,
       AlwaysDenyRule,
     ],
   };

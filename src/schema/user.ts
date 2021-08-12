@@ -5,7 +5,8 @@ import {
   IntegerType,
   StringType,
   Action,
-  ActionOperation
+  ActionOperation,
+  requiredField,
 } from "@snowtop/ent/schema";
 import { EmailType } from "@snowtop/ent-email";
 import { PasswordType } from "@snowtop/ent-password";
@@ -50,6 +51,12 @@ export default class User extends BaseEntSchema {
     {
       operation: ActionOperation.Create,
       fields: ["FirstName", "LastName", "EmailAddress", "Password"],
-    }
+    },
+    {
+      operation: ActionOperation.Edit,
+      actionName: "EditUserReputationAction",
+      hideFromGraphQL: true,
+      fields: [requiredField("Reputation")],
+    },
   ];
 }
