@@ -21,6 +21,9 @@ import {
   QuestionToAuthorsEdge,
   QuestionToCommentsEdge,
   QuestionToPrivateNotesEdge,
+  QuestionToVotesEdge,
+  QuestionVote,
+  QuestionVoteToVotersQuery,
   User,
   UserToAuthorToAuthoredAnswerCommentsQuery,
   UserToAuthorToAuthoredAnswersQuery,
@@ -31,7 +34,9 @@ import {
   UserToAuthoredQuestionCommentsQuery,
   UserToAuthoredQuestionsQuery,
   UserToQuestionPrivateNotesQuery,
+  UserToQuestionsVotedQuery,
   UserToUserQuestionPrivateNotesQuery,
+  UserToVoterToQuestionsVotedQuery,
 } from "src/ent/internal";
 
 export const questionToAnswersCountLoaderFactory =
@@ -62,6 +67,13 @@ export const questionToPrivateNotesDataLoaderFactory =
     EdgeType.QuestionToPrivateNotes,
     () => QuestionToPrivateNotesEdge,
   );
+
+export const questionToVotesCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.QuestionToVotes);
+export const questionToVotesDataLoaderFactory = new AssocEdgeLoaderFactory(
+  EdgeType.QuestionToVotes,
+  () => QuestionToVotesEdge,
+);
 
 export class QuestionToAnswersQueryBase extends AssocEdgeQueryBase<
   Question,
@@ -154,8 +166,16 @@ export class QuestionToAuthorsQueryBase extends AssocEdgeQueryBase<
     return UserToQuestionPrivateNotesQuery.query(this.viewer, this);
   }
 
+  queryQuestionsVoted(): UserToQuestionsVotedQuery {
+    return UserToQuestionsVotedQuery.query(this.viewer, this);
+  }
+
   queryUserQuestionPrivateNotes(): UserToUserQuestionPrivateNotesQuery {
     return UserToUserQuestionPrivateNotesQuery.query(this.viewer, this);
+  }
+
+  queryVoterToQuestionsVoted(): UserToVoterToQuestionsVotedQuery {
+    return UserToVoterToQuestionsVotedQuery.query(this.viewer, this);
   }
 }
 
@@ -212,5 +232,33 @@ export class QuestionToPrivateNotesQueryBase extends AssocEdgeQueryBase<
 
   queryAuthors(): QuestionPrivateNoteToAuthorsQuery {
     return QuestionPrivateNoteToAuthorsQuery.query(this.viewer, this);
+  }
+}
+
+export class QuestionToVotesQueryBase extends AssocEdgeQueryBase<
+  Question,
+  QuestionVote,
+  QuestionToVotesEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<Question>) {
+    super(
+      viewer,
+      src,
+      questionToVotesCountLoaderFactory,
+      questionToVotesDataLoaderFactory,
+      QuestionVote.loaderOptions(),
+    );
+  }
+
+  static query<T extends QuestionToVotesQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<Question>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<Question>,
+  ): T {
+    return new this(viewer, src);
+  }
+
+  queryVoters(): QuestionVoteToVotersQuery {
+    return QuestionVoteToVotersQuery.query(this.viewer, this);
   }
 }

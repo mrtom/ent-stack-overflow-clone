@@ -27,6 +27,7 @@ import {
   QuestionToAuthorsQuery,
   QuestionToCommentsQuery,
   QuestionToPrivateNotesQuery,
+  QuestionToVotesQuery,
   User,
 } from "src/ent/internal";
 import schema from "src/schema/question";
@@ -171,6 +172,10 @@ export class QuestionBase {
 
   queryPrivateNotes(): QuestionToPrivateNotesQuery {
     return QuestionToPrivateNotesQuery.query(this.viewer, this.id);
+  }
+
+  queryVotes(): QuestionToVotesQuery {
+    return QuestionToVotesQuery.query(this.viewer, this.id);
   }
 
   async loadAuthor(): Promise<User | null> {

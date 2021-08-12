@@ -1,3 +1,8 @@
+enum VoteType {
+  UP
+  DOWN
+}
+
 type AnswerComment implements Node {
   answer: Answer
   author: User
@@ -47,6 +52,15 @@ type Question implements Node {
   authors(first: Int, after: String, last: Int, before: String): QuestionToAuthorsConnection!
   comments(first: Int, after: String, last: Int, before: String): QuestionToCommentsConnection!
   privateNotes(first: Int, after: String, last: Int, before: String): QuestionToPrivateNotesConnection!
+  votes(first: Int, after: String, last: Int, before: String): QuestionToVotesConnection!
+}
+
+type QuestionVote implements Node {
+  question: Question
+  voter: User
+  id: ID!
+  voteType: VoteType!
+  voters(first: Int, after: String, last: Int, before: String): QuestionVoteToVotersConnection!
 }
 
 type User implements Node {
@@ -64,7 +78,9 @@ type User implements Node {
   authoredQuestionComments(first: Int, after: String, last: Int, before: String): UserToAuthoredQuestionCommentsConnection!
   authoredQuestions(first: Int, after: String, last: Int, before: String): UserToAuthoredQuestionsConnection!
   questionPrivateNotes(first: Int, after: String, last: Int, before: String): UserToQuestionPrivateNotesConnection!
+  questionsVoted(first: Int, after: String, last: Int, before: String): UserToQuestionsVotedConnection!
   userQuestionPrivateNotes(first: Int, after: String, last: Int, before: String): UserToUserQuestionPrivateNotesConnection!
+  voterToQuestionsVoted(first: Int, after: String, last: Int, before: String): UserToVoterToQuestionsVotedConnection!
   howLong: Int!
   questionsFeed(first: Int, after: String, last: Int, before: String): UserToQuestionsFeedConnection!
 }
@@ -197,6 +213,30 @@ type QuestionToPrivateNotesEdge implements Edge {
   cursor: String!
 }
 
+type QuestionToVotesConnection implements Connection {
+  edges: [QuestionToVotesEdge!]!
+  nodes: [QuestionVote!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type QuestionToVotesEdge implements Edge {
+  node: QuestionVote!
+  cursor: String!
+}
+
+type QuestionVoteToVotersConnection implements Connection {
+  edges: [QuestionVoteToVotersEdge!]!
+  nodes: [User!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type QuestionVoteToVotersEdge implements Edge {
+  node: User!
+  cursor: String!
+}
+
 type UserToAuthorToAuthoredAnswerCommentsConnection implements Connection {
   edges: [UserToAuthorToAuthoredAnswerCommentsEdge!]!
   nodes: [AnswerComment!]!
@@ -317,6 +357,18 @@ type UserToQuestionsFeedEdge implements Edge {
   cursor: String!
 }
 
+type UserToQuestionsVotedConnection implements Connection {
+  edges: [UserToQuestionsVotedEdge!]!
+  nodes: [QuestionVote!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type UserToQuestionsVotedEdge implements Edge {
+  node: QuestionVote!
+  cursor: String!
+}
+
 type UserToUserQuestionPrivateNotesConnection implements Connection {
   edges: [UserToUserQuestionPrivateNotesEdge!]!
   nodes: [QuestionPrivateNote!]!
@@ -326,6 +378,18 @@ type UserToUserQuestionPrivateNotesConnection implements Connection {
 
 type UserToUserQuestionPrivateNotesEdge implements Edge {
   node: QuestionPrivateNote!
+  cursor: String!
+}
+
+type UserToVoterToQuestionsVotedConnection implements Connection {
+  edges: [UserToVoterToQuestionsVotedEdge!]!
+  nodes: [QuestionVote!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type UserToVoterToQuestionsVotedEdge implements Edge {
+  node: QuestionVote!
   cursor: String!
 }
 
@@ -590,6 +654,42 @@ type QuestionRemoveAuthorPayload {
   question: Question!
 }
 
+input QuestionVoteAddVoterInput {
+  questionVoteID: ID!
+  voterID: ID!
+}
+
+type QuestionVoteAddVoterPayload {
+  questionVote: QuestionVote!
+}
+
+input QuestionVoteCreateInput {
+  voteType: VoteType!
+  questionID: ID!
+  voterID: ID!
+}
+
+type QuestionVoteCreatePayload {
+  questionVote: QuestionVote!
+}
+
+input QuestionVoteDeleteInput {
+  questionVoteID: ID!
+}
+
+type QuestionVoteDeletePayload {
+  deletedQuestionVoteID: ID
+}
+
+input QuestionVoteRemoveVoterInput {
+  questionVoteID: ID!
+  voterID: ID!
+}
+
+type QuestionVoteRemoveVoterPayload {
+  questionVote: QuestionVote!
+}
+
 input UserCreateInput {
   firstName: String!
   lastName: String!
@@ -635,6 +735,10 @@ type Mutation {
   questionPrivateNoteEdit(input: QuestionPrivateNoteEditInput!): QuestionPrivateNoteEditPayload!
   questionPrivateNoteRemoveAuthor(input: QuestionPrivateNoteRemoveAuthorInput!): QuestionPrivateNoteRemoveAuthorPayload!
   questionRemoveAuthor(input: QuestionRemoveAuthorInput!): QuestionRemoveAuthorPayload!
+  questionVoteAddVoter(input: QuestionVoteAddVoterInput!): QuestionVoteAddVoterPayload!
+  questionVoteCreate(input: QuestionVoteCreateInput!): QuestionVoteCreatePayload!
+  questionVoteDelete(input: QuestionVoteDeleteInput!): QuestionVoteDeletePayload!
+  questionVoteRemoveVoter(input: QuestionVoteRemoveVoterInput!): QuestionVoteRemoveVoterPayload!
   userAuthJWT(input: UserAuthJWTInput!): UserAuthJWTPayload!
   userCreate(input: UserCreateInput!): UserCreatePayload!
 }

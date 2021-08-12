@@ -15,6 +15,7 @@ import {
   Question,
   QuestionComment,
   QuestionPrivateNote,
+  QuestionVote,
   User,
 } from "src/ent/";
 import { EdgeType, NodeType } from "src/ent/const";
@@ -268,6 +269,50 @@ export class QuestionBuilder implements Builder<Question> {
           node,
           EdgeType.QuestionToPrivateNotes,
         );
+      }
+    }
+    return this;
+  }
+
+  addVote(...ids: ID[]): QuestionBuilder;
+  addVote(...nodes: QuestionVote[]): QuestionBuilder;
+  addVote(...nodes: Builder<QuestionVote>[]): QuestionBuilder;
+  addVote(
+    ...nodes: ID[] | QuestionVote[] | Builder<QuestionVote>[]
+  ): QuestionBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addVoteID(node);
+      } else if (typeof node === "object") {
+        this.addVoteID(node.id);
+      } else {
+        this.addVoteID(node);
+      }
+    }
+    return this;
+  }
+
+  addVoteID(
+    id: ID | Builder<QuestionVote>,
+    options?: AssocEdgeInputOptions,
+  ): QuestionBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.QuestionToVotes,
+      NodeType.QuestionVote,
+      options,
+    );
+    return this;
+  }
+
+  removeVote(...ids: ID[]): QuestionBuilder;
+  removeVote(...nodes: QuestionVote[]): QuestionBuilder;
+  removeVote(...nodes: ID[] | QuestionVote[]): QuestionBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(node.id, EdgeType.QuestionToVotes);
+      } else {
+        this.orchestrator.removeOutboundEdge(node, EdgeType.QuestionToVotes);
       }
     }
     return this;

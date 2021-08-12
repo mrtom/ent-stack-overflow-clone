@@ -33,7 +33,9 @@ import {
   UserToAuthoredQuestionCommentsQuery,
   UserToAuthoredQuestionsQuery,
   UserToQuestionPrivateNotesQuery,
+  UserToQuestionsVotedQuery,
   UserToUserQuestionPrivateNotesQuery,
+  UserToVoterToQuestionsVotedQuery,
 } from "src/ent/internal";
 import schema from "src/schema/user";
 
@@ -243,8 +245,16 @@ export class UserBase {
     return UserToQuestionPrivateNotesQuery.query(this.viewer, this.id);
   }
 
+  queryQuestionsVoted(): UserToQuestionsVotedQuery {
+    return UserToQuestionsVotedQuery.query(this.viewer, this.id);
+  }
+
   queryUserQuestionPrivateNotes(): UserToUserQuestionPrivateNotesQuery {
     return UserToUserQuestionPrivateNotesQuery.query(this.viewer, this.id);
+  }
+
+  queryVoterToQuestionsVoted(): UserToVoterToQuestionsVotedQuery {
+    return UserToVoterToQuestionsVotedQuery.query(this.viewer, this.id);
   }
 }
 

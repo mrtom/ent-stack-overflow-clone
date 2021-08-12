@@ -9,8 +9,8 @@ import {
 } from "@snowtop/ent";
 import {
   EdgeType,
-  QuestionPrivateNote,
-  QuestionPrivateNoteToAuthorsEdge,
+  QuestionVote,
+  QuestionVoteToVotersEdge,
   User,
   UserToAuthorToAuthoredAnswerCommentsQuery,
   UserToAuthorToAuthoredAnswersQuery,
@@ -26,33 +26,32 @@ import {
   UserToVoterToQuestionsVotedQuery,
 } from "src/ent/internal";
 
-export const questionPrivateNoteToAuthorsCountLoaderFactory =
-  new AssocEdgeCountLoaderFactory(EdgeType.QuestionPrivateNoteToAuthors);
-export const questionPrivateNoteToAuthorsDataLoaderFactory =
-  new AssocEdgeLoaderFactory(
-    EdgeType.QuestionPrivateNoteToAuthors,
-    () => QuestionPrivateNoteToAuthorsEdge,
-  );
+export const questionVoteToVotersCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.QuestionVoteToVoters);
+export const questionVoteToVotersDataLoaderFactory = new AssocEdgeLoaderFactory(
+  EdgeType.QuestionVoteToVoters,
+  () => QuestionVoteToVotersEdge,
+);
 
-export class QuestionPrivateNoteToAuthorsQueryBase extends AssocEdgeQueryBase<
-  QuestionPrivateNote,
+export class QuestionVoteToVotersQueryBase extends AssocEdgeQueryBase<
+  QuestionVote,
   User,
-  QuestionPrivateNoteToAuthorsEdge
+  QuestionVoteToVotersEdge
 > {
-  constructor(viewer: Viewer, src: EdgeQuerySource<QuestionPrivateNote>) {
+  constructor(viewer: Viewer, src: EdgeQuerySource<QuestionVote>) {
     super(
       viewer,
       src,
-      questionPrivateNoteToAuthorsCountLoaderFactory,
-      questionPrivateNoteToAuthorsDataLoaderFactory,
+      questionVoteToVotersCountLoaderFactory,
+      questionVoteToVotersDataLoaderFactory,
       User.loaderOptions(),
     );
   }
 
-  static query<T extends QuestionPrivateNoteToAuthorsQueryBase>(
-    this: new (viewer: Viewer, src: EdgeQuerySource<QuestionPrivateNote>) => T,
+  static query<T extends QuestionVoteToVotersQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<QuestionVote>) => T,
     viewer: Viewer,
-    src: EdgeQuerySource<QuestionPrivateNote>,
+    src: EdgeQuerySource<QuestionVote>,
   ): T {
     return new this(viewer, src);
   }

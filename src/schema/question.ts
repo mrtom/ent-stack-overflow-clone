@@ -50,6 +50,10 @@ export default class Question extends BaseEntSchema implements Schema {
       schemaName: "QuestionComment",
     },
     {
+      name: "votes",
+      schemaName: "QuestionVote",
+    },
+    {
       name: "privateNotes",
       schemaName: "QuestionPrivateNote",
     },

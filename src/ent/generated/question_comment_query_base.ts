@@ -21,7 +21,9 @@ import {
   UserToAuthoredQuestionCommentsQuery,
   UserToAuthoredQuestionsQuery,
   UserToQuestionPrivateNotesQuery,
+  UserToQuestionsVotedQuery,
   UserToUserQuestionPrivateNotesQuery,
+  UserToVoterToQuestionsVotedQuery,
 } from "src/ent/internal";
 
 export const questionCommentToAuthorsCountLoaderFactory =
@@ -91,7 +93,15 @@ export class QuestionCommentToAuthorsQueryBase extends AssocEdgeQueryBase<
     return UserToQuestionPrivateNotesQuery.query(this.viewer, this);
   }
 
+  queryQuestionsVoted(): UserToQuestionsVotedQuery {
+    return UserToQuestionsVotedQuery.query(this.viewer, this);
+  }
+
   queryUserQuestionPrivateNotes(): UserToUserQuestionPrivateNotesQuery {
     return UserToUserQuestionPrivateNotesQuery.query(this.viewer, this);
+  }
+
+  queryVoterToQuestionsVoted(): UserToVoterToQuestionsVotedQuery {
+    return UserToVoterToQuestionsVotedQuery.query(this.viewer, this);
   }
 }

@@ -1,1 +1,7 @@
 In order to use fields in an Ent Custom Query they need to have an index on them
+
+TODO:
+Need to make sure only auther can remove a vote
+Need to make sure only one vote per question per user: Done
+Need to look into adding reputation to question author on vote
+Need to prevent author from voting for own question

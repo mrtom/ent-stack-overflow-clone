@@ -16,6 +16,7 @@ import {
   Question,
   QuestionComment,
   QuestionPrivateNote,
+  QuestionVote,
   User,
 } from "src/ent/";
 import { EdgeType, NodeType } from "src/ent/const";
@@ -552,6 +553,56 @@ export class UserBuilder implements Builder<User> {
     return this;
   }
 
+  addQuestionsVoted(...ids: ID[]): UserBuilder;
+  addQuestionsVoted(...nodes: QuestionVote[]): UserBuilder;
+  addQuestionsVoted(...nodes: Builder<QuestionVote>[]): UserBuilder;
+  addQuestionsVoted(
+    ...nodes: ID[] | QuestionVote[] | Builder<QuestionVote>[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addQuestionsVotedID(node);
+      } else if (typeof node === "object") {
+        this.addQuestionsVotedID(node.id);
+      } else {
+        this.addQuestionsVotedID(node);
+      }
+    }
+    return this;
+  }
+
+  addQuestionsVotedID(
+    id: ID | Builder<QuestionVote>,
+    options?: AssocEdgeInputOptions,
+  ): UserBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.UserToQuestionsVoted,
+      NodeType.QuestionVote,
+      options,
+    );
+    return this;
+  }
+
+  removeQuestionsVoted(...ids: ID[]): UserBuilder;
+  removeQuestionsVoted(...nodes: QuestionVote[]): UserBuilder;
+  removeQuestionsVoted(...nodes: ID[] | QuestionVote[]): UserBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.UserToQuestionsVoted,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(
+          node,
+          EdgeType.UserToQuestionsVoted,
+        );
+      }
+    }
+    return this;
+  }
+
   addUserQuestionPrivateNote(...ids: ID[]): UserBuilder;
   addUserQuestionPrivateNote(...nodes: QuestionPrivateNote[]): UserBuilder;
   addUserQuestionPrivateNote(
@@ -600,6 +651,56 @@ export class UserBuilder implements Builder<User> {
         this.orchestrator.removeOutboundEdge(
           node,
           EdgeType.UserToUserQuestionPrivateNotes,
+        );
+      }
+    }
+    return this;
+  }
+
+  addVoterToQuestionsVoted(...ids: ID[]): UserBuilder;
+  addVoterToQuestionsVoted(...nodes: QuestionVote[]): UserBuilder;
+  addVoterToQuestionsVoted(...nodes: Builder<QuestionVote>[]): UserBuilder;
+  addVoterToQuestionsVoted(
+    ...nodes: ID[] | QuestionVote[] | Builder<QuestionVote>[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addVoterToQuestionsVotedID(node);
+      } else if (typeof node === "object") {
+        this.addVoterToQuestionsVotedID(node.id);
+      } else {
+        this.addVoterToQuestionsVotedID(node);
+      }
+    }
+    return this;
+  }
+
+  addVoterToQuestionsVotedID(
+    id: ID | Builder<QuestionVote>,
+    options?: AssocEdgeInputOptions,
+  ): UserBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.UserToVoterToQuestionsVoted,
+      NodeType.QuestionVote,
+      options,
+    );
+    return this;
+  }
+
+  removeVoterToQuestionsVoted(...ids: ID[]): UserBuilder;
+  removeVoterToQuestionsVoted(...nodes: QuestionVote[]): UserBuilder;
+  removeVoterToQuestionsVoted(...nodes: ID[] | QuestionVote[]): UserBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.UserToVoterToQuestionsVoted,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(
+          node,
+          EdgeType.UserToVoterToQuestionsVoted,
         );
       }
     }

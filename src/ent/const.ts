@@ -11,6 +11,8 @@ export enum NodeType {
   QuestionComment = "questionComment",
   // QuestionPrivateNote is the node type for the QuestionPrivateNote object. Used to identify this node in edges and other places.
   QuestionPrivateNote = "questionPrivateNote",
+  // QuestionVote is the node type for the QuestionVote object. Used to identify this node in edges and other places.
+  QuestionVote = "questionVote",
   // User is the node type for the User object. Used to identify this node in edges and other places.
   User = "user",
 }
@@ -22,6 +24,7 @@ export function getNodeTypeValues() {
     NodeType.Question,
     NodeType.QuestionComment,
     NodeType.QuestionPrivateNote,
+    NodeType.QuestionVote,
     NodeType.User,
   ];
 }
@@ -45,6 +48,10 @@ export enum EdgeType {
   QuestionToComments = "1f939a84-c765-4168-a6d1-ac9deea9d34e",
   // QuestionToPrivateNotes is the edgeType for the question to privatenotes edge.
   QuestionToPrivateNotes = "ad37d17b-4319-4192-8a59-6499dd870edb",
+  // QuestionToVotes is the edgeType for the question to votes edge.
+  QuestionToVotes = "67432296-9c50-4b5b-afe0-67d28c6e7776",
+  // QuestionVoteToVoters is the edgeType for the questionVote to voters edge.
+  QuestionVoteToVoters = "ee449750-58df-4a33-a692-d8bf90e70a9d",
   // UserToAuthorToAuthoredAnswerComments is the edgeType for the user to authortoauthoredanswercomments edge.
   UserToAuthorToAuthoredAnswerComments = "21319a5d-1678-4a97-8d9f-e8af198504b2",
   // UserToAuthorToAuthoredAnswers is the edgeType for the user to authortoauthoredanswers edge.
@@ -63,8 +70,12 @@ export enum EdgeType {
   UserToAuthoredQuestions = "eb398e63-df78-40d2-9e86-50a3a788c88f",
   // UserToQuestionPrivateNotes is the edgeType for the user to questionprivatenotes edge.
   UserToQuestionPrivateNotes = "5da8f466-0498-42ed-9f0f-9138223793b9",
+  // UserToQuestionsVoted is the edgeType for the user to questionsvoted edge.
+  UserToQuestionsVoted = "92e68df1-d754-43dd-8e0d-6016f6caaba9",
   // UserToUserQuestionPrivateNotes is the edgeType for the user to userquestionprivatenotes edge.
   UserToUserQuestionPrivateNotes = "fd476c64-01c5-44b3-859b-a15dc450d1f9",
+  // UserToVoterToQuestionsVoted is the edgeType for the user to votertoquestionsvoted edge.
+  UserToVoterToQuestionsVoted = "f0d2fac2-6682-4150-aa90-b42749eae9d0",
 }
 
 export function getEdgeTypeValues() {
@@ -78,6 +89,8 @@ export function getEdgeTypeValues() {
     EdgeType.QuestionToAuthors,
     EdgeType.QuestionToComments,
     EdgeType.QuestionToPrivateNotes,
+    EdgeType.QuestionToVotes,
+    EdgeType.QuestionVoteToVoters,
     EdgeType.UserToAuthorToAuthoredAnswerComments,
     EdgeType.UserToAuthorToAuthoredAnswers,
     EdgeType.UserToAuthorToAuthoredQuestionComments,
@@ -87,6 +100,8 @@ export function getEdgeTypeValues() {
     EdgeType.UserToAuthoredQuestionComments,
     EdgeType.UserToAuthoredQuestions,
     EdgeType.UserToQuestionPrivateNotes,
+    EdgeType.UserToQuestionsVoted,
     EdgeType.UserToUserQuestionPrivateNotes,
+    EdgeType.UserToVoterToQuestionsVoted,
   ];
 }

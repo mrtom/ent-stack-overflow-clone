@@ -168,6 +168,41 @@ sa.Table("question_private_notes_edges", metadata,
     sa.Index("question_private_notes_edges_time_idx", "time"),
 )
    
+sa.Table("question_vote_voters_edges", metadata,
+    sa.Column("id1", postgresql.UUID(), nullable=False),
+    sa.Column("id1_type", sa.Text(), nullable=False),
+    sa.Column("edge_type", postgresql.UUID(), nullable=False),
+    sa.Column("id2", postgresql.UUID(), nullable=False),
+    sa.Column("id2_type", sa.Text(), nullable=False),
+    sa.Column("time", sa.TIMESTAMP(), nullable=False),
+    sa.Column("data", sa.Text(), nullable=True),
+    sa.PrimaryKeyConstraint("id1", "edge_type", "id2", name="question_vote_voters_edges_id1_edge_type_id2_pkey"),
+    sa.Index("question_vote_voters_edges_time_idx", "time"),
+)
+   
+sa.Table("question_votes", metadata,
+    sa.Column("id", postgresql.UUID(), nullable=False),
+    sa.Column("created_at", sa.TIMESTAMP(), nullable=False),
+    sa.Column("updated_at", sa.TIMESTAMP(), nullable=False),
+    sa.Column("vote_type", postgresql.ENUM("up", "down", name="vote_type"), nullable=False),
+    sa.Column("question_id", postgresql.UUID(), nullable=False),
+    sa.Column("user_id", postgresql.UUID(), nullable=False),
+    sa.PrimaryKeyConstraint("id", name="question_votes_id_pkey"),
+    sa.UniqueConstraint("user_id", "question_id", name="uniqueVoter"),
+)
+   
+sa.Table("question_votes_edges", metadata,
+    sa.Column("id1", postgresql.UUID(), nullable=False),
+    sa.Column("id1_type", sa.Text(), nullable=False),
+    sa.Column("edge_type", postgresql.UUID(), nullable=False),
+    sa.Column("id2", postgresql.UUID(), nullable=False),
+    sa.Column("id2_type", sa.Text(), nullable=False),
+    sa.Column("time", sa.TIMESTAMP(), nullable=False),
+    sa.Column("data", sa.Text(), nullable=True),
+    sa.PrimaryKeyConstraint("id1", "edge_type", "id2", name="question_votes_edges_id1_edge_type_id2_pkey"),
+    sa.Index("question_votes_edges_time_idx", "time"),
+)
+   
 sa.Table("questions", metadata,
     sa.Column("id", postgresql.UUID(), nullable=False),
     sa.Column("created_at", sa.TIMESTAMP(), nullable=False),
@@ -241,6 +276,18 @@ sa.Table("user_question_private_notes_edges", metadata,
     sa.Index("user_question_private_notes_edges_time_idx", "time"),
 )
    
+sa.Table("user_questions_voted_edges", metadata,
+    sa.Column("id1", postgresql.UUID(), nullable=False),
+    sa.Column("id1_type", sa.Text(), nullable=False),
+    sa.Column("edge_type", postgresql.UUID(), nullable=False),
+    sa.Column("id2", postgresql.UUID(), nullable=False),
+    sa.Column("id2_type", sa.Text(), nullable=False),
+    sa.Column("time", sa.TIMESTAMP(), nullable=False),
+    sa.Column("data", sa.Text(), nullable=True),
+    sa.PrimaryKeyConstraint("id1", "edge_type", "id2", name="user_questions_voted_edges_id1_edge_type_id2_pkey"),
+    sa.Index("user_questions_voted_edges_time_idx", "time"),
+)
+   
 sa.Table("users", metadata,
     sa.Column("id", postgresql.UUID(), nullable=False),
     sa.Column("created_at", sa.TIMESTAMP(), nullable=False),
@@ -267,6 +314,8 @@ metadata.info["edges"] = {
     'QuestionToAuthorsEdge': {"edge_name":"QuestionToAuthorsEdge", "edge_type":"dbdae75e-1072-438e-8713-4f4284b289ad", "edge_table":"question_authors_edges", "symmetric_edge":False, "inverse_edge_type":"f5f98bc4-94ed-4b3d-88b5-628992440185"},
     'QuestionToCommentsEdge': {"edge_name":"QuestionToCommentsEdge", "edge_type":"1f939a84-c765-4168-a6d1-ac9deea9d34e", "edge_table":"question_comments_edges", "symmetric_edge":False, "inverse_edge_type":None},
     'QuestionToPrivateNotesEdge': {"edge_name":"QuestionToPrivateNotesEdge", "edge_type":"ad37d17b-4319-4192-8a59-6499dd870edb", "edge_table":"question_private_notes_edges", "symmetric_edge":False, "inverse_edge_type":None},
+    'QuestionToVotesEdge': {"edge_name":"QuestionToVotesEdge", "edge_type":"67432296-9c50-4b5b-afe0-67d28c6e7776", "edge_table":"question_votes_edges", "symmetric_edge":False, "inverse_edge_type":None},
+    'QuestionVoteToVotersEdge': {"edge_name":"QuestionVoteToVotersEdge", "edge_type":"ee449750-58df-4a33-a692-d8bf90e70a9d", "edge_table":"question_vote_voters_edges", "symmetric_edge":False, "inverse_edge_type":"f0d2fac2-6682-4150-aa90-b42749eae9d0"},
     'UserToAuthorToAuthoredAnswerCommentsEdge': {"edge_name":"UserToAuthorToAuthoredAnswerCommentsEdge", "edge_type":"21319a5d-1678-4a97-8d9f-e8af198504b2", "edge_table":"answer_comments_authors_edges", "symmetric_edge":False, "inverse_edge_type":"39bfd663-0fd1-4268-aed3-8978ac3af5f9"},
     'UserToAuthorToAuthoredAnswersEdge': {"edge_name":"UserToAuthorToAuthoredAnswersEdge", "edge_type":"334a0a65-f4bf-4119-b1b8-7e60e86c5374", "edge_table":"answer_authors_edges", "symmetric_edge":False, "inverse_edge_type":"6226f374-ada1-4acb-a1d3-f0f3e1603ba6"},
     'UserToAuthorToAuthoredQuestionCommentsEdge': {"edge_name":"UserToAuthorToAuthoredQuestionCommentsEdge", "edge_type":"1888c833-ad80-4f06-846b-96fab877b50b", "edge_table":"question_comment_authors_edges", "symmetric_edge":False, "inverse_edge_type":"1daa71ae-916d-45d5-b86a-91de3dc33356"},
@@ -277,7 +326,9 @@ metadata.info["edges"] = {
     'UserToAuthoredQuestionsEdge': {"edge_name":"UserToAuthoredQuestionsEdge", "edge_type":"eb398e63-df78-40d2-9e86-50a3a788c88f", "edge_table":"question_authors_edges", "symmetric_edge":False, "inverse_edge_type":"dbdae75e-1072-438e-8713-4f4284b289ad"},
     'UserToPrivateNotesEdge': {"edge_name":"UserToPrivateNotesEdge", "edge_type":"cb788bf0-b768-4f8d-a7eb-72138d5ca98a", "edge_table":"user_private_notes_edges", "symmetric_edge":False, "inverse_edge_type":None},
     'UserToQuestionPrivateNotesEdge': {"edge_name":"UserToQuestionPrivateNotesEdge", "edge_type":"5da8f466-0498-42ed-9f0f-9138223793b9", "edge_table":"user_question_private_notes_edges", "symmetric_edge":False, "inverse_edge_type":None},
+    'UserToQuestionsVotedEdge': {"edge_name":"UserToQuestionsVotedEdge", "edge_type":"92e68df1-d754-43dd-8e0d-6016f6caaba9", "edge_table":"user_questions_voted_edges", "symmetric_edge":False, "inverse_edge_type":None},
     'UserToUserQuestionPrivateNotesEdge': {"edge_name":"UserToUserQuestionPrivateNotesEdge", "edge_type":"fd476c64-01c5-44b3-859b-a15dc450d1f9", "edge_table":"question_private_note_authors_edges", "symmetric_edge":False, "inverse_edge_type":"33c7d9f9-c700-466b-b278-e40b887f7ac4"},
+    'UserToVoterToQuestionsVotedEdge': {"edge_name":"UserToVoterToQuestionsVotedEdge", "edge_type":"f0d2fac2-6682-4150-aa90-b42749eae9d0", "edge_table":"question_vote_voters_edges", "symmetric_edge":False, "inverse_edge_type":"ee449750-58df-4a33-a692-d8bf90e70a9d"},
   }
 }
 

@@ -40,6 +40,10 @@ export default class User extends BaseEntSchema {
       name: "questionPrivateNotes",
       schemaName: "QuestionPrivateNote",
     },
+    {
+      name: "questionsVoted",
+      schemaName: "QuestionVote",
+    },
   ];
 
   actions: Action[] = [
