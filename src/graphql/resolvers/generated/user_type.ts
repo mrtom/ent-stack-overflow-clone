@@ -16,6 +16,7 @@ import {
 } from "@snowtop/ent/graphql";
 import {
   User,
+  UserToAnswersVotedQuery,
   UserToAuthorToAuthoredAnswerCommentsQuery,
   UserToAuthorToAuthoredAnswersQuery,
   UserToAuthorToAuthoredQuestionCommentsQuery,
@@ -27,9 +28,11 @@ import {
   UserToQuestionPrivateNotesQuery,
   UserToQuestionsVotedQuery,
   UserToUserQuestionPrivateNotesQuery,
+  UserToVoterToAnswersVotedQuery,
   UserToVoterToQuestionsVotedQuery,
 } from "src/ent/";
 import {
+  UserToAnswersVotedConnectionType,
   UserToAuthorToAuthoredAnswerCommentsConnectionType,
   UserToAuthorToAuthoredAnswersConnectionType,
   UserToAuthorToAuthoredQuestionCommentsConnectionType,
@@ -42,6 +45,7 @@ import {
   UserToQuestionsFeedConnectionType,
   UserToQuestionsVotedConnectionType,
   UserToUserQuestionPrivateNotesConnectionType,
+  UserToVoterToAnswersVotedConnectionType,
   UserToVoterToQuestionsVotedConnectionType,
 } from "src/graphql/resolvers/internal";
 
@@ -63,6 +67,35 @@ export const UserType = new GraphQLObjectType({
     },
     emailAddress: {
       type: GraphQLNonNull(GraphQLString),
+    },
+    answersVoted: {
+      type: GraphQLNonNull(UserToAnswersVotedConnectionType()),
+      args: {
+        first: {
+          description: "",
+          type: GraphQLInt,
+        },
+        after: {
+          description: "",
+          type: GraphQLString,
+        },
+        last: {
+          description: "",
+          type: GraphQLInt,
+        },
+        before: {
+          description: "",
+          type: GraphQLString,
+        },
+      },
+      resolve: (user: User, args: {}, context: RequestContext) => {
+        return new GraphQLEdgeConnection(
+          user.viewer,
+          user,
+          (v, user: User) => UserToAnswersVotedQuery.query(v, user),
+          args,
+        );
+      },
     },
     authorToAuthoredAnswerComments: {
       type: GraphQLNonNull(
@@ -386,6 +419,35 @@ export const UserType = new GraphQLObjectType({
           user.viewer,
           user,
           (v, user: User) => UserToUserQuestionPrivateNotesQuery.query(v, user),
+          args,
+        );
+      },
+    },
+    voterToAnswersVoted: {
+      type: GraphQLNonNull(UserToVoterToAnswersVotedConnectionType()),
+      args: {
+        first: {
+          description: "",
+          type: GraphQLInt,
+        },
+        after: {
+          description: "",
+          type: GraphQLString,
+        },
+        last: {
+          description: "",
+          type: GraphQLInt,
+        },
+        before: {
+          description: "",
+          type: GraphQLString,
+        },
+      },
+      resolve: (user: User, args: {}, context: RequestContext) => {
+        return new GraphQLEdgeConnection(
+          user.viewer,
+          user,
+          (v, user: User) => UserToVoterToAnswersVotedQuery.query(v, user),
           args,
         );
       },

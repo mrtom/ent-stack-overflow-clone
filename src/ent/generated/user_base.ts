@@ -24,6 +24,7 @@ import { Field, getFields } from "@snowtop/ent/schema";
 import {
   EdgeType,
   NodeType,
+  UserToAnswersVotedQuery,
   UserToAuthorToAuthoredAnswerCommentsQuery,
   UserToAuthorToAuthoredAnswersQuery,
   UserToAuthorToAuthoredQuestionCommentsQuery,
@@ -35,6 +36,7 @@ import {
   UserToQuestionPrivateNotesQuery,
   UserToQuestionsVotedQuery,
   UserToUserQuestionPrivateNotesQuery,
+  UserToVoterToAnswersVotedQuery,
   UserToVoterToQuestionsVotedQuery,
 } from "src/ent/internal";
 import schema from "src/schema/user";
@@ -203,6 +205,10 @@ export class UserBase {
     return UserBase.getSchemaFields().get(key);
   }
 
+  queryAnswersVoted(): UserToAnswersVotedQuery {
+    return UserToAnswersVotedQuery.query(this.viewer, this.id);
+  }
+
   queryAuthorToAuthoredAnswerComments(): UserToAuthorToAuthoredAnswerCommentsQuery {
     return UserToAuthorToAuthoredAnswerCommentsQuery.query(
       this.viewer,
@@ -251,6 +257,10 @@ export class UserBase {
 
   queryUserQuestionPrivateNotes(): UserToUserQuestionPrivateNotesQuery {
     return UserToUserQuestionPrivateNotesQuery.query(this.viewer, this.id);
+  }
+
+  queryVoterToAnswersVoted(): UserToVoterToAnswersVotedQuery {
+    return UserToVoterToAnswersVotedQuery.query(this.viewer, this.id);
   }
 
   queryVoterToQuestionsVoted(): UserToVoterToQuestionsVotedQuery {

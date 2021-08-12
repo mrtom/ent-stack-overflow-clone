@@ -7,7 +7,7 @@ import { Trigger, Validator } from "@snowtop/ent/action";
 
 import { Question, QuestionVote, User, VoteType } from "src/ent";
 import { QuestionVoteBuilder } from "src/ent/question_vote/actions/question_vote_builder";
-import { QuestionVoteVoterValidator } from "src/ent/question_vote/actions/validators/question_event_validators";
+import { QuestionVoteVoterValidator } from "src/ent/question_vote/actions/validators/question_vote_validators";
 import {
   CreateQuestionVoteActionBase,
   QuestionVoteCreateInput,

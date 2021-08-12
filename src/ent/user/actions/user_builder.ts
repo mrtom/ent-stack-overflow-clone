@@ -13,6 +13,7 @@ import {
 import {
   Answer,
   AnswerComment,
+  AnswerVote,
   Question,
   QuestionComment,
   QuestionPrivateNote,
@@ -89,6 +90,53 @@ export class UserBuilder implements Builder<User> {
   clearInputEdges(edgeType: EdgeType, op: WriteOperation, id?: ID) {
     this.orchestrator.clearInputEdges(edgeType, op, id);
   }
+  addAnswersVoted(...ids: ID[]): UserBuilder;
+  addAnswersVoted(...nodes: AnswerVote[]): UserBuilder;
+  addAnswersVoted(...nodes: Builder<AnswerVote>[]): UserBuilder;
+  addAnswersVoted(
+    ...nodes: ID[] | AnswerVote[] | Builder<AnswerVote>[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addAnswersVotedID(node);
+      } else if (typeof node === "object") {
+        this.addAnswersVotedID(node.id);
+      } else {
+        this.addAnswersVotedID(node);
+      }
+    }
+    return this;
+  }
+
+  addAnswersVotedID(
+    id: ID | Builder<AnswerVote>,
+    options?: AssocEdgeInputOptions,
+  ): UserBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.UserToAnswersVoted,
+      NodeType.AnswerVote,
+      options,
+    );
+    return this;
+  }
+
+  removeAnswersVoted(...ids: ID[]): UserBuilder;
+  removeAnswersVoted(...nodes: AnswerVote[]): UserBuilder;
+  removeAnswersVoted(...nodes: ID[] | AnswerVote[]): UserBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.UserToAnswersVoted,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(node, EdgeType.UserToAnswersVoted);
+      }
+    }
+    return this;
+  }
+
   addAuthorToAuthoredAnswerComment(...ids: ID[]): UserBuilder;
   addAuthorToAuthoredAnswerComment(...nodes: AnswerComment[]): UserBuilder;
   addAuthorToAuthoredAnswerComment(
@@ -651,6 +699,56 @@ export class UserBuilder implements Builder<User> {
         this.orchestrator.removeOutboundEdge(
           node,
           EdgeType.UserToUserQuestionPrivateNotes,
+        );
+      }
+    }
+    return this;
+  }
+
+  addVoterToAnswersVoted(...ids: ID[]): UserBuilder;
+  addVoterToAnswersVoted(...nodes: AnswerVote[]): UserBuilder;
+  addVoterToAnswersVoted(...nodes: Builder<AnswerVote>[]): UserBuilder;
+  addVoterToAnswersVoted(
+    ...nodes: ID[] | AnswerVote[] | Builder<AnswerVote>[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addVoterToAnswersVotedID(node);
+      } else if (typeof node === "object") {
+        this.addVoterToAnswersVotedID(node.id);
+      } else {
+        this.addVoterToAnswersVotedID(node);
+      }
+    }
+    return this;
+  }
+
+  addVoterToAnswersVotedID(
+    id: ID | Builder<AnswerVote>,
+    options?: AssocEdgeInputOptions,
+  ): UserBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.UserToVoterToAnswersVoted,
+      NodeType.AnswerVote,
+      options,
+    );
+    return this;
+  }
+
+  removeVoterToAnswersVoted(...ids: ID[]): UserBuilder;
+  removeVoterToAnswersVoted(...nodes: AnswerVote[]): UserBuilder;
+  removeVoterToAnswersVoted(...nodes: ID[] | AnswerVote[]): UserBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.UserToVoterToAnswersVoted,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(
+          node,
+          EdgeType.UserToVoterToAnswersVoted,
         );
       }
     }

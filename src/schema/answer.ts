@@ -48,6 +48,10 @@ export default class Answer extends BaseEntSchema implements Schema {
       name: "comments",
       schemaName: "AnswerComment",
     },
+    {
+      name: "votes",
+      schemaName: "AnswerVote",
+    },
   ];
 
   actions: Action[] = [

@@ -10,7 +10,7 @@ import {
   saveBuilder,
   saveBuilderX,
 } from "@snowtop/ent/action";
-import { Answer, AnswerComment, Question, User } from "src/ent/";
+import { Answer, AnswerComment, AnswerVote, Question, User } from "src/ent/";
 import { EdgeType, NodeType } from "src/ent/const";
 import schema from "src/schema/answer";
 
@@ -164,6 +164,50 @@ export class AnswerBuilder implements Builder<Answer> {
         );
       } else {
         this.orchestrator.removeOutboundEdge(node, EdgeType.AnswerToComments);
+      }
+    }
+    return this;
+  }
+
+  addVote(...ids: ID[]): AnswerBuilder;
+  addVote(...nodes: AnswerVote[]): AnswerBuilder;
+  addVote(...nodes: Builder<AnswerVote>[]): AnswerBuilder;
+  addVote(
+    ...nodes: ID[] | AnswerVote[] | Builder<AnswerVote>[]
+  ): AnswerBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addVoteID(node);
+      } else if (typeof node === "object") {
+        this.addVoteID(node.id);
+      } else {
+        this.addVoteID(node);
+      }
+    }
+    return this;
+  }
+
+  addVoteID(
+    id: ID | Builder<AnswerVote>,
+    options?: AssocEdgeInputOptions,
+  ): AnswerBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.AnswerToVotes,
+      NodeType.AnswerVote,
+      options,
+    );
+    return this;
+  }
+
+  removeVote(...ids: ID[]): AnswerBuilder;
+  removeVote(...nodes: AnswerVote[]): AnswerBuilder;
+  removeVote(...nodes: ID[] | AnswerVote[]): AnswerBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(node.id, EdgeType.AnswerToVotes);
+      } else {
+        this.orchestrator.removeOutboundEdge(node, EdgeType.AnswerToVotes);
       }
     }
     return this;

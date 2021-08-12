@@ -11,6 +11,7 @@ import {
 import {
   Answer,
   AnswerComment,
+  AnswerVote,
   Question,
   QuestionComment,
   QuestionPrivateNote,
@@ -41,6 +42,8 @@ export function getLoaderOptions(type: NodeType): LoadEntOptions<Ent> {
       return Answer.loaderOptions();
     case NodeType.AnswerComment:
       return AnswerComment.loaderOptions();
+    case NodeType.AnswerVote:
+      return AnswerVote.loaderOptions();
     case NodeType.Question:
       return Question.loaderOptions();
     case NodeType.QuestionComment:

@@ -13,6 +13,9 @@ import {
   AnswerCommentToAuthorsQuery,
   AnswerToAuthorsQuery,
   AnswerToCommentsQuery,
+  AnswerToVotesQuery,
+  AnswerVote,
+  AnswerVoteToVotersQuery,
   EdgeType,
   Question,
   QuestionComment,
@@ -27,6 +30,7 @@ import {
   QuestionVote,
   QuestionVoteToVotersQuery,
   User,
+  UserToAnswersVotedEdge,
   UserToAuthorToAuthoredAnswerCommentsEdge,
   UserToAuthorToAuthoredAnswersEdge,
   UserToAuthorToAuthoredQuestionCommentsEdge,
@@ -38,8 +42,16 @@ import {
   UserToQuestionPrivateNotesEdge,
   UserToQuestionsVotedEdge,
   UserToUserQuestionPrivateNotesEdge,
+  UserToVoterToAnswersVotedEdge,
   UserToVoterToQuestionsVotedEdge,
 } from "src/ent/internal";
+
+export const userToAnswersVotedCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.UserToAnswersVoted);
+export const userToAnswersVotedDataLoaderFactory = new AssocEdgeLoaderFactory(
+  EdgeType.UserToAnswersVoted,
+  () => UserToAnswersVotedEdge,
+);
 
 export const userToAuthorToAuthoredAnswerCommentsCountLoaderFactory =
   new AssocEdgeCountLoaderFactory(
@@ -132,6 +144,14 @@ export const userToUserQuestionPrivateNotesDataLoaderFactory =
     () => UserToUserQuestionPrivateNotesEdge,
   );
 
+export const userToVoterToAnswersVotedCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.UserToVoterToAnswersVoted);
+export const userToVoterToAnswersVotedDataLoaderFactory =
+  new AssocEdgeLoaderFactory(
+    EdgeType.UserToVoterToAnswersVoted,
+    () => UserToVoterToAnswersVotedEdge,
+  );
+
 export const userToVoterToQuestionsVotedCountLoaderFactory =
   new AssocEdgeCountLoaderFactory(EdgeType.UserToVoterToQuestionsVoted);
 export const userToVoterToQuestionsVotedDataLoaderFactory =
@@ -139,6 +159,34 @@ export const userToVoterToQuestionsVotedDataLoaderFactory =
     EdgeType.UserToVoterToQuestionsVoted,
     () => UserToVoterToQuestionsVotedEdge,
   );
+
+export class UserToAnswersVotedQueryBase extends AssocEdgeQueryBase<
+  User,
+  AnswerVote,
+  UserToAnswersVotedEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<User>) {
+    super(
+      viewer,
+      src,
+      userToAnswersVotedCountLoaderFactory,
+      userToAnswersVotedDataLoaderFactory,
+      AnswerVote.loaderOptions(),
+    );
+  }
+
+  static query<T extends UserToAnswersVotedQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<User>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<User>,
+  ): T {
+    return new this(viewer, src);
+  }
+
+  queryVoters(): AnswerVoteToVotersQuery {
+    return AnswerVoteToVotersQuery.query(this.viewer, this);
+  }
+}
 
 export class UserToAuthorToAuthoredAnswerCommentsQueryBase extends AssocEdgeQueryBase<
   User,
@@ -197,6 +245,10 @@ export class UserToAuthorToAuthoredAnswersQueryBase extends AssocEdgeQueryBase<
 
   queryComments(): AnswerToCommentsQuery {
     return AnswerToCommentsQuery.query(this.viewer, this);
+  }
+
+  queryVotes(): AnswerToVotesQuery {
+    return AnswerToVotesQuery.query(this.viewer, this);
   }
 }
 
@@ -329,6 +381,10 @@ export class UserToAuthoredAnswersQueryBase extends AssocEdgeQueryBase<
 
   queryComments(): AnswerToCommentsQuery {
     return AnswerToCommentsQuery.query(this.viewer, this);
+  }
+
+  queryVotes(): AnswerToVotesQuery {
+    return AnswerToVotesQuery.query(this.viewer, this);
   }
 }
 
@@ -485,6 +541,34 @@ export class UserToUserQuestionPrivateNotesQueryBase extends AssocEdgeQueryBase<
 
   queryAuthors(): QuestionPrivateNoteToAuthorsQuery {
     return QuestionPrivateNoteToAuthorsQuery.query(this.viewer, this);
+  }
+}
+
+export class UserToVoterToAnswersVotedQueryBase extends AssocEdgeQueryBase<
+  User,
+  AnswerVote,
+  UserToVoterToAnswersVotedEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<User>) {
+    super(
+      viewer,
+      src,
+      userToVoterToAnswersVotedCountLoaderFactory,
+      userToVoterToAnswersVotedDataLoaderFactory,
+      AnswerVote.loaderOptions(),
+    );
+  }
+
+  static query<T extends UserToVoterToAnswersVotedQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<User>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<User>,
+  ): T {
+    return new this(viewer, src);
+  }
+
+  queryVoters(): AnswerVoteToVotersQuery {
+    return AnswerVoteToVotersQuery.query(this.viewer, this);
   }
 }
 

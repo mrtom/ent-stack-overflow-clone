@@ -8,9 +8,9 @@ import {
   Viewer,
 } from "@snowtop/ent";
 import {
+  AnswerVote,
+  AnswerVoteToVotersEdge,
   EdgeType,
-  QuestionComment,
-  QuestionCommentToAuthorsEdge,
   User,
   UserToAnswersVotedQuery,
   UserToAuthorToAuthoredAnswerCommentsQuery,
@@ -28,33 +28,32 @@ import {
   UserToVoterToQuestionsVotedQuery,
 } from "src/ent/internal";
 
-export const questionCommentToAuthorsCountLoaderFactory =
-  new AssocEdgeCountLoaderFactory(EdgeType.QuestionCommentToAuthors);
-export const questionCommentToAuthorsDataLoaderFactory =
-  new AssocEdgeLoaderFactory(
-    EdgeType.QuestionCommentToAuthors,
-    () => QuestionCommentToAuthorsEdge,
-  );
+export const answerVoteToVotersCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.AnswerVoteToVoters);
+export const answerVoteToVotersDataLoaderFactory = new AssocEdgeLoaderFactory(
+  EdgeType.AnswerVoteToVoters,
+  () => AnswerVoteToVotersEdge,
+);
 
-export class QuestionCommentToAuthorsQueryBase extends AssocEdgeQueryBase<
-  QuestionComment,
+export class AnswerVoteToVotersQueryBase extends AssocEdgeQueryBase<
+  AnswerVote,
   User,
-  QuestionCommentToAuthorsEdge
+  AnswerVoteToVotersEdge
 > {
-  constructor(viewer: Viewer, src: EdgeQuerySource<QuestionComment>) {
+  constructor(viewer: Viewer, src: EdgeQuerySource<AnswerVote>) {
     super(
       viewer,
       src,
-      questionCommentToAuthorsCountLoaderFactory,
-      questionCommentToAuthorsDataLoaderFactory,
+      answerVoteToVotersCountLoaderFactory,
+      answerVoteToVotersDataLoaderFactory,
       User.loaderOptions(),
     );
   }
 
-  static query<T extends QuestionCommentToAuthorsQueryBase>(
-    this: new (viewer: Viewer, src: EdgeQuerySource<QuestionComment>) => T,
+  static query<T extends AnswerVoteToVotersQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<AnswerVote>) => T,
     viewer: Viewer,
-    src: EdgeQuerySource<QuestionComment>,
+    src: EdgeQuerySource<AnswerVote>,
   ): T {
     return new this(viewer, src);
   }

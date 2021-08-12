@@ -11,6 +11,10 @@ import { AnswerCommentCreateType } from "src/graphql/mutations/generated/answer_
 import { AnswerCommentDeleteType } from "src/graphql/mutations/generated/answer_comment/answer_comment_delete_type";
 import { AnswerCommentEditType } from "src/graphql/mutations/generated/answer_comment/answer_comment_edit_type";
 import { AnswerCommentRemoveAuthorType } from "src/graphql/mutations/generated/answer_comment/answer_comment_remove_author_type";
+import { AnswerVoteAddVoterType } from "src/graphql/mutations/generated/answer_vote/answer_vote_add_voter_type";
+import { AnswerVoteCreateType } from "src/graphql/mutations/generated/answer_vote/answer_vote_create_type";
+import { AnswerVoteDeleteType } from "src/graphql/mutations/generated/answer_vote/answer_vote_delete_type";
+import { AnswerVoteRemoveVoterType } from "src/graphql/mutations/generated/answer_vote/answer_vote_remove_voter_type";
 import { QuestionAddAuthorType } from "src/graphql/mutations/generated/question/question_add_author_type";
 import { QuestionAnsweredEditType } from "src/graphql/mutations/generated/question/question_answered_edit_type";
 import { QuestionCreateType } from "src/graphql/mutations/generated/question/question_create_type";
@@ -47,6 +51,10 @@ export const MutationType = new GraphQLObjectType({
     answerDelete: AnswerDeleteType,
     answerEdit: AnswerEditType,
     answerRemoveAuthor: AnswerRemoveAuthorType,
+    answerVoteAddVoter: AnswerVoteAddVoterType,
+    answerVoteCreate: AnswerVoteCreateType,
+    answerVoteDelete: AnswerVoteDeleteType,
+    answerVoteRemoveVoter: AnswerVoteRemoveVoterType,
     questionAddAuthor: QuestionAddAuthorType,
     questionAnsweredEdit: QuestionAnsweredEditType,
     questionCommentAddAuthor: QuestionCommentAddAuthorType,

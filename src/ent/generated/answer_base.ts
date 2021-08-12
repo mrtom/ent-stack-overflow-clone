@@ -23,6 +23,7 @@ import { Field, getFields } from "@snowtop/ent/schema";
 import {
   AnswerToAuthorsQuery,
   AnswerToCommentsQuery,
+  AnswerToVotesQuery,
   EdgeType,
   NodeType,
   Question,
@@ -154,6 +155,10 @@ export class AnswerBase {
 
   queryComments(): AnswerToCommentsQuery {
     return AnswerToCommentsQuery.query(this.viewer, this.id);
+  }
+
+  queryVotes(): AnswerToVotesQuery {
+    return AnswerToVotesQuery.query(this.viewer, this.id);
   }
 
   async loadAuthor(): Promise<User | null> {

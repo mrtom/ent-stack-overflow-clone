@@ -41,6 +41,22 @@ import {
   AnswerCommentRemoveAuthorInputType,
   AnswerCommentRemoveAuthorPayloadType,
 } from "src/graphql/mutations/generated/answer_comment/answer_comment_remove_author_type";
+import {
+  AnswerVoteAddVoterInputType,
+  AnswerVoteAddVoterPayloadType,
+} from "src/graphql/mutations/generated/answer_vote/answer_vote_add_voter_type";
+import {
+  AnswerVoteCreateInputType,
+  AnswerVoteCreatePayloadType,
+} from "src/graphql/mutations/generated/answer_vote/answer_vote_create_type";
+import {
+  AnswerVoteDeleteInputType,
+  AnswerVoteDeletePayloadType,
+} from "src/graphql/mutations/generated/answer_vote/answer_vote_delete_type";
+import {
+  AnswerVoteRemoveVoterInputType,
+  AnswerVoteRemoveVoterPayloadType,
+} from "src/graphql/mutations/generated/answer_vote/answer_vote_remove_voter_type";
 import { MutationType } from "src/graphql/mutations/generated/mutation_type";
 import {
   QuestionAddAuthorInputType,
@@ -136,7 +152,11 @@ import {
   AnswerCommentType,
   AnswerToAuthorsConnectionType,
   AnswerToCommentsConnectionType,
+  AnswerToVotesConnectionType,
   AnswerType,
+  AnswerVoteToVotersConnectionType,
+  AnswerVoteType,
+  AnswerVoteTypeType,
   QuestionCommentToAuthorsConnectionType,
   QuestionCommentType,
   QuestionPrivateNoteToAuthorsConnectionType,
@@ -149,6 +169,7 @@ import {
   QuestionType,
   QuestionVoteToVotersConnectionType,
   QuestionVoteType,
+  UserToAnswersVotedConnectionType,
   UserToAuthorToAuthoredAnswerCommentsConnectionType,
   UserToAuthorToAuthoredAnswersConnectionType,
   UserToAuthorToAuthoredQuestionCommentsConnectionType,
@@ -161,6 +182,7 @@ import {
   UserToQuestionsFeedConnectionType,
   UserToQuestionsVotedConnectionType,
   UserToUserQuestionPrivateNotesConnectionType,
+  UserToVoterToAnswersVotedConnectionType,
   UserToVoterToQuestionsVotedConnectionType,
   UserType,
   ViewerTypeType,
@@ -171,9 +193,11 @@ export default new GraphQLSchema({
   query: QueryType,
   mutation: MutationType,
   types: [
+    AnswerVoteTypeType,
     VoteTypeType,
     AnswerCommentType,
     AnswerType,
+    AnswerVoteType,
     QuestionCommentType,
     QuestionPrivateNoteType,
     QuestionType,
@@ -182,6 +206,8 @@ export default new GraphQLSchema({
     AnswerCommentToAuthorsConnectionType(),
     AnswerToAuthorsConnectionType(),
     AnswerToCommentsConnectionType(),
+    AnswerToVotesConnectionType(),
+    AnswerVoteToVotersConnectionType(),
     QuestionCommentToAuthorsConnectionType(),
     QuestionPrivateNoteToAuthorsConnectionType(),
     QuestionToAnswersConnectionType(),
@@ -190,6 +216,7 @@ export default new GraphQLSchema({
     QuestionToPrivateNotesConnectionType(),
     QuestionToVotesConnectionType(),
     QuestionVoteToVotersConnectionType(),
+    UserToAnswersVotedConnectionType(),
     UserToAuthorToAuthoredAnswerCommentsConnectionType(),
     UserToAuthorToAuthoredAnswersConnectionType(),
     UserToAuthorToAuthoredQuestionCommentsConnectionType(),
@@ -202,6 +229,7 @@ export default new GraphQLSchema({
     UserToQuestionsFeedConnectionType(),
     UserToQuestionsVotedConnectionType(),
     UserToUserQuestionPrivateNotesConnectionType(),
+    UserToVoterToAnswersVotedConnectionType(),
     UserToVoterToQuestionsVotedConnectionType(),
     ViewerTypeType,
     UserAuthJWTInputType,
@@ -226,6 +254,14 @@ export default new GraphQLSchema({
     AnswerEditPayloadType,
     AnswerRemoveAuthorInputType,
     AnswerRemoveAuthorPayloadType,
+    AnswerVoteAddVoterInputType,
+    AnswerVoteAddVoterPayloadType,
+    AnswerVoteCreateInputType,
+    AnswerVoteCreatePayloadType,
+    AnswerVoteDeleteInputType,
+    AnswerVoteDeletePayloadType,
+    AnswerVoteRemoveVoterInputType,
+    AnswerVoteRemoveVoterPayloadType,
     QuestionAddAuthorInputType,
     QuestionAddAuthorPayloadType,
     QuestionAnsweredEditInputType,
