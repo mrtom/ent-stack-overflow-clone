@@ -671,7 +671,6 @@ type QuestionCommentRemoveAuthorPayload {
 input QuestionCreateInput {
   title: String!
   questionBody: String!
-  authorID: ID!
 }
 
 type QuestionCreatePayload {

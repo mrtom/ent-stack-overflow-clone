@@ -22,6 +22,7 @@ export default class Question extends BaseEntSchema implements Schema {
       name: "authorID",
       fieldEdge: { schema: "User", inverseEdge: "authoredQuestions" },
       storageKey: "user_id",
+      defaultToViewerOnCreate: true,
     }),
   ];
 
@@ -62,7 +63,7 @@ export default class Question extends BaseEntSchema implements Schema {
   actions: Action[] = [
     {
       operation: ActionOperation.Create,
-      fields: ["title", "questionBody", "authorID"],
+      fields: ["title", "questionBody"],
     },
     {
       operation: ActionOperation.Edit,

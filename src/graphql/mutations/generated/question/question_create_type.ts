@@ -3,7 +3,6 @@
 import {
   GraphQLFieldConfig,
   GraphQLFieldConfigMap,
-  GraphQLID,
   GraphQLInputFieldConfigMap,
   GraphQLInputObjectType,
   GraphQLNonNull,
@@ -12,16 +11,11 @@ import {
   GraphQLString,
 } from "graphql";
 import { RequestContext } from "@snowtop/ent";
-import { mustDecodeIDFromGQLID } from "@snowtop/ent/graphql";
 import { Question } from "src/ent/";
 import CreateQuestionAction, {
   QuestionCreateInput,
 } from "src/ent/question/actions/create_question_action";
 import { QuestionType } from "src/graphql/resolvers/";
-
-interface customQuestionCreateInput extends QuestionCreateInput {
-  authorID: string;
-}
 
 interface QuestionCreatePayload {
   question: Question;
@@ -35,9 +29,6 @@ export const QuestionCreateInputType = new GraphQLInputObjectType({
     },
     questionBody: {
       type: GraphQLNonNull(GraphQLString),
-    },
-    authorID: {
-      type: GraphQLNonNull(GraphQLID),
     },
   }),
 });
@@ -54,7 +45,7 @@ export const QuestionCreatePayloadType = new GraphQLObjectType({
 export const QuestionCreateType: GraphQLFieldConfig<
   undefined,
   RequestContext,
-  { [input: string]: customQuestionCreateInput }
+  { [input: string]: QuestionCreateInput }
 > = {
   type: GraphQLNonNull(QuestionCreatePayloadType),
   args: {
@@ -72,7 +63,6 @@ export const QuestionCreateType: GraphQLFieldConfig<
     let question = await CreateQuestionAction.create(context.getViewer(), {
       title: input.title,
       questionBody: input.questionBody,
-      authorID: mustDecodeIDFromGQLID(input.authorID),
     }).saveX();
     return { question: question };
   },

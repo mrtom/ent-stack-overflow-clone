@@ -9,6 +9,13 @@ Need to prevent author from voting for own question. Done
 
 https://github.com/lolopinto/ent/issues/435
 
+TODO:
+- Split out user and user login objects
+- Make sure user is readable by everyone, writable by themselves and omni only
+- Make sure user login is read/write by themselves and omni only
+- (Presumably) fix the triggers for reputation as once User is not writable by everyone that won't work
+- I think that's it!
+
 Brief:
 
 Objects:

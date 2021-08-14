@@ -2,17 +2,11 @@
 
 import {
   AllowIfViewerHasIdentityPrivacyPolicy,
-  ID,
   PrivacyPolicy,
   Viewer,
 } from "@snowtop/ent";
-import {
-  Action,
-  Builder,
-  Changeset,
-  WriteOperation,
-} from "@snowtop/ent/action";
-import { Question, User } from "src/ent/";
+import { Action, Changeset, WriteOperation } from "@snowtop/ent/action";
+import { Question } from "src/ent/";
 import {
   QuestionBuilder,
   QuestionInput,
@@ -21,7 +15,6 @@ import {
 export interface QuestionCreateInput {
   title: string;
   questionBody: string;
-  authorID: ID | Builder<User>;
 }
 
 export class CreateQuestionActionBase implements Action<Question> {
