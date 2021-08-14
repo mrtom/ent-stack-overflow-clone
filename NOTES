@@ -43,6 +43,7 @@ Question Comment:
 - Need to be creatable by anyone
 - Need to be editable by super users or the author or anyone with a reputation > 100
 - Need to be removable by super users
+- Notify question author when question receives a comment
 
 Answers:
 - Answers need to be visible to everyone with an account
