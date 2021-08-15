@@ -49,10 +49,10 @@ export default class User extends BaseEntSchema {
       name: "answersVoted",
       schemaName: "AnswerVote",
     },
-    // {
-    //   name: "savedAuthenticationDetails",
-    //   schemaName: "UserAuthentication",
-    // },
+    {
+      name: "authenticationDetails",
+      schemaName: "UserAuthentication",
+    },
   ];
 
   actions: Action[] = [

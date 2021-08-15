@@ -26,6 +26,7 @@ export * from "src/graphql/resolvers/generated/question_comment/question_comment
 export * from "src/graphql/resolvers/generated/question_private_note/question_private_note_to_authors_connection_type";
 export * from "src/graphql/resolvers/generated/question_vote/question_vote_to_voters_connection_type";
 export * from "src/graphql/resolvers/generated/user/user_to_answers_voted_connection_type";
+export * from "src/graphql/resolvers/generated/user/user_to_authentication_details_connection_type";
 export * from "src/graphql/resolvers/generated/user/user_to_author_to_authored_answer_comments_connection_type";
 export * from "src/graphql/resolvers/generated/user/user_to_author_to_authored_answers_connection_type";
 export * from "src/graphql/resolvers/generated/user/user_to_author_to_authored_question_comments_connection_type";
@@ -37,7 +38,6 @@ export * from "src/graphql/resolvers/generated/user/user_to_authored_questions_c
 export * from "src/graphql/resolvers/generated/user/user_to_question_private_notes_connection_type";
 export * from "src/graphql/resolvers/generated/user/user_to_questions_feed_connection_type";
 export * from "src/graphql/resolvers/generated/user/user_to_questions_voted_connection_type";
-export * from "src/graphql/resolvers/generated/user/user_to_saved_authentication_details_connection_type";
 export * from "src/graphql/resolvers/generated/user/user_to_user_question_private_notes_connection_type";
 export * from "src/graphql/resolvers/generated/user/user_to_voter_to_answers_voted_connection_type";
 export * from "src/graphql/resolvers/generated/user/user_to_voter_to_questions_voted_connection_type";

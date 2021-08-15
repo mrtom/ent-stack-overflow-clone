@@ -90,6 +90,7 @@ type User implements Node {
   reputation: Int!
   emailAddress: String!
   answersVoted(first: Int, after: String, last: Int, before: String): UserToAnswersVotedConnection!
+  authenticationDetails(first: Int, after: String, last: Int, before: String): UserToAuthenticationDetailsConnection!
   authorToAuthoredAnswerComments(first: Int, after: String, last: Int, before: String): UserToAuthorToAuthoredAnswerCommentsConnection!
   authorToAuthoredAnswers(first: Int, after: String, last: Int, before: String): UserToAuthorToAuthoredAnswersConnection!
   authorToAuthoredQuestionComments(first: Int, after: String, last: Int, before: String): UserToAuthorToAuthoredQuestionCommentsConnection!
@@ -100,7 +101,6 @@ type User implements Node {
   authoredQuestions(first: Int, after: String, last: Int, before: String): UserToAuthoredQuestionsConnection!
   questionPrivateNotes(first: Int, after: String, last: Int, before: String): UserToQuestionPrivateNotesConnection!
   questionsVoted(first: Int, after: String, last: Int, before: String): UserToQuestionsVotedConnection!
-  savedAuthenticationDetails(first: Int, after: String, last: Int, before: String): UserToSavedAuthenticationDetailsConnection!
   userQuestionPrivateNotes(first: Int, after: String, last: Int, before: String): UserToUserQuestionPrivateNotesConnection!
   voterToAnswersVoted(first: Int, after: String, last: Int, before: String): UserToVoterToAnswersVotedConnection!
   voterToQuestionsVoted(first: Int, after: String, last: Int, before: String): UserToVoterToQuestionsVotedConnection!
@@ -296,6 +296,18 @@ type UserToAnswersVotedEdge implements Edge {
   cursor: String!
 }
 
+type UserToAuthenticationDetailsConnection implements Connection {
+  edges: [UserToAuthenticationDetailsEdge!]!
+  nodes: [UserAuthentication!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type UserToAuthenticationDetailsEdge implements Edge {
+  node: UserAuthentication!
+  cursor: String!
+}
+
 type UserToAuthorToAuthoredAnswerCommentsConnection implements Connection {
   edges: [UserToAuthorToAuthoredAnswerCommentsEdge!]!
   nodes: [AnswerComment!]!
@@ -425,18 +437,6 @@ type UserToQuestionsVotedConnection implements Connection {
 
 type UserToQuestionsVotedEdge implements Edge {
   node: QuestionVote!
-  cursor: String!
-}
-
-type UserToSavedAuthenticationDetailsConnection implements Connection {
-  edges: [UserToSavedAuthenticationDetailsEdge!]!
-  nodes: [UserAuthentication!]!
-  pageInfo: PageInfo!
-  rawCount: Int!
-}
-
-type UserToSavedAuthenticationDetailsEdge implements Edge {
-  node: UserAuthentication!
   cursor: String!
 }
 

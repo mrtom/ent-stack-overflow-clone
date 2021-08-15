@@ -114,7 +114,7 @@ export class UserAuthenticationBuilder implements Builder<UserAuthentication> {
     if (fields.userID) {
       this.orchestrator.addInboundEdge(
         fields.userID,
-        EdgeType.UserToSavedAuthenticationDetails,
+        EdgeType.UserToAuthenticationDetails,
         NodeType.User,
       );
     }

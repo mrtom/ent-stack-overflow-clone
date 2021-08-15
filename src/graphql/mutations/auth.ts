@@ -7,9 +7,8 @@ import {
   gqlInputObjectType,
   gqlMutation,
   gqlObjectType,
-  encodeGQLID,
 } from "@snowtop/ent/graphql"
-import { ID, RequestContext } from "@snowtop/ent"
+import { RequestContext } from "@snowtop/ent"
 import { useAndVerifyAuthJWT } from "@snowtop/ent-passport";
 
 import { User } from "src/ent/user";
@@ -74,8 +73,6 @@ export class UserAuthJWTPayload {
      if (!userEnt) {
        throw new Error("not the right credentials");
      }
-
-     const user = await User.loadX(viewer, userEnt.id);
 
      return {
        viewer: new ViewerType(viewer),

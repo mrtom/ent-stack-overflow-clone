@@ -25,6 +25,7 @@ import {
   EdgeType,
   NodeType,
   UserToAnswersVotedQuery,
+  UserToAuthenticationDetailsQuery,
   UserToAuthorToAuthoredAnswerCommentsQuery,
   UserToAuthorToAuthoredAnswersQuery,
   UserToAuthorToAuthoredQuestionCommentsQuery,
@@ -35,7 +36,6 @@ import {
   UserToAuthoredQuestionsQuery,
   UserToQuestionPrivateNotesQuery,
   UserToQuestionsVotedQuery,
-  UserToSavedAuthenticationDetailsQuery,
   UserToUserQuestionPrivateNotesQuery,
   UserToVoterToAnswersVotedQuery,
   UserToVoterToQuestionsVotedQuery,
@@ -210,6 +210,10 @@ export class UserBase {
     return UserToAnswersVotedQuery.query(this.viewer, this.id);
   }
 
+  queryAuthenticationDetails(): UserToAuthenticationDetailsQuery {
+    return UserToAuthenticationDetailsQuery.query(this.viewer, this.id);
+  }
+
   queryAuthorToAuthoredAnswerComments(): UserToAuthorToAuthoredAnswerCommentsQuery {
     return UserToAuthorToAuthoredAnswerCommentsQuery.query(
       this.viewer,
@@ -254,10 +258,6 @@ export class UserBase {
 
   queryQuestionsVoted(): UserToQuestionsVotedQuery {
     return UserToQuestionsVotedQuery.query(this.viewer, this.id);
-  }
-
-  querySavedAuthenticationDetails(): UserToSavedAuthenticationDetailsQuery {
-    return UserToSavedAuthenticationDetailsQuery.query(this.viewer, this.id);
   }
 
   queryUserQuestionPrivateNotes(): UserToUserQuestionPrivateNotesQuery {

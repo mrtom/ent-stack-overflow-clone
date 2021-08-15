@@ -17,6 +17,7 @@ import {
 import {
   User,
   UserToAnswersVotedQuery,
+  UserToAuthenticationDetailsQuery,
   UserToAuthorToAuthoredAnswerCommentsQuery,
   UserToAuthorToAuthoredAnswersQuery,
   UserToAuthorToAuthoredQuestionCommentsQuery,
@@ -27,13 +28,13 @@ import {
   UserToAuthoredQuestionsQuery,
   UserToQuestionPrivateNotesQuery,
   UserToQuestionsVotedQuery,
-  UserToSavedAuthenticationDetailsQuery,
   UserToUserQuestionPrivateNotesQuery,
   UserToVoterToAnswersVotedQuery,
   UserToVoterToQuestionsVotedQuery,
 } from "src/ent/";
 import {
   UserToAnswersVotedConnectionType,
+  UserToAuthenticationDetailsConnectionType,
   UserToAuthorToAuthoredAnswerCommentsConnectionType,
   UserToAuthorToAuthoredAnswersConnectionType,
   UserToAuthorToAuthoredQuestionCommentsConnectionType,
@@ -45,7 +46,6 @@ import {
   UserToQuestionPrivateNotesConnectionType,
   UserToQuestionsFeedConnectionType,
   UserToQuestionsVotedConnectionType,
-  UserToSavedAuthenticationDetailsConnectionType,
   UserToUserQuestionPrivateNotesConnectionType,
   UserToVoterToAnswersVotedConnectionType,
   UserToVoterToQuestionsVotedConnectionType,
@@ -95,6 +95,35 @@ export const UserType = new GraphQLObjectType({
           user.viewer,
           user,
           (v, user: User) => UserToAnswersVotedQuery.query(v, user),
+          args,
+        );
+      },
+    },
+    authenticationDetails: {
+      type: GraphQLNonNull(UserToAuthenticationDetailsConnectionType()),
+      args: {
+        first: {
+          description: "",
+          type: GraphQLInt,
+        },
+        after: {
+          description: "",
+          type: GraphQLString,
+        },
+        last: {
+          description: "",
+          type: GraphQLInt,
+        },
+        before: {
+          description: "",
+          type: GraphQLString,
+        },
+      },
+      resolve: (user: User, args: {}, context: RequestContext) => {
+        return new GraphQLEdgeConnection(
+          user.viewer,
+          user,
+          (v, user: User) => UserToAuthenticationDetailsQuery.query(v, user),
           args,
         );
       },
@@ -392,36 +421,6 @@ export const UserType = new GraphQLObjectType({
           user.viewer,
           user,
           (v, user: User) => UserToQuestionsVotedQuery.query(v, user),
-          args,
-        );
-      },
-    },
-    savedAuthenticationDetails: {
-      type: GraphQLNonNull(UserToSavedAuthenticationDetailsConnectionType()),
-      args: {
-        first: {
-          description: "",
-          type: GraphQLInt,
-        },
-        after: {
-          description: "",
-          type: GraphQLString,
-        },
-        last: {
-          description: "",
-          type: GraphQLInt,
-        },
-        before: {
-          description: "",
-          type: GraphQLString,
-        },
-      },
-      resolve: (user: User, args: {}, context: RequestContext) => {
-        return new GraphQLEdgeConnection(
-          user.viewer,
-          user,
-          (v, user: User) =>
-            UserToSavedAuthenticationDetailsQuery.query(v, user),
           args,
         );
       },

@@ -41,6 +41,7 @@ export * from "src/ent/question_comment/query/question_comment_to_authors_query"
 export * from "src/ent/question_private_note/query/question_private_note_to_authors_query";
 export * from "src/ent/question_vote/query/question_vote_to_voters_query";
 export * from "src/ent/user/query/user_to_answers_voted_query";
+export * from "src/ent/user/query/user_to_authentication_details_query";
 export * from "src/ent/user/query/user_to_author_to_authored_answer_comments_query";
 export * from "src/ent/user/query/user_to_author_to_authored_answers_query";
 export * from "src/ent/user/query/user_to_author_to_authored_question_comments_query";
@@ -51,7 +52,6 @@ export * from "src/ent/user/query/user_to_authored_question_comments_query";
 export * from "src/ent/user/query/user_to_authored_questions_query";
 export * from "src/ent/user/query/user_to_question_private_notes_query";
 export * from "src/ent/user/query/user_to_questions_voted_query";
-export * from "src/ent/user/query/user_to_saved_authentication_details_query";
 export * from "src/ent/user/query/user_to_user_question_private_notes_query";
 export * from "src/ent/user/query/user_to_voter_to_answers_voted_query";
 export * from "src/ent/user/query/user_to_voter_to_questions_voted_query";

@@ -19,6 +19,7 @@ import {
   EdgeType,
   User,
   UserToAnswersVotedQuery,
+  UserToAuthenticationDetailsQuery,
   UserToAuthorToAuthoredAnswerCommentsQuery,
   UserToAuthorToAuthoredAnswersQuery,
   UserToAuthorToAuthoredQuestionCommentsQuery,
@@ -29,7 +30,6 @@ import {
   UserToAuthoredQuestionsQuery,
   UserToQuestionPrivateNotesQuery,
   UserToQuestionsVotedQuery,
-  UserToSavedAuthenticationDetailsQuery,
   UserToUserQuestionPrivateNotesQuery,
   UserToVoterToAnswersVotedQuery,
   UserToVoterToQuestionsVotedQuery,
@@ -84,6 +84,10 @@ export class AnswerToAuthorsQueryBase extends AssocEdgeQueryBase<
     return UserToAnswersVotedQuery.query(this.viewer, this);
   }
 
+  queryAuthenticationDetails(): UserToAuthenticationDetailsQuery {
+    return UserToAuthenticationDetailsQuery.query(this.viewer, this);
+  }
+
   queryAuthorToAuthoredAnswerComments(): UserToAuthorToAuthoredAnswerCommentsQuery {
     return UserToAuthorToAuthoredAnswerCommentsQuery.query(this.viewer, this);
   }
@@ -122,10 +126,6 @@ export class AnswerToAuthorsQueryBase extends AssocEdgeQueryBase<
 
   queryQuestionsVoted(): UserToQuestionsVotedQuery {
     return UserToQuestionsVotedQuery.query(this.viewer, this);
-  }
-
-  querySavedAuthenticationDetails(): UserToSavedAuthenticationDetailsQuery {
-    return UserToSavedAuthenticationDetailsQuery.query(this.viewer, this);
   }
 
   queryUserQuestionPrivateNotes(): UserToUserQuestionPrivateNotesQuery {
