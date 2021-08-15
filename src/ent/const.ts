@@ -17,6 +17,8 @@ export enum NodeType {
   QuestionVote = "questionVote",
   // User is the node type for the User object. Used to identify this node in edges and other places.
   User = "user",
+  // UserAuthentication is the node type for the UserAuthentication object. Used to identify this node in edges and other places.
+  UserAuthentication = "userAuthentication",
 }
 
 export function getNodeTypeValues() {
@@ -29,6 +31,7 @@ export function getNodeTypeValues() {
     NodeType.QuestionPrivateNote,
     NodeType.QuestionVote,
     NodeType.User,
+    NodeType.UserAuthentication,
   ];
 }
 
@@ -81,6 +84,8 @@ export enum EdgeType {
   UserToQuestionPrivateNotes = "5da8f466-0498-42ed-9f0f-9138223793b9",
   // UserToQuestionsVoted is the edgeType for the user to questionsvoted edge.
   UserToQuestionsVoted = "92e68df1-d754-43dd-8e0d-6016f6caaba9",
+  // UserToSavedAuthenticationDetails is the edgeType for the user to savedauthenticationdetails edge.
+  UserToSavedAuthenticationDetails = "2049f992-3325-4323-9875-9ee53bafff49",
   // UserToUserQuestionPrivateNotes is the edgeType for the user to userquestionprivatenotes edge.
   UserToUserQuestionPrivateNotes = "fd476c64-01c5-44b3-859b-a15dc450d1f9",
   // UserToVoterToAnswersVoted is the edgeType for the user to votertoanswersvoted edge.
@@ -115,6 +120,7 @@ export function getEdgeTypeValues() {
     EdgeType.UserToAuthoredQuestions,
     EdgeType.UserToQuestionPrivateNotes,
     EdgeType.UserToQuestionsVoted,
+    EdgeType.UserToSavedAuthenticationDetails,
     EdgeType.UserToUserQuestionPrivateNotes,
     EdgeType.UserToVoterToAnswersVoted,
     EdgeType.UserToVoterToQuestionsVoted,

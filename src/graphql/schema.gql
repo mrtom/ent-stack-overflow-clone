@@ -77,6 +77,12 @@ type QuestionVote implements Node {
   voters(first: Int, after: String, last: Int, before: String): QuestionVoteToVotersConnection!
 }
 
+type UserAuthentication implements Node {
+  user: User
+  id: ID!
+  emailAddress: String!
+}
+
 type User implements Node {
   id: ID!
   firstName: String!
@@ -94,6 +100,7 @@ type User implements Node {
   authoredQuestions(first: Int, after: String, last: Int, before: String): UserToAuthoredQuestionsConnection!
   questionPrivateNotes(first: Int, after: String, last: Int, before: String): UserToQuestionPrivateNotesConnection!
   questionsVoted(first: Int, after: String, last: Int, before: String): UserToQuestionsVotedConnection!
+  savedAuthenticationDetails(first: Int, after: String, last: Int, before: String): UserToSavedAuthenticationDetailsConnection!
   userQuestionPrivateNotes(first: Int, after: String, last: Int, before: String): UserToUserQuestionPrivateNotesConnection!
   voterToAnswersVoted(first: Int, after: String, last: Int, before: String): UserToVoterToAnswersVotedConnection!
   voterToQuestionsVoted(first: Int, after: String, last: Int, before: String): UserToVoterToQuestionsVotedConnection!
@@ -418,6 +425,18 @@ type UserToQuestionsVotedConnection implements Connection {
 
 type UserToQuestionsVotedEdge implements Edge {
   node: QuestionVote!
+  cursor: String!
+}
+
+type UserToSavedAuthenticationDetailsConnection implements Connection {
+  edges: [UserToSavedAuthenticationDetailsEdge!]!
+  nodes: [UserAuthentication!]!
+  pageInfo: PageInfo!
+  rawCount: Int!
+}
+
+type UserToSavedAuthenticationDetailsEdge implements Edge {
+  node: UserAuthentication!
   cursor: String!
 }
 
