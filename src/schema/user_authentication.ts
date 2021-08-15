@@ -1,4 +1,5 @@
 import {
+  Action,
   ActionOperation,
   BaseEntSchema,
   Edge,
@@ -20,6 +21,31 @@ export default class UserAuthentication extends BaseEntSchema implements Schema 
       storageKey: "user_id",
       defaultToViewerOnCreate: true,
     }),
+  ];
+
+  // edges: Edge[] = [
+  //   {
+  //     name: "users",
+  //     schemaName: "User",
+  //     inverseEdge: {
+  //       name: "userToAuthDetails",
+  //     },
+  //     edgeActions: [
+  //       {
+  //         operation: ActionOperation.AddEdge,
+  //       },
+  //       {
+  //         operation: ActionOperation.RemoveEdge,
+  //       },
+  //     ],
+  //   },
+  // ];
+
+  actions: Action[] = [
+    {
+      operation: ActionOperation.Create,
+      fields: ["EmailAddress", "Password"],
+    },
   ];
 
   indices: Index[] = [

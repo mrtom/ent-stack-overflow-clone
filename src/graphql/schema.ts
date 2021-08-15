@@ -146,6 +146,10 @@ import {
   UserAuthJWTInputType,
   UserAuthJWTPayloadType,
 } from "src/graphql/mutations/generated/user_auth_jwt_type";
+import {
+  UserAuthenticationCreateInputType,
+  UserAuthenticationCreatePayloadType,
+} from "src/graphql/mutations/generated/user_authentication/user_authentication_create_type";
 import { QueryType } from "src/graphql/resolvers/generated/query_type";
 import {
   AnswerCommentToAuthorsConnectionType,
@@ -306,6 +310,8 @@ export default new GraphQLSchema({
     QuestionVoteDeletePayloadType,
     QuestionVoteRemoveVoterInputType,
     QuestionVoteRemoveVoterPayloadType,
+    UserAuthenticationCreateInputType,
+    UserAuthenticationCreatePayloadType,
     UserCreateInputType,
     UserCreatePayloadType,
   ],

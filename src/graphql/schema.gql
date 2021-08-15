@@ -802,6 +802,15 @@ type QuestionVoteRemoveVoterPayload {
   questionVote: QuestionVote!
 }
 
+input UserAuthenticationCreateInput {
+  emailAddress: String!
+  password: String!
+}
+
+type UserAuthenticationCreatePayload {
+  userAuthentication: UserAuthentication!
+}
+
 input UserCreateInput {
   firstName: String!
   lastName: String!
@@ -856,5 +865,6 @@ type Mutation {
   questionVoteDelete(input: QuestionVoteDeleteInput!): QuestionVoteDeletePayload!
   questionVoteRemoveVoter(input: QuestionVoteRemoveVoterInput!): QuestionVoteRemoveVoterPayload!
   userAuthJWT(input: UserAuthJWTInput!): UserAuthJWTPayload!
+  userAuthenticationCreate(input: UserAuthenticationCreateInput!): UserAuthenticationCreatePayload!
   userCreate(input: UserCreateInput!): UserCreatePayload!
 }

@@ -1,0 +1,3 @@
+import { UserAuthenticationAddUserAuthActionBase } from "src/ent/user_authentication/actions/generated/user_authentication_add_user_auth_action_base";
+
+export default class UserAuthenticationAddUserAuthAction extends UserAuthenticationAddUserAuthActionBase {}

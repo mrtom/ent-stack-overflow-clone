@@ -1,0 +1,3 @@
+import { UserAuthenticationRemoveUserAuthActionBase } from "src/ent/user_authentication/actions/generated/user_authentication_remove_user_auth_action_base";
+
+export default class UserAuthenticationRemoveUserAuthAction extends UserAuthenticationRemoveUserAuthActionBase {}
