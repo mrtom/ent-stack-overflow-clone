@@ -1,4 +1,9 @@
-import { Question, QuestionComment } from "src/ent";
+import {
+  PrivacyPolicy,
+  AllowIfViewerHasIdentityPrivacyPolicy,
+} from "@snowtop/ent";
+
+import { QuestionComment } from "src/ent";
 import { EntCreationObserver } from 'src/observers/EntCreationObserver';
 import { fakeSMSService } from "src/services/fakeSMSService";
 
@@ -13,6 +18,10 @@ import { QuestionCommentBuilder } from './question_comment_builder';
 export { QuestionCommentCreateInput };
 
 export default class CreateQuestionCommentAction extends CreateQuestionCommentActionBase {
+  getPrivacyPolicy(): PrivacyPolicy {
+    return AllowIfViewerHasIdentityPrivacyPolicy;
+  }
+
   observers = [
     {
       observe: async (_builder: QuestionCommentBuilder, input: QuestionCommentCreateInput) => {

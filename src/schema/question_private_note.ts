@@ -23,6 +23,7 @@ export default class QuestionPrivateNote extends BaseEntSchema implements Schema
       name: "authorID",
       fieldEdge: { schema: "User", inverseEdge: "questionPrivateNotes" },
       storageKey: "user_id",
+      defaultToViewerOnCreate: true,
     }),
   ];
 
@@ -47,7 +48,14 @@ export default class QuestionPrivateNote extends BaseEntSchema implements Schema
   // create, edit, delete
   actions: Action[] = [
     {
-      operation: ActionOperation.Mutations,
+      operation: ActionOperation.Create,
+      fields: ["body", "questionID"],
+    },
+    {
+      operation: ActionOperation.Edit,
+    },
+    {
+      operation: ActionOperation.Delete,
     },
   ];
 }

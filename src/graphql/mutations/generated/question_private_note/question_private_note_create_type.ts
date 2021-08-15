@@ -22,7 +22,6 @@ import { QuestionPrivateNoteType } from "src/graphql/resolvers/";
 interface customQuestionPrivateNoteCreateInput
   extends QuestionPrivateNoteCreateInput {
   questionID: string;
-  authorID: string;
 }
 
 interface QuestionPrivateNoteCreatePayload {
@@ -36,9 +35,6 @@ export const QuestionPrivateNoteCreateInputType = new GraphQLInputObjectType({
       type: GraphQLNonNull(GraphQLString),
     },
     questionID: {
-      type: GraphQLNonNull(GraphQLID),
-    },
-    authorID: {
       type: GraphQLNonNull(GraphQLID),
     },
   }),
@@ -79,7 +75,6 @@ export const QuestionPrivateNoteCreateType: GraphQLFieldConfig<
       {
         body: input.body,
         questionID: mustDecodeIDFromGQLID(input.questionID),
-        authorID: mustDecodeIDFromGQLID(input.authorID),
       },
     ).saveX();
     return { questionPrivateNote: questionPrivateNote };

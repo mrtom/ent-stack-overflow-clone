@@ -20,7 +20,6 @@ import { AnswerVoteType, AnswerVoteTypeType } from "src/graphql/resolvers/";
 
 interface customAnswerVoteCreateInput extends AnswerVoteCreateInput {
   answerID: string;
-  voterID: string;
 }
 
 interface AnswerVoteCreatePayload {
@@ -34,9 +33,6 @@ export const AnswerVoteCreateInputType = new GraphQLInputObjectType({
       type: GraphQLNonNull(AnswerVoteTypeType),
     },
     answerID: {
-      type: GraphQLNonNull(GraphQLID),
-    },
-    voterID: {
       type: GraphQLNonNull(GraphQLID),
     },
   }),
@@ -75,7 +71,6 @@ export const AnswerVoteCreateType: GraphQLFieldConfig<
     let answerVote = await CreateAnswerVoteAction.create(context.getViewer(), {
       answerVoteType: input.answerVoteType,
       answerID: mustDecodeIDFromGQLID(input.answerID),
-      voterID: mustDecodeIDFromGQLID(input.voterID),
     }).saveX();
     return { answerVote: answerVote };
   },

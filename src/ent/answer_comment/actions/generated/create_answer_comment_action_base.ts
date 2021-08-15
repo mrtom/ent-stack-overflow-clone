@@ -12,7 +12,7 @@ import {
   Changeset,
   WriteOperation,
 } from "@snowtop/ent/action";
-import { Answer, AnswerComment, User } from "src/ent/";
+import { Answer, AnswerComment } from "src/ent/";
 import {
   AnswerCommentBuilder,
   AnswerCommentInput,
@@ -21,7 +21,6 @@ import {
 export interface AnswerCommentCreateInput {
   body: string;
   answerID: ID | Builder<Answer>;
-  authorID: ID | Builder<User>;
 }
 
 export class CreateAnswerCommentActionBase implements Action<AnswerComment> {

@@ -22,6 +22,7 @@ export default class QuestionComment extends BaseEntSchema implements Schema {
       name: "authorID",
       fieldEdge: { schema: "User", inverseEdge: "authoredQuestionComments" },
       storageKey: "user_id",
+      defaultToViewerOnCreate: true,
     }),
   ];
 
@@ -46,7 +47,14 @@ export default class QuestionComment extends BaseEntSchema implements Schema {
   // create, edit, delete
   actions: Action[] = [
     {
-      operation: ActionOperation.Mutations,
+      operation: ActionOperation.Create,
+      fields: ["body", "questionID"],
+    },
+    {
+      operation: ActionOperation.Edit,
+    },
+    {
+      operation: ActionOperation.Delete,
     },
   ];
 }

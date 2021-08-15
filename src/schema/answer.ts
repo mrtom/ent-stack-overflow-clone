@@ -25,6 +25,7 @@ export default class Answer extends BaseEntSchema implements Schema {
       name: "authorID",
       fieldEdge: { schema: "User", inverseEdge: "authoredAnswers" },
       storageKey: "user_id",
+      defaultToViewerOnCreate: true,
     }),
   ];
 
@@ -57,7 +58,7 @@ export default class Answer extends BaseEntSchema implements Schema {
   actions: Action[] = [
     {
       operation: ActionOperation.Create,
-      fields: ["body", "questionID", "authorID"],
+      fields: ["body", "questionID"],
     },
     {
       operation: ActionOperation.Edit,

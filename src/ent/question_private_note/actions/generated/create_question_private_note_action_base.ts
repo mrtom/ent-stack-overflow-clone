@@ -12,7 +12,7 @@ import {
   Changeset,
   WriteOperation,
 } from "@snowtop/ent/action";
-import { Question, QuestionPrivateNote, User } from "src/ent/";
+import { Question, QuestionPrivateNote } from "src/ent/";
 import {
   QuestionPrivateNoteBuilder,
   QuestionPrivateNoteInput,
@@ -21,7 +21,6 @@ import {
 export interface QuestionPrivateNoteCreateInput {
   body: string;
   questionID: ID | Builder<Question>;
-  authorID: ID | Builder<User>;
 }
 
 export class CreateQuestionPrivateNoteActionBase

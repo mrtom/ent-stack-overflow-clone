@@ -21,7 +21,6 @@ import { AnswerCommentType } from "src/graphql/resolvers/";
 
 interface customAnswerCommentCreateInput extends AnswerCommentCreateInput {
   answerID: string;
-  authorID: string;
 }
 
 interface AnswerCommentCreatePayload {
@@ -35,9 +34,6 @@ export const AnswerCommentCreateInputType = new GraphQLInputObjectType({
       type: GraphQLNonNull(GraphQLString),
     },
     answerID: {
-      type: GraphQLNonNull(GraphQLID),
-    },
-    authorID: {
       type: GraphQLNonNull(GraphQLID),
     },
   }),
@@ -78,7 +74,6 @@ export const AnswerCommentCreateType: GraphQLFieldConfig<
       {
         body: input.body,
         answerID: mustDecodeIDFromGQLID(input.answerID),
-        authorID: mustDecodeIDFromGQLID(input.authorID),
       },
     ).saveX();
     return { answerComment: answerComment };

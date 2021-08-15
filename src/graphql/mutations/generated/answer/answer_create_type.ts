@@ -21,7 +21,6 @@ import { AnswerType } from "src/graphql/resolvers/";
 
 interface customAnswerCreateInput extends AnswerCreateInput {
   questionID: string;
-  authorID: string;
 }
 
 interface AnswerCreatePayload {
@@ -35,9 +34,6 @@ export const AnswerCreateInputType = new GraphQLInputObjectType({
       type: GraphQLNonNull(GraphQLString),
     },
     questionID: {
-      type: GraphQLNonNull(GraphQLID),
-    },
-    authorID: {
       type: GraphQLNonNull(GraphQLID),
     },
   }),
@@ -73,7 +69,6 @@ export const AnswerCreateType: GraphQLFieldConfig<
     let answer = await CreateAnswerAction.create(context.getViewer(), {
       body: input.body,
       questionID: mustDecodeIDFromGQLID(input.questionID),
-      authorID: mustDecodeIDFromGQLID(input.authorID),
     }).saveX();
     return { answer: answer };
   },

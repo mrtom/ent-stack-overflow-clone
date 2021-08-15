@@ -27,6 +27,7 @@ export default class QuestionVote extends BaseEntSchema implements Schema {
       name: "voterID",
       fieldEdge: { schema: "User", inverseEdge: "questionsVoted" },
       storageKey: "user_id",
+      defaultToViewerOnCreate: true,
     }),
   ];
 
@@ -51,6 +52,7 @@ export default class QuestionVote extends BaseEntSchema implements Schema {
   actions: Action[] = [
     {
       operation: ActionOperation.Create,
+      fields: ["VoteType", "questionID"],
     },
     {
       operation: ActionOperation.Delete,

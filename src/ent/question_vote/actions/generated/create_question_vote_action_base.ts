@@ -12,7 +12,7 @@ import {
   Changeset,
   WriteOperation,
 } from "@snowtop/ent/action";
-import { Question, QuestionVote, User, VoteType } from "src/ent/";
+import { Question, QuestionVote, VoteType } from "src/ent/";
 import {
   QuestionVoteBuilder,
   QuestionVoteInput,
@@ -21,7 +21,6 @@ import {
 export interface QuestionVoteCreateInput {
   voteType: VoteType;
   questionID: ID | Builder<Question>;
-  voterID: ID | Builder<User>;
 }
 
 export class CreateQuestionVoteActionBase implements Action<QuestionVote> {

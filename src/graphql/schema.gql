@@ -493,7 +493,6 @@ type AnswerCommentAddAuthorPayload {
 input AnswerCommentCreateInput {
   body: String!
   answerID: ID!
-  authorID: ID!
 }
 
 type AnswerCommentCreatePayload {
@@ -531,7 +530,6 @@ type AnswerCommentRemoveAuthorPayload {
 input AnswerCreateInput {
   body: String!
   questionID: ID!
-  authorID: ID!
 }
 
 type AnswerCreatePayload {
@@ -579,7 +577,6 @@ type AnswerVoteAddVoterPayload {
 input AnswerVoteCreateInput {
   answerVoteType: AnswerVoteType!
   answerID: ID!
-  voterID: ID!
 }
 
 type AnswerVoteCreatePayload {
@@ -633,7 +630,6 @@ type QuestionCommentAddAuthorPayload {
 input QuestionCommentCreateInput {
   body: String!
   questionID: ID!
-  authorID: ID!
 }
 
 type QuestionCommentCreatePayload {
@@ -709,7 +705,6 @@ type QuestionPrivateNoteAddAuthorPayload {
 input QuestionPrivateNoteCreateInput {
   body: String!
   questionID: ID!
-  authorID: ID!
 }
 
 type QuestionPrivateNoteCreatePayload {
@@ -765,7 +760,6 @@ type QuestionVoteAddVoterPayload {
 input QuestionVoteCreateInput {
   voteType: VoteType!
   questionID: ID!
-  voterID: ID!
 }
 
 type QuestionVoteCreatePayload {
