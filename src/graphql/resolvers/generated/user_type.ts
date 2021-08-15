@@ -67,9 +67,6 @@ export const UserType = new GraphQLObjectType({
     reputation: {
       type: GraphQLNonNull(GraphQLInt),
     },
-    emailAddress: {
-      type: GraphQLNonNull(GraphQLString),
-    },
     answersVoted: {
       type: GraphQLNonNull(UserToAnswersVotedConnectionType()),
       args: {

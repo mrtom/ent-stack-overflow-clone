@@ -15,9 +15,7 @@ import {
   loadCustomData,
   loadCustomEnts,
   loadEnt,
-  loadEntViaKey,
   loadEntX,
-  loadEntXViaKey,
   loadEnts,
 } from "@snowtop/ent";
 import { Field, getFields } from "@snowtop/ent/schema";
@@ -50,8 +48,6 @@ const fields = [
   "first_name",
   "last_name",
   "reputation",
-  "email_address",
-  "password",
 ];
 
 export class UserBase {
@@ -62,8 +58,6 @@ export class UserBase {
   readonly firstName: string;
   readonly lastName: string;
   readonly reputation: number;
-  readonly emailAddress: string;
-  protected readonly password: string;
 
   constructor(public viewer: Viewer, data: Data) {
     this.id = data.id;
@@ -72,8 +66,6 @@ export class UserBase {
     this.firstName = data.first_name;
     this.lastName = data.last_name;
     this.reputation = data.reputation;
-    this.emailAddress = data.email_address;
-    this.password = data.password;
   }
 
   // default privacyPolicy is Viewer can see themselves
@@ -137,49 +129,6 @@ export class UserBase {
       throw new Error(`couldn't load row for ${id}`);
     }
     return row;
-  }
-
-  static async loadFromEmailAddress<T extends UserBase>(
-    this: new (viewer: Viewer, data: Data) => T,
-    viewer: Viewer,
-    emailAddress: string,
-  ): Promise<T | null> {
-    return loadEntViaKey(viewer, emailAddress, {
-      ...UserBase.loaderOptions.apply(this),
-      loaderFactory: userEmailAddressLoader,
-    });
-  }
-
-  static async loadFromEmailAddressX<T extends UserBase>(
-    this: new (viewer: Viewer, data: Data) => T,
-    viewer: Viewer,
-    emailAddress: string,
-  ): Promise<T> {
-    return loadEntXViaKey(viewer, emailAddress, {
-      ...UserBase.loaderOptions.apply(this),
-      loaderFactory: userEmailAddressLoader,
-    });
-  }
-
-  static async loadIDFromEmailAddress<T extends UserBase>(
-    this: new (viewer: Viewer, data: Data) => T,
-    emailAddress: string,
-    context?: Context,
-  ): Promise<ID | undefined> {
-    const row = await userEmailAddressLoader
-      .createLoader(context)
-      .load(emailAddress);
-    return row?.id;
-  }
-
-  static async loadRawDataFromEmailAddress<T extends UserBase>(
-    this: new (viewer: Viewer, data: Data) => T,
-    emailAddress: string,
-    context?: Context,
-  ): Promise<Data | null> {
-    return await userEmailAddressLoader
-      .createLoader(context)
-      .load(emailAddress);
   }
 
   static loaderOptions<T extends UserBase>(
@@ -278,12 +227,3 @@ export const userLoader = new ObjectLoaderFactory({
   fields,
   key: "id",
 });
-
-export const userEmailAddressLoader = new ObjectLoaderFactory({
-  tableName,
-  fields,
-  key: "email_address",
-});
-
-userLoader.addToPrime(userEmailAddressLoader);
-userEmailAddressLoader.addToPrime(userLoader);

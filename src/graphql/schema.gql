@@ -88,7 +88,6 @@ type User implements Node {
   firstName: String!
   lastName: String!
   reputation: Int!
-  emailAddress: String!
   answersVoted(first: Int, after: String, last: Int, before: String): UserToAnswersVotedConnection!
   authenticationDetails(first: Int, after: String, last: Int, before: String): UserToAuthenticationDetailsConnection!
   authorToAuthoredAnswerComments(first: Int, after: String, last: Int, before: String): UserToAuthorToAuthoredAnswerCommentsConnection!

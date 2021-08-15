@@ -1,7 +1,7 @@
 import { GraphQLID } from "graphql";
 import { ID, RequestContext } from "@snowtop/ent";
 import { gqlArg, gqlContextType, gqlQuery } from "@snowtop/ent/graphql";
-import { User } from "src/ent";
+import { User, UserAuthentication } from "src/ent";
 
 export class UserResolver {
   @gqlQuery({ name: "userByEmail", type: "User", nullable: true })
@@ -9,7 +9,12 @@ export class UserResolver {
     @gqlContextType() context: RequestContext,
     @gqlArg("emailAddress") emailAddress: string,
   ) {
-    return await User.loadFromEmailAddress(context.getViewer(), emailAddress);
+    const userAuth = await UserAuthentication.loadFromEmailAddress(context.getViewer(), emailAddress);
+    if (userAuth === null) {
+      return null;
+    }
+
+    return await userAuth.loadUser();
   }
 
   @gqlQuery({ name: "user", type: "User", nullable: true })

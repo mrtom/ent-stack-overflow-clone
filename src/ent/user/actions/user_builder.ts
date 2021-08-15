@@ -28,8 +28,6 @@ export interface UserInput {
   firstName?: string;
   lastName?: string;
   reputation?: number;
-  emailAddress?: string;
-  password?: string;
 }
 
 export interface UserAction extends Action<User> {
@@ -899,8 +897,6 @@ export class UserBuilder implements Builder<User> {
     addField("FirstName", fields.firstName);
     addField("LastName", fields.lastName);
     addField("Reputation", fields.reputation);
-    addField("EmailAddress", fields.emailAddress);
-    addField("Password", fields.password);
     return result;
   }
 
@@ -921,15 +917,5 @@ export class UserBuilder implements Builder<User> {
   // get value of Reputation. Retrieves it from the input if specified or takes it from existingEnt
   getNewReputationValue(): number | undefined {
     return this.input.reputation || this.existingEnt?.reputation;
-  }
-
-  // get value of EmailAddress. Retrieves it from the input if specified or takes it from existingEnt
-  getNewEmailAddressValue(): string | undefined {
-    return this.input.emailAddress || this.existingEnt?.emailAddress;
-  }
-
-  // get value of Password. Retrieves it from the input if specified or takes it from existingEnt
-  getNewPasswordValue(): string | undefined {
-    return this.input.password;
   }
 }
