@@ -29,6 +29,7 @@ import {
   UserToAuthoredQuestionsQuery,
   UserToQuestionPrivateNotesQuery,
   UserToQuestionsVotedQuery,
+  UserToSavedAuthenticationDetailsQuery,
   UserToUserQuestionPrivateNotesQuery,
   UserToVoterToAnswersVotedQuery,
   UserToVoterToQuestionsVotedQuery,
@@ -121,6 +122,10 @@ export class AnswerToAuthorsQueryBase extends AssocEdgeQueryBase<
 
   queryQuestionsVoted(): UserToQuestionsVotedQuery {
     return UserToQuestionsVotedQuery.query(this.viewer, this);
+  }
+
+  querySavedAuthenticationDetails(): UserToSavedAuthenticationDetailsQuery {
+    return UserToSavedAuthenticationDetailsQuery.query(this.viewer, this);
   }
 
   queryUserQuestionPrivateNotes(): UserToUserQuestionPrivateNotesQuery {

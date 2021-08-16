@@ -35,6 +35,7 @@ import {
   UserToAuthoredQuestionsQuery,
   UserToQuestionPrivateNotesQuery,
   UserToQuestionsVotedQuery,
+  UserToSavedAuthenticationDetailsQuery,
   UserToUserQuestionPrivateNotesQuery,
   UserToVoterToAnswersVotedQuery,
   UserToVoterToQuestionsVotedQuery,
@@ -253,6 +254,10 @@ export class UserBase {
 
   queryQuestionsVoted(): UserToQuestionsVotedQuery {
     return UserToQuestionsVotedQuery.query(this.viewer, this.id);
+  }
+
+  querySavedAuthenticationDetails(): UserToSavedAuthenticationDetailsQuery {
+    return UserToSavedAuthenticationDetailsQuery.query(this.viewer, this.id);
   }
 
   queryUserQuestionPrivateNotes(): UserToUserQuestionPrivateNotesQuery {

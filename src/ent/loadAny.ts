@@ -17,6 +17,7 @@ import {
   QuestionPrivateNote,
   QuestionVote,
   User,
+  UserAuthentication,
 } from "src/ent/";
 import { NodeType } from "./const";
 
@@ -54,5 +55,7 @@ export function getLoaderOptions(type: NodeType): LoadEntOptions<Ent> {
       return QuestionVote.loaderOptions();
     case NodeType.User:
       return User.loaderOptions();
+    case NodeType.UserAuthentication:
+      return UserAuthentication.loaderOptions();
   }
 }

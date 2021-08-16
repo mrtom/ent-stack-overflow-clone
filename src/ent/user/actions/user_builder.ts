@@ -19,6 +19,7 @@ import {
   QuestionPrivateNote,
   QuestionVote,
   User,
+  UserAuthentication,
 } from "src/ent/";
 import { EdgeType, NodeType } from "src/ent/const";
 import schema from "src/schema/user";
@@ -645,6 +646,60 @@ export class UserBuilder implements Builder<User> {
         this.orchestrator.removeOutboundEdge(
           node,
           EdgeType.UserToQuestionsVoted,
+        );
+      }
+    }
+    return this;
+  }
+
+  addSavedAuthenticationDetail(...ids: ID[]): UserBuilder;
+  addSavedAuthenticationDetail(...nodes: UserAuthentication[]): UserBuilder;
+  addSavedAuthenticationDetail(
+    ...nodes: Builder<UserAuthentication>[]
+  ): UserBuilder;
+  addSavedAuthenticationDetail(
+    ...nodes: ID[] | UserAuthentication[] | Builder<UserAuthentication>[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addSavedAuthenticationDetailID(node);
+      } else if (typeof node === "object") {
+        this.addSavedAuthenticationDetailID(node.id);
+      } else {
+        this.addSavedAuthenticationDetailID(node);
+      }
+    }
+    return this;
+  }
+
+  addSavedAuthenticationDetailID(
+    id: ID | Builder<UserAuthentication>,
+    options?: AssocEdgeInputOptions,
+  ): UserBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.UserToSavedAuthenticationDetails,
+      NodeType.UserAuthentication,
+      options,
+    );
+    return this;
+  }
+
+  removeSavedAuthenticationDetail(...ids: ID[]): UserBuilder;
+  removeSavedAuthenticationDetail(...nodes: UserAuthentication[]): UserBuilder;
+  removeSavedAuthenticationDetail(
+    ...nodes: ID[] | UserAuthentication[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.UserToSavedAuthenticationDetails,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(
+          node,
+          EdgeType.UserToSavedAuthenticationDetails,
         );
       }
     }

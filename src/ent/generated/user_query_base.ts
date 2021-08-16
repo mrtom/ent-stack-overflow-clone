@@ -30,6 +30,7 @@ import {
   QuestionVote,
   QuestionVoteToVotersQuery,
   User,
+  UserAuthentication,
   UserToAnswersVotedEdge,
   UserToAuthorToAuthoredAnswerCommentsEdge,
   UserToAuthorToAuthoredAnswersEdge,
@@ -41,6 +42,7 @@ import {
   UserToAuthoredQuestionsEdge,
   UserToQuestionPrivateNotesEdge,
   UserToQuestionsVotedEdge,
+  UserToSavedAuthenticationDetailsEdge,
   UserToUserQuestionPrivateNotesEdge,
   UserToVoterToAnswersVotedEdge,
   UserToVoterToQuestionsVotedEdge,
@@ -135,6 +137,14 @@ export const userToQuestionsVotedDataLoaderFactory = new AssocEdgeLoaderFactory(
   EdgeType.UserToQuestionsVoted,
   () => UserToQuestionsVotedEdge,
 );
+
+export const userToSavedAuthenticationDetailsCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.UserToSavedAuthenticationDetails);
+export const userToSavedAuthenticationDetailsDataLoaderFactory =
+  new AssocEdgeLoaderFactory(
+    EdgeType.UserToSavedAuthenticationDetails,
+    () => UserToSavedAuthenticationDetailsEdge,
+  );
 
 export const userToUserQuestionPrivateNotesCountLoaderFactory =
   new AssocEdgeCountLoaderFactory(EdgeType.UserToUserQuestionPrivateNotes);
@@ -513,6 +523,30 @@ export class UserToQuestionsVotedQueryBase extends AssocEdgeQueryBase<
 
   queryVoters(): QuestionVoteToVotersQuery {
     return QuestionVoteToVotersQuery.query(this.viewer, this);
+  }
+}
+
+export class UserToSavedAuthenticationDetailsQueryBase extends AssocEdgeQueryBase<
+  User,
+  UserAuthentication,
+  UserToSavedAuthenticationDetailsEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<User>) {
+    super(
+      viewer,
+      src,
+      userToSavedAuthenticationDetailsCountLoaderFactory,
+      userToSavedAuthenticationDetailsDataLoaderFactory,
+      UserAuthentication.loaderOptions(),
+    );
+  }
+
+  static query<T extends UserToSavedAuthenticationDetailsQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<User>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<User>,
+  ): T {
+    return new this(viewer, src);
   }
 }
 
