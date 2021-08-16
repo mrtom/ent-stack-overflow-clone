@@ -1,4 +1,3 @@
-import { loadEntsFromClause } from "@snowtop/ent/core/ent";
 import { QuestionBase } from "src/ent/internal";
 
 import {
@@ -7,7 +6,7 @@ import {
   AlwaysAllowRule,
 } from "@snowtop/ent"
 
-import { AllowIfOmniRule } from "./../privacy/omni";
+import { AllowIfOmniRule } from "src/privacy/omni";
 
 export class Question extends QuestionBase {
   privacyPolicy: PrivacyPolicy = {

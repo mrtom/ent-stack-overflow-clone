@@ -32,6 +32,7 @@ import {
   User,
   UserAuthentication,
   UserToAnswersVotedEdge,
+  UserToAuthenticationDetailsEdge,
   UserToAuthorToAuthoredAnswerCommentsEdge,
   UserToAuthorToAuthoredAnswersEdge,
   UserToAuthorToAuthoredQuestionCommentsEdge,
@@ -42,7 +43,6 @@ import {
   UserToAuthoredQuestionsEdge,
   UserToQuestionPrivateNotesEdge,
   UserToQuestionsVotedEdge,
-  UserToSavedAuthenticationDetailsEdge,
   UserToUserQuestionPrivateNotesEdge,
   UserToVoterToAnswersVotedEdge,
   UserToVoterToQuestionsVotedEdge,
@@ -54,6 +54,14 @@ export const userToAnswersVotedDataLoaderFactory = new AssocEdgeLoaderFactory(
   EdgeType.UserToAnswersVoted,
   () => UserToAnswersVotedEdge,
 );
+
+export const userToAuthenticationDetailsCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.UserToAuthenticationDetails);
+export const userToAuthenticationDetailsDataLoaderFactory =
+  new AssocEdgeLoaderFactory(
+    EdgeType.UserToAuthenticationDetails,
+    () => UserToAuthenticationDetailsEdge,
+  );
 
 export const userToAuthorToAuthoredAnswerCommentsCountLoaderFactory =
   new AssocEdgeCountLoaderFactory(
@@ -138,14 +146,6 @@ export const userToQuestionsVotedDataLoaderFactory = new AssocEdgeLoaderFactory(
   () => UserToQuestionsVotedEdge,
 );
 
-export const userToSavedAuthenticationDetailsCountLoaderFactory =
-  new AssocEdgeCountLoaderFactory(EdgeType.UserToSavedAuthenticationDetails);
-export const userToSavedAuthenticationDetailsDataLoaderFactory =
-  new AssocEdgeLoaderFactory(
-    EdgeType.UserToSavedAuthenticationDetails,
-    () => UserToSavedAuthenticationDetailsEdge,
-  );
-
 export const userToUserQuestionPrivateNotesCountLoaderFactory =
   new AssocEdgeCountLoaderFactory(EdgeType.UserToUserQuestionPrivateNotes);
 export const userToUserQuestionPrivateNotesDataLoaderFactory =
@@ -195,6 +195,30 @@ export class UserToAnswersVotedQueryBase extends AssocEdgeQueryBase<
 
   queryVoters(): AnswerVoteToVotersQuery {
     return AnswerVoteToVotersQuery.query(this.viewer, this);
+  }
+}
+
+export class UserToAuthenticationDetailsQueryBase extends AssocEdgeQueryBase<
+  User,
+  UserAuthentication,
+  UserToAuthenticationDetailsEdge
+> {
+  constructor(viewer: Viewer, src: EdgeQuerySource<User>) {
+    super(
+      viewer,
+      src,
+      userToAuthenticationDetailsCountLoaderFactory,
+      userToAuthenticationDetailsDataLoaderFactory,
+      UserAuthentication.loaderOptions(),
+    );
+  }
+
+  static query<T extends UserToAuthenticationDetailsQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<User>) => T,
+    viewer: Viewer,
+    src: EdgeQuerySource<User>,
+  ): T {
+    return new this(viewer, src);
   }
 }
 
@@ -523,30 +547,6 @@ export class UserToQuestionsVotedQueryBase extends AssocEdgeQueryBase<
 
   queryVoters(): QuestionVoteToVotersQuery {
     return QuestionVoteToVotersQuery.query(this.viewer, this);
-  }
-}
-
-export class UserToSavedAuthenticationDetailsQueryBase extends AssocEdgeQueryBase<
-  User,
-  UserAuthentication,
-  UserToSavedAuthenticationDetailsEdge
-> {
-  constructor(viewer: Viewer, src: EdgeQuerySource<User>) {
-    super(
-      viewer,
-      src,
-      userToSavedAuthenticationDetailsCountLoaderFactory,
-      userToSavedAuthenticationDetailsDataLoaderFactory,
-      UserAuthentication.loaderOptions(),
-    );
-  }
-
-  static query<T extends UserToSavedAuthenticationDetailsQueryBase>(
-    this: new (viewer: Viewer, src: EdgeQuerySource<User>) => T,
-    viewer: Viewer,
-    src: EdgeQuerySource<User>,
-  ): T {
-    return new this(viewer, src);
   }
 }
 

@@ -9,11 +9,11 @@ import {
 } from "@snowtop/ent";
 import {
   EdgeType,
-  QuestionPrivateNote,
-  QuestionPrivateNoteToAuthorsEdge,
   User,
+  UserAuthentication,
+  UserAuthenticationToUsersEdge,
   UserToAnswersVotedQuery,
-  UserToAuthenticationDetailsQuery,
+  UserToAuthDetailsQuery,
   UserToAuthorToAuthoredAnswerCommentsQuery,
   UserToAuthorToAuthoredAnswersQuery,
   UserToAuthorToAuthoredQuestionCommentsQuery,
@@ -24,48 +24,45 @@ import {
   UserToAuthoredQuestionsQuery,
   UserToQuestionPrivateNotesQuery,
   UserToQuestionsVotedQuery,
+  UserToSavedAuthenticationDetailsQuery,
   UserToUserQuestionPrivateNotesQuery,
   UserToVoterToAnswersVotedQuery,
   UserToVoterToQuestionsVotedQuery,
 } from "src/ent/internal";
 
-export const questionPrivateNoteToAuthorsCountLoaderFactory =
-  new AssocEdgeCountLoaderFactory(EdgeType.QuestionPrivateNoteToAuthors);
-export const questionPrivateNoteToAuthorsDataLoaderFactory =
+export const userAuthenticationToUsersCountLoaderFactory =
+  new AssocEdgeCountLoaderFactory(EdgeType.UserAuthenticationToUsers);
+export const userAuthenticationToUsersDataLoaderFactory =
   new AssocEdgeLoaderFactory(
-    EdgeType.QuestionPrivateNoteToAuthors,
-    () => QuestionPrivateNoteToAuthorsEdge,
+    EdgeType.UserAuthenticationToUsers,
+    () => UserAuthenticationToUsersEdge,
   );
 
-export class QuestionPrivateNoteToAuthorsQueryBase extends AssocEdgeQueryBase<
-  QuestionPrivateNote,
+export class UserAuthenticationToUsersQueryBase extends AssocEdgeQueryBase<
+  UserAuthentication,
   User,
-  QuestionPrivateNoteToAuthorsEdge
+  UserAuthenticationToUsersEdge
 > {
-  constructor(viewer: Viewer, src: EdgeQuerySource<QuestionPrivateNote>) {
+  constructor(viewer: Viewer, src: EdgeQuerySource<UserAuthentication>) {
     super(
       viewer,
       src,
-      questionPrivateNoteToAuthorsCountLoaderFactory,
-      questionPrivateNoteToAuthorsDataLoaderFactory,
+      userAuthenticationToUsersCountLoaderFactory,
+      userAuthenticationToUsersDataLoaderFactory,
       User.loaderOptions(),
     );
   }
 
-  static query<T extends QuestionPrivateNoteToAuthorsQueryBase>(
-    this: new (viewer: Viewer, src: EdgeQuerySource<QuestionPrivateNote>) => T,
+  static query<T extends UserAuthenticationToUsersQueryBase>(
+    this: new (viewer: Viewer, src: EdgeQuerySource<UserAuthentication>) => T,
     viewer: Viewer,
-    src: EdgeQuerySource<QuestionPrivateNote>,
+    src: EdgeQuerySource<UserAuthentication>,
   ): T {
     return new this(viewer, src);
   }
 
   queryAnswersVoted(): UserToAnswersVotedQuery {
     return UserToAnswersVotedQuery.query(this.viewer, this);
-  }
-
-  queryAuthenticationDetails(): UserToAuthenticationDetailsQuery {
-    return UserToAuthenticationDetailsQuery.query(this.viewer, this);
   }
 
   queryAuthorToAuthoredAnswerComments(): UserToAuthorToAuthoredAnswerCommentsQuery {
@@ -108,8 +105,16 @@ export class QuestionPrivateNoteToAuthorsQueryBase extends AssocEdgeQueryBase<
     return UserToQuestionsVotedQuery.query(this.viewer, this);
   }
 
+  querySavedAuthenticationDetails(): UserToSavedAuthenticationDetailsQuery {
+    return UserToSavedAuthenticationDetailsQuery.query(this.viewer, this);
+  }
+
   queryUserQuestionPrivateNotes(): UserToUserQuestionPrivateNotesQuery {
     return UserToUserQuestionPrivateNotesQuery.query(this.viewer, this);
+  }
+
+  queryUserToAuthDetails(): UserToAuthDetailsQuery {
+    return UserToAuthDetailsQuery.query(this.viewer, this);
   }
 
   queryVoterToAnswersVoted(): UserToVoterToAnswersVotedQuery {

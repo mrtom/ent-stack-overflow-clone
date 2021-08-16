@@ -146,6 +146,10 @@ import {
   UserAuthJWTInputType,
   UserAuthJWTPayloadType,
 } from "src/graphql/mutations/generated/user_auth_jwt_type";
+import {
+  UserAuthenticationCreateInputType,
+  UserAuthenticationCreatePayloadType,
+} from "src/graphql/mutations/generated/user_authentication/user_authentication_create_type";
 import { QueryType } from "src/graphql/resolvers/generated/query_type";
 import {
   AnswerCommentToAuthorsConnectionType,
@@ -171,6 +175,7 @@ import {
   QuestionVoteType,
   UserAuthenticationType,
   UserToAnswersVotedConnectionType,
+  UserToAuthenticationDetailsConnectionType,
   UserToAuthorToAuthoredAnswerCommentsConnectionType,
   UserToAuthorToAuthoredAnswersConnectionType,
   UserToAuthorToAuthoredQuestionCommentsConnectionType,
@@ -182,7 +187,6 @@ import {
   UserToQuestionPrivateNotesConnectionType,
   UserToQuestionsFeedConnectionType,
   UserToQuestionsVotedConnectionType,
-  UserToSavedAuthenticationDetailsConnectionType,
   UserToUserQuestionPrivateNotesConnectionType,
   UserToVoterToAnswersVotedConnectionType,
   UserToVoterToQuestionsVotedConnectionType,
@@ -220,6 +224,7 @@ export default new GraphQLSchema({
     QuestionToVotesConnectionType(),
     QuestionVoteToVotersConnectionType(),
     UserToAnswersVotedConnectionType(),
+    UserToAuthenticationDetailsConnectionType(),
     UserToAuthorToAuthoredAnswerCommentsConnectionType(),
     UserToAuthorToAuthoredAnswersConnectionType(),
     UserToAuthorToAuthoredQuestionCommentsConnectionType(),
@@ -231,7 +236,6 @@ export default new GraphQLSchema({
     UserToQuestionPrivateNotesConnectionType(),
     UserToQuestionsFeedConnectionType(),
     UserToQuestionsVotedConnectionType(),
-    UserToSavedAuthenticationDetailsConnectionType(),
     UserToUserQuestionPrivateNotesConnectionType(),
     UserToVoterToAnswersVotedConnectionType(),
     UserToVoterToQuestionsVotedConnectionType(),
@@ -306,6 +310,8 @@ export default new GraphQLSchema({
     QuestionVoteDeletePayloadType,
     QuestionVoteRemoveVoterInputType,
     QuestionVoteRemoveVoterPayloadType,
+    UserAuthenticationCreateInputType,
+    UserAuthenticationCreatePayloadType,
     UserCreateInputType,
     UserCreatePayloadType,
   ],

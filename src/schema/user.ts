@@ -8,16 +8,12 @@ import {
   ActionOperation,
   requiredField,
 } from "@snowtop/ent/schema";
-import { EmailType } from "@snowtop/ent-email";
-import { PasswordType } from "@snowtop/ent-password";
 
 export default class User extends BaseEntSchema {
   fields: Field[] = [
     StringType({ name: "FirstName" }),
     StringType({ name: "LastName" }),
     IntegerType({ name: "Reputation", nullable: false, defaultValueOnCreate: () => 0 }),
-    EmailType({ name: "EmailAddress", unique: true }),
-    PasswordType({ name: "Password" }),
   ];
 
   edges: Edge[] = [
@@ -50,7 +46,7 @@ export default class User extends BaseEntSchema {
       schemaName: "AnswerVote",
     },
     {
-      name: "savedAuthenticationDetails",
+      name: "authenticationDetails",
       schemaName: "UserAuthentication",
     },
   ];
@@ -58,7 +54,15 @@ export default class User extends BaseEntSchema {
   actions: Action[] = [
     {
       operation: ActionOperation.Create,
-      fields: ["FirstName", "LastName", "EmailAddress", "Password"],
+      fields: ["FirstName", "LastName"],
+      actionOnlyFields: [
+        {
+          name: "EmailAddress", type: "String",
+        },
+        {
+          name: "Password", type: "String",
+        },
+      ],
     },
     {
       operation: ActionOperation.Edit,

@@ -28,8 +28,6 @@ export interface UserInput {
   firstName?: string;
   lastName?: string;
   reputation?: number;
-  emailAddress?: string;
-  password?: string;
 }
 
 export interface UserAction extends Action<User> {
@@ -133,6 +131,58 @@ export class UserBuilder implements Builder<User> {
         );
       } else {
         this.orchestrator.removeOutboundEdge(node, EdgeType.UserToAnswersVoted);
+      }
+    }
+    return this;
+  }
+
+  addAuthenticationDetail(...ids: ID[]): UserBuilder;
+  addAuthenticationDetail(...nodes: UserAuthentication[]): UserBuilder;
+  addAuthenticationDetail(...nodes: Builder<UserAuthentication>[]): UserBuilder;
+  addAuthenticationDetail(
+    ...nodes: ID[] | UserAuthentication[] | Builder<UserAuthentication>[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (this.isBuilder(node)) {
+        this.addAuthenticationDetailID(node);
+      } else if (typeof node === "object") {
+        this.addAuthenticationDetailID(node.id);
+      } else {
+        this.addAuthenticationDetailID(node);
+      }
+    }
+    return this;
+  }
+
+  addAuthenticationDetailID(
+    id: ID | Builder<UserAuthentication>,
+    options?: AssocEdgeInputOptions,
+  ): UserBuilder {
+    this.orchestrator.addOutboundEdge(
+      id,
+      EdgeType.UserToAuthenticationDetails,
+      NodeType.UserAuthentication,
+      options,
+    );
+    return this;
+  }
+
+  removeAuthenticationDetail(...ids: ID[]): UserBuilder;
+  removeAuthenticationDetail(...nodes: UserAuthentication[]): UserBuilder;
+  removeAuthenticationDetail(
+    ...nodes: ID[] | UserAuthentication[]
+  ): UserBuilder {
+    for (const node of nodes) {
+      if (typeof node === "object") {
+        this.orchestrator.removeOutboundEdge(
+          node.id,
+          EdgeType.UserToAuthenticationDetails,
+        );
+      } else {
+        this.orchestrator.removeOutboundEdge(
+          node,
+          EdgeType.UserToAuthenticationDetails,
+        );
       }
     }
     return this;
@@ -652,60 +702,6 @@ export class UserBuilder implements Builder<User> {
     return this;
   }
 
-  addSavedAuthenticationDetail(...ids: ID[]): UserBuilder;
-  addSavedAuthenticationDetail(...nodes: UserAuthentication[]): UserBuilder;
-  addSavedAuthenticationDetail(
-    ...nodes: Builder<UserAuthentication>[]
-  ): UserBuilder;
-  addSavedAuthenticationDetail(
-    ...nodes: ID[] | UserAuthentication[] | Builder<UserAuthentication>[]
-  ): UserBuilder {
-    for (const node of nodes) {
-      if (this.isBuilder(node)) {
-        this.addSavedAuthenticationDetailID(node);
-      } else if (typeof node === "object") {
-        this.addSavedAuthenticationDetailID(node.id);
-      } else {
-        this.addSavedAuthenticationDetailID(node);
-      }
-    }
-    return this;
-  }
-
-  addSavedAuthenticationDetailID(
-    id: ID | Builder<UserAuthentication>,
-    options?: AssocEdgeInputOptions,
-  ): UserBuilder {
-    this.orchestrator.addOutboundEdge(
-      id,
-      EdgeType.UserToSavedAuthenticationDetails,
-      NodeType.UserAuthentication,
-      options,
-    );
-    return this;
-  }
-
-  removeSavedAuthenticationDetail(...ids: ID[]): UserBuilder;
-  removeSavedAuthenticationDetail(...nodes: UserAuthentication[]): UserBuilder;
-  removeSavedAuthenticationDetail(
-    ...nodes: ID[] | UserAuthentication[]
-  ): UserBuilder {
-    for (const node of nodes) {
-      if (typeof node === "object") {
-        this.orchestrator.removeOutboundEdge(
-          node.id,
-          EdgeType.UserToSavedAuthenticationDetails,
-        );
-      } else {
-        this.orchestrator.removeOutboundEdge(
-          node,
-          EdgeType.UserToSavedAuthenticationDetails,
-        );
-      }
-    }
-    return this;
-  }
-
   addUserQuestionPrivateNote(...ids: ID[]): UserBuilder;
   addUserQuestionPrivateNote(...nodes: QuestionPrivateNote[]): UserBuilder;
   addUserQuestionPrivateNote(
@@ -901,8 +897,6 @@ export class UserBuilder implements Builder<User> {
     addField("FirstName", fields.firstName);
     addField("LastName", fields.lastName);
     addField("Reputation", fields.reputation);
-    addField("EmailAddress", fields.emailAddress);
-    addField("Password", fields.password);
     return result;
   }
 
@@ -923,15 +917,5 @@ export class UserBuilder implements Builder<User> {
   // get value of Reputation. Retrieves it from the input if specified or takes it from existingEnt
   getNewReputationValue(): number | undefined {
     return this.input.reputation || this.existingEnt?.reputation;
-  }
-
-  // get value of EmailAddress. Retrieves it from the input if specified or takes it from existingEnt
-  getNewEmailAddressValue(): string | undefined {
-    return this.input.emailAddress || this.existingEnt?.emailAddress;
-  }
-
-  // get value of Password. Retrieves it from the input if specified or takes it from existingEnt
-  getNewPasswordValue(): string | undefined {
-    return this.input.password;
   }
 }

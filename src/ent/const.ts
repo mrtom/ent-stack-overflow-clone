@@ -64,6 +64,8 @@ export enum EdgeType {
   QuestionVoteToVoters = "ee449750-58df-4a33-a692-d8bf90e70a9d",
   // UserToAnswersVoted is the edgeType for the user to answersvoted edge.
   UserToAnswersVoted = "7293e3fd-0ddd-424c-a740-27392e885d7e",
+  // UserToAuthenticationDetails is the edgeType for the user to authenticationdetails edge.
+  UserToAuthenticationDetails = "76806fdf-2a89-4c5f-947b-1bd9dad8b03d",
   // UserToAuthorToAuthoredAnswerComments is the edgeType for the user to authortoauthoredanswercomments edge.
   UserToAuthorToAuthoredAnswerComments = "21319a5d-1678-4a97-8d9f-e8af198504b2",
   // UserToAuthorToAuthoredAnswers is the edgeType for the user to authortoauthoredanswers edge.
@@ -84,8 +86,6 @@ export enum EdgeType {
   UserToQuestionPrivateNotes = "5da8f466-0498-42ed-9f0f-9138223793b9",
   // UserToQuestionsVoted is the edgeType for the user to questionsvoted edge.
   UserToQuestionsVoted = "92e68df1-d754-43dd-8e0d-6016f6caaba9",
-  // UserToSavedAuthenticationDetails is the edgeType for the user to savedauthenticationdetails edge.
-  UserToSavedAuthenticationDetails = "2049f992-3325-4323-9875-9ee53bafff49",
   // UserToUserQuestionPrivateNotes is the edgeType for the user to userquestionprivatenotes edge.
   UserToUserQuestionPrivateNotes = "fd476c64-01c5-44b3-859b-a15dc450d1f9",
   // UserToVoterToAnswersVoted is the edgeType for the user to votertoanswersvoted edge.
@@ -110,6 +110,7 @@ export function getEdgeTypeValues() {
     EdgeType.QuestionToVotes,
     EdgeType.QuestionVoteToVoters,
     EdgeType.UserToAnswersVoted,
+    EdgeType.UserToAuthenticationDetails,
     EdgeType.UserToAuthorToAuthoredAnswerComments,
     EdgeType.UserToAuthorToAuthoredAnswers,
     EdgeType.UserToAuthorToAuthoredQuestionComments,
@@ -120,7 +121,6 @@ export function getEdgeTypeValues() {
     EdgeType.UserToAuthoredQuestions,
     EdgeType.UserToQuestionPrivateNotes,
     EdgeType.UserToQuestionsVoted,
-    EdgeType.UserToSavedAuthenticationDetails,
     EdgeType.UserToUserQuestionPrivateNotes,
     EdgeType.UserToVoterToAnswersVoted,
     EdgeType.UserToVoterToQuestionsVoted,

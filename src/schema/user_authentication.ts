@@ -1,4 +1,5 @@
 import {
+  Action,
   ActionOperation,
   BaseEntSchema,
   Edge,
@@ -16,10 +17,17 @@ export default class UserAuthentication extends BaseEntSchema implements Schema 
     PasswordType({ name: "Password" }),
     UUIDType({
       name: "userID",
-      fieldEdge: { schema: "User", inverseEdge: "savedAuthenticationDetails" },
+      fieldEdge: { schema: "User", inverseEdge: "authenticationDetails" },
       storageKey: "user_id",
       defaultToViewerOnCreate: true,
     }),
+  ];
+
+  actions: Action[] = [
+    {
+      operation: ActionOperation.Create,
+      fields: ["EmailAddress", "Password"],
+    },
   ];
 
   indices: Index[] = [
