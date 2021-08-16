@@ -26,7 +26,8 @@ export default class UserAuthentication extends BaseEntSchema implements Schema 
   actions: Action[] = [
     {
       operation: ActionOperation.Create,
-      fields: ["EmailAddress", "Password"],
+      fields: ["EmailAddress", "Password", "userID"],
+      hideFromGraphQL: true,
     },
   ];
 

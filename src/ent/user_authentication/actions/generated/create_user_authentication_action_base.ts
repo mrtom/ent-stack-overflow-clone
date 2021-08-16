@@ -2,11 +2,17 @@
 
 import {
   AllowIfViewerHasIdentityPrivacyPolicy,
+  ID,
   PrivacyPolicy,
   Viewer,
 } from "@snowtop/ent";
-import { Action, Changeset, WriteOperation } from "@snowtop/ent/action";
-import { UserAuthentication } from "src/ent/";
+import {
+  Action,
+  Builder,
+  Changeset,
+  WriteOperation,
+} from "@snowtop/ent/action";
+import { User, UserAuthentication } from "src/ent/";
 import {
   UserAuthenticationBuilder,
   UserAuthenticationInput,
@@ -15,6 +21,7 @@ import {
 export interface UserAuthenticationCreateInput {
   emailAddress: string;
   password: string;
+  userID: ID | Builder<User>;
 }
 
 export class CreateUserAuthenticationActionBase

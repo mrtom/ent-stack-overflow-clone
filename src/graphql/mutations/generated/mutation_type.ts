@@ -37,7 +37,6 @@ import { QuestionVoteDeleteType } from "src/graphql/mutations/generated/question
 import { QuestionVoteRemoveVoterType } from "src/graphql/mutations/generated/question_vote/question_vote_remove_voter_type";
 import { UserCreateType } from "src/graphql/mutations/generated/user/user_create_type";
 import { UserAuthJWTType } from "src/graphql/mutations/generated/user_auth_jwt_type";
-import { UserAuthenticationCreateType } from "src/graphql/mutations/generated/user_authentication/user_authentication_create_type";
 
 export const MutationType = new GraphQLObjectType({
   name: "Mutation",
@@ -77,7 +76,6 @@ export const MutationType = new GraphQLObjectType({
     questionVoteDelete: QuestionVoteDeleteType,
     questionVoteRemoveVoter: QuestionVoteRemoveVoterType,
     userAuthJWT: UserAuthJWTType,
-    userAuthenticationCreate: UserAuthenticationCreateType,
     userCreate: UserCreateType,
   }),
 });

@@ -1,19 +1,12 @@
 In order to use fields in an Ent Custom Query they need to have an index on them
 
-TODO:
-Need to make sure votes are visible to everyone. Done.
-Need to make sure only auther can remove a vote. Done.
-Need to make sure only one vote per question per user: Done
-Need to look into adding reputation to question author on vote: Done - but will break when user privacy set properly.
-Need to prevent author from voting for own question. Done
-
 
 TODO:
-- Split out user and user login objects
+- Split out user and user login objects: Done.
 - Make sure user is readable by everyone, writable by themselves and omni only
 - Make sure user login is read/write by themselves and omni only
 - (Presumably) fix the triggers for reputation as once User is not writable by everyone that won't work
-- Use defaultToViewerOnCreate everywhere it's relevant
+- Use defaultToViewerOnCreate everywhere it's relevant: Done.
 - I think that's it!
 
 Brief:
