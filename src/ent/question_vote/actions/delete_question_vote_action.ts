@@ -6,7 +6,7 @@ import { QuestionVoteBuilder, QuestionVoteInput } from "src/ent/question_vote/ac
 import EditUserReputationAction from "src/ent/user/actions/edit_user_reputation_action";
 
 import { AllowIfViewerVoterPrivacyPolicy } from "src/privacy/voter";
-
+import { UserReputationAdminViewer } from "src/privacy/userReputation";
 export default class DeleteQuestionVoteAction extends DeleteQuestionVoteActionBase {
   getPrivacyPolicy() {
     return AllowIfViewerVoterPrivacyPolicy;
@@ -14,24 +14,39 @@ export default class DeleteQuestionVoteAction extends DeleteQuestionVoteActionBa
 
   triggers: Trigger<QuestionVote>[] = [
     {
-      async changeset(builder: QuestionVoteBuilder, input: QuestionVoteInput) {
+      async changeset(builder: QuestionVoteBuilder, input: {}) {
         const viewer = builder.viewer;
+        const viewerID = viewer.viewerID;
+        const vote = builder.existingEnt;
         const questionIDOrBuider = builder.getNewQuestionIDValue();
 
+        if (!viewerID) {
+          throw new Error("Could not load viewer");
+        }
+
+        if (!vote) {
+          throw new Error("Could not load vote");
+        }
+
         if (!questionIDOrBuider || builder.isBuilder(questionIDOrBuider)) {
-          // TODO: This is unexpected. We should log as such.
-          return;
+          throw new Error("Could not load questionID or builder");
         }
 
         const question = await Question.loadX(viewer, questionIDOrBuider);
         const questionAuthorID = question.authorID;
+        const questionAuthor = await User.loadX(viewer, questionAuthorID);
 
-        const reputationChange = input.voteType == VoteType.Up.toUpperCase() ? 10 : -10;
+        const reputationChange =
+          vote.voteType.toUpperCase() == VoteType.Up.toUpperCase() ? -10 : 10;
 
-        const user = await User.loadX(viewer, questionAuthorID);
-        return await EditUserReputationAction.create(builder.viewer, user, {
-          reputation: user.reputation + reputationChange
-        }).changeset();
+        const viewerWithEditReputationPermission = new UserReputationAdminViewer(viewerID);
+        return await EditUserReputationAction.create(
+          viewerWithEditReputationPermission,
+          questionAuthor,
+          {
+            reputation: questionAuthor.reputation + reputationChange
+          }
+        ).changeset();
       },
     },
   ];

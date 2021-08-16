@@ -1,3 +1,7 @@
+import { AllowIfViewerRule, AlwaysDenyRule } from "@snowtop/ent";
+
+import { AllowIfOmniRule } from "src/privacy/omni";
+import { AllowIfUserReputationAdminRule } from "src/privacy/userReputation";
 import {
   EditUserReputationActionBase,
   UserEditInput,
@@ -5,4 +9,15 @@ import {
 
 export { UserEditInput };
 
-export default class EditUserReputationAction extends EditUserReputationActionBase {}
+export default class EditUserReputationAction extends EditUserReputationActionBase {
+  getPrivacyPolicy() {
+    return {
+      rules: [
+        AllowIfOmniRule,
+        AllowIfViewerRule,
+        AllowIfUserReputationAdminRule,
+        AlwaysDenyRule,
+      ],
+    };
+  }
+}

@@ -13,6 +13,7 @@ import {
   CreateAnswerVoteActionBase,
 } from "src/ent/answer_vote/actions/generated/create_answer_vote_action_base";
 import EditUserReputationAction from "src/ent/user/actions/edit_user_reputation_action";
+import { UserReputationAdminViewer } from "src/privacy/userReputation";
 
 export { AnswerVoteCreateInput };
 
@@ -31,7 +32,12 @@ export default class CreateAnswerVoteAction extends CreateAnswerVoteActionBase {
     {
       async changeset(builder: AnswerVoteBuilder, input: AnswerVoteCreateInput) {
         const viewer = builder.viewer;
+        const viewerID = viewer.viewerID;
         const answerIDOrBuider = builder.getNewAnswerIDValue();
+
+        if (!viewerID) {
+          throw new Error("Could not load viewer");
+        }
 
         if (!answerIDOrBuider || builder.isBuilder(answerIDOrBuider)) {
           // TODO: This is unexpected. We should log as such.
@@ -44,9 +50,15 @@ export default class CreateAnswerVoteAction extends CreateAnswerVoteActionBase {
         const reputationChange = input.answerVoteType == AnswerVoteType.Up.toUpperCase() ? 10 : -10;
 
         const user = await User.loadX(viewer, answerAuthorID);
-        return await EditUserReputationAction.create(builder.viewer, user, {
-          reputation: user.reputation + reputationChange
-        }).changeset();
+
+        const viewerWithEditReputationPermission = new UserReputationAdminViewer(viewerID);
+        return await EditUserReputationAction.create(
+          viewerWithEditReputationPermission,
+          user,
+          {
+            reputation: user.reputation + reputationChange
+          }
+        ).changeset();
       },
     },
   ];
