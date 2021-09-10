@@ -2,24 +2,20 @@ In order to use fields in an Ent Custom Query they need to have an index on them
 
 
 TODO:
-- Split out user and user login objects: Done.
-- Make sure user is readable by everyone, writable by themselves and omni only. Done. Creation is open to everyone, no editing capabilities yet.
-- Make sure user login is read/write by themselves and omni only. Done.
-- Use defaultToViewerOnCreate everywhere it's relevant: Done.
-- (Presumably) fix the triggers for reputation as once User is not writable by everyone that won't work
-- I think that's it!
+- Make sure we fail if we try and create a user with an existing email address. Currently we don't as we're using an observer rather than a trigger, because we need the user to have been created (to have an id) before we can create the user auth.
+Not sure what the right option is here - perhaps one to ask Ola?
 
 Brief:
 
 Objects:
 - User
-- User Login
+- User Authentication
 - Question
+- Question Vote
 - Question Comment
 - Answer
-- Answer Comment
-- Question Vote
 - Answer Vote
+- Answer Comment
 - Private Note
 
 Business Logic:
