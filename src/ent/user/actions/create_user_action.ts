@@ -1,3 +1,4 @@
+import { Trigger } from "@snowtop/ent/action";
 import { Data, IDViewer, AlwaysAllowPrivacyPolicy } from "@snowtop/ent";
 
 import { User } from "src/ent";
@@ -21,29 +22,19 @@ export default class CreateUserAction extends CreateUserActionBase {
     return new IDViewer(data.id);
   }
 
-
   observers = [
+    new EntCreationObserver<User>(),
+  ];
+
+  triggers: Trigger<User>[] = [
     {
-      observe: async (builder: UserBuilder, input: UserCreateInput): Promise<void> => {
-        const emailAddress = input.emailAddress;
-        const password = input.password;
-
-        const newUserEnt = await builder.editedEnt();
-
-        if (!newUserEnt) {
-          throw new Error("Could not load new user ent, user authentication not created");
-        }
-
-        await CreateUserAuthenticationAction.create(
-          builder.viewer,
-          {
-            emailAddress: emailAddress,
-            password: password,
-            userID: newUserEnt.id,
-          }
-        ).save();
+      async changeset(builder: UserBuilder, input: UserCreateInput) {
+        return await CreateUserAuthenticationAction.create(builder.viewer, {
+          emailAddress: input.emailAddress,
+          password: input.password,
+          userID: builder,
+        }).changeset();
       },
     },
-    new EntCreationObserver<User>(),
   ];
 }
