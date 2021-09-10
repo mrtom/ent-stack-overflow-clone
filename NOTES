@@ -1,10 +1,5 @@
 In order to use fields in an Ent Custom Query they need to have an index on them
 
-
-TODO:
-- Make sure we fail if we try and create a user with an existing email address. Currently we don't as we're using an observer rather than a trigger, because we need the user to have been created (to have an id) before we can create the user auth.
-Not sure what the right option is here - perhaps one to ask Ola?
-
 Brief:
 
 Objects:
