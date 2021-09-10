@@ -2,7 +2,6 @@ import {
   Action,
   ActionOperation,
   BaseEntSchema,
-  Edge,
   Field,
   Index,
   Schema,
