@@ -18,7 +18,7 @@ Business Logic:
 User:
 - User should be viewable by anyone with an account
 
-User Login:
+User Authentication:
 - User login should be viewable only by the user
 
 Questions:
@@ -40,7 +40,7 @@ Question Comment:
 Answers:
 - Answers need to be visible to everyone with an account
 - Answers need to be creatable by anyone with an account
-- Answers need to be editale by the author, superusers and anyone with a reputation > 100
+- Answers need to be editable by the author, superusers and anyone with a reputation > 100
 - Answers need to be deletable by a superuser
 
 Answer Comment:
@@ -51,14 +51,14 @@ Answer Comment:
 
 Question Votes:
 - Need to make sure votes are visible to all accounts
-- Need to make sure only auther can remove a vote
+- Need to make sure only author can remove a vote
 - Need to make sure only one vote per question per user
 - Need to add/remove reputation to question author on vote
 - Need to prevent author from voting for own question
 
 Answer Votes:
 - Need to make sure votes are visible to all accounts
-- Need to make sure only auther can remove a vote
+- Need to make sure only author can remove a vote
 - Need to make sure only one vote per answer per user
 - Need to add/remove reputation to answer author on vote
 - Need to prevent author from voting for own answer
